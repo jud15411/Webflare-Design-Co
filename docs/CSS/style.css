@@ -35,35 +35,6 @@ header {
     z-index: 1000;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-}
-
-.header-logo {
-    width: 200px;
-    height: auto;
-    border-radius: 10px;;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-}
-
-.nav-links li {
-    margin-left: 40px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--dark);
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
 .nav-links a:hover {
     color: var(--primary);
 }
@@ -496,4 +467,63 @@ footer {
     .portfolio-grid {
         grid-template-columns: 1fr;
     }
+}
+
+
+.navbar {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.navdiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 35px;
+    font-weight: 600px;
+    margin-top: 15px;
+}
+
+.logo-img {
+    width: 225px;
+    height: auto;
+    margin: 15px;
+}
+
+.logo-color {
+    color: black;
+}
+
+.link {
+    list-style: none;
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.link-text {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 25px;
+    text-decoration: none;
+}
+
+.contact-btn {
+    background-color: black;
+    margin-right: 25px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 90px;
+}
+
+.btn-text {
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    text-decoration: none;
 }
