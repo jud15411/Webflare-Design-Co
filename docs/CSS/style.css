@@ -70,12 +70,20 @@ header {
 }
 
 .hero-img {
-    width: 70%;
+    width: 100%;
 }
 
 .hero-img-img {
-    width: 100%;
+    width: 70%;
     max-width: 500px;
+    border-radius: 10px;
+}
+
+@media (min-width: 750px) {
+    .hero-img-img {
+        width: 100%;
+        max-width: 750px;
+    }
 }
 
 h1 {
@@ -174,6 +182,10 @@ p {
 .about-text {
     width: 75%;
     display: flex;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .about-text-about {
@@ -295,7 +307,10 @@ p {
 }
 
 .contact-info {
-    width: 40%;
+    display: flex;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .contact-form {
@@ -613,4 +628,8 @@ footer {
     position: fixed;
 }
 
+.section1 {
+    display: flex; 
+    justify-content: center;
 
+}
