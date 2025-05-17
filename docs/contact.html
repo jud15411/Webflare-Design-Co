@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Webflare Design Co.</title>
+  <link rel="icon" href="Img/webflare-favicon.png">
+  <link rel="stylesheet" href="CSS/contact.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+        emailjs.init({
+            publicKey: "tAPyZLxsCqU_CP0H-",
+        });
+    })();
+    </script>
+</head>
+<body>
+  <div class="contact-section">
+    <div class="header">
+      <img src="Img/fav.png" alt="Webflare Design Co. Logo" class="logo"/>
+      <h1>Webflare Design Co.</h1>
+    </div>
+
+    <h2>Contact</h2>
+    <div class="contact-container">
+      <form class="contact-form" action="https://formsubmit.co/judsonwells100@gmail.com" method="POST">
+        <input type="text" name="_honey" style="display: none;">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://webflaredesignco.com/success.html">
+
+
+        <h3>Contact Us</h3>
+        <input name="name" type="text" placeholder="Name" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div class="contact-info">
+        <p><strong>Phone:</strong> +1 (315) 590 2863</p>
+        <p><strong>Email:</strong> support@webflaredesignco.com</p>
+        <p><strong>Address:</strong><br/>807 Pickering St<br/>Ogdensburg, NY 13669</p>
+        <button class="home-btn"><a href="index.html" class="home-btn-txt">Home</a></button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

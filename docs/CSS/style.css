@@ -50,7 +50,7 @@ header {
     border: none;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 1.5s ease;
 }
 
 .btn:hover {
@@ -592,4 +592,20 @@ footer {
 
 .align-left1 {
     align-items: start;
+
+}
+.off-screen-menu {
+    background-color: #212529;
+    height: 100%;
+    width: 80%;
+    right: 0;
+    top: 0;
+    position: fixed;
+}
+
+@media (max-width: 750px) {
+    .menu-hide {
+        display: none;
+        transition: 1.5s ease-in-out;
+    }
 }
