@@ -9,7 +9,7 @@
 </head>
 <body>
             
-    <header>
+    <header class="header">
         <nav class="navbar">
             <div class="navdiv">
                 <div class="logo"> <a href="index.html"><img src="Logos/logo.png" alt="logo" class="logo-img"></a></div>
@@ -25,21 +25,18 @@
     </header>
 
     <section id="home" class="hero">
-        <div class="container section1">
-            <div class="hero-content">
-                <h1>Creating <span>Digital Experiences</span> That Inspire</h1>
-                <p>We specialize in crafting stunning websites and digital solutions that help businesses thrive in the digital landscape.</p>
-                <a href="#contact" class="btn">Get Started</a>
-            </div>
-            <!---
+        
+            <div class="container section1">
+                <div class="hero-content">
+                    <h1>Creating <span class="home-text-1">Digital Experiences</span> That Inspire</h1>
+                    <p>We specialize in crafting stunning websites and digital solutions that help businesses thrive in the digital landscape.</p>
+                    <a href="#contact" class="btn">Get Started</a>
+                </div>
+            </div> 
             <div class="hero-img">
-                <img src="../Img/web-dev.jpg" alt="Web Design Illustration">
+                <img class="hero-img-img" src="Img/web-dev.jpg" alt="Web Design Illustration">
             </div>
-        -->
-        </div>
-        <div class="hero-img">
-            <img src="Img/web-dev.jpg" alt="Web Design Illustration">
-        </div>
+        
     </section>
 
     <section id="services" class="services">
@@ -95,41 +92,44 @@
                     <img src="Img/web-dev-2.jpg" alt="About Webflare Design">
                 </div>
                 <div class="about-text">
-                    <h3>About Webflare Design Co</h3>
-                    <p>Welcome to Webflare Design Co, where creativity meets technology! 
-                        Founded by a passionate father-son duo, we specialize in crafting 
-                        stunning and functional web designs that elevate your online presence. 
-                        Our mission is to empower businesses of all sizes with innovative web 
-                        solutions tailored to their unique needs.</p>
-                    <h3>Who We Are</h3>
-                    <p>At Webflare Design Co, we believe that a website is more than just an 
-                        online brochure; it’s a powerful tool for communication and engagement. 
-                        With years of combined experience in web development and design, we bring a 
-                        personal touch to every project. Our commitment to quality and customer 
-                        satisfaction drives us to exceed expectations at every turn.</p>
-                    <h3>Our Core Values</h3>
-                    <ul>
-                        <li>
-                            Integrity: We uphold the highest standards of honesty and transparency in our work.
-                        </li>
-                        <li>
-                            Collaboration: We value open communication and teamwork, ensuring that our clients are involved throughout the design process.
-                        </li>
-                        <li>
-                            Innovation: We stay ahead of industry trends, continuously seeking new ways to enhance user experience through cutting-edge technology.
-                        </li>
-                        <li>
-                            Customer Focus: Your vision is our priority. We listen carefully to your needs and tailor our services accordingly.
-                        </li>
-                    </ul>
-                    <br>
-                    <h3>Our Vision</h3>
-                    <p>As we embark on this exciting journey together, our vision is clear:</p>
-                    <p>To be a leading provider of innovative web solutions that not only meet but exceed the expectations of our clients.</p>
-                    <p>We aspire to create websites that inspire, engage, and convert visitors into loyal customers. By leveraging the latest 
-                        technologies and design principles, we aim to help businesses thrive in the digital landscape.</p>
-                    <p>We invite you to explore how Webflare Design Co can transform your online presence. Whether you're
-                        starting from scratch or looking for a redesign, we're here to help you achieve your goals with passion and expertise.</p>
+                    <div class="about-text-about">
+                        <h3>About Webflare Design Co</h3>
+                        <p>Welcome to Webflare Design Co, where creativity meets technology! 
+                            Founded by a passionate father-son duo, we specialize in crafting 
+                            stunning and functional web designs that elevate your online presence. 
+                            Our mission is to empower businesses of all sizes with innovative web 
+                            solutions tailored to their unique needs.</p>
+                        <h3>Who We Are</h3>
+                        <p>At Webflare Design Co, we believe that a website is more than just an 
+                            online brochure; it’s a powerful tool for communication and engagement. 
+                            With years of combined experience in web development and design, we bring a 
+                            personal touch to every project. Our commitment to quality and customer 
+                            satisfaction drives us to exceed expectations at every turn.</p>
+                        <h3>Our Core Values</h3>
+                        <ul>
+                            <li>
+                                Integrity: We uphold the highest standards of honesty and transparency in our work.
+                            </li>
+                            <li>
+                                Collaboration: We value open communication and teamwork, ensuring that our clients are involved throughout the design process.
+                            </li>
+                            <li>
+                                Innovation: We stay ahead of industry trends, continuously seeking new ways to enhance user experience through cutting-edge technology.
+                            </li>
+                            <li>
+                                Customer Focus: Your vision is our priority. We listen carefully to your needs and tailor our services accordingly.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="about-text-about">
+                        <h3>Our Vision</h3>
+                        <p>As we embark on this exciting journey together, our vision is clear:</p>
+                        <p>To be a leading provider of innovative web solutions that not only meet but exceed the expectations of our clients.</p>
+                        <p>We aspire to create websites that inspire, engage, and convert visitors into loyal customers. By leveraging the latest 
+                            technologies and design principles, we aim to help businesses thrive in the digital landscape.</p>
+                        <p>We invite you to explore how Webflare Design Co can transform your online presence. Whether you're
+                            starting from scratch or looking for a redesign, we're here to help you achieve your goals with passion and expertise.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -246,8 +246,8 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h3>Webflare Design Co</h3>
-                    <p>Creating digital experiences that inspire and drive results for businesses worldwide.</p>
+                    <img src="Logos/logo.png" alt="logo" class="footer-logo">
+                    <p class="copyright align-left1" >Creating digital experiences that inspire and drive results for businesses worldwide.</p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/profile.php?id=61574849023999" target="_blank"><span>fb</span></a>
                     </div>
@@ -277,11 +277,29 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Webflare Design Co. All rights reserved. </p>
+                <p class="copyright-text">&copy; 2025 Webflare Design Co. All rights reserved. </p>
             </div>
         </div>
     </footer>
     <script type="text/javascript">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
     <script type="text/javascript">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){$zoho.salesiq.floatbutton.visible('hide');}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
+
+    <script>
+        // Enable hidden nav bar
+        {
+            const nav = document.querySelector(".header");
+            let lastScrollY = window.scrollY;
+
+            window.addEventListener("scroll", ()=> {
+                if(lastScrollY < window.scrollY) {
+                    nav.classList.add("nav--hidden");
+                }else {
+                    nav.classList.remove("nav--hidden");
+                }
+
+                lastScrollY = window.scrollY;
+            });
+        }
+    </script>
 </body>
 </html>
