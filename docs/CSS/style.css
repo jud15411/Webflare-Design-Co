@@ -570,7 +570,7 @@ footer {
 
 @media (max-width: 750px) {
     .nav--hidden {
-        transform: translateY(-225px);
+        transform: translateY(-250px);
     box-shadow: none;
     }
 
