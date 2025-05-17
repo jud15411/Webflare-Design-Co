@@ -568,6 +568,16 @@ footer {
     box-shadow: none;
 }
 
+@media (max-width: 750px) {
+    .nav--hidden {
+        transform: translateY(-225px);
+    box-shadow: none;
+    }
+
+    .contact-btn {
+        margin-bottom: 20px;
+    }
+}
 .copyright {
     color: white;
 }
@@ -603,9 +613,4 @@ footer {
     position: fixed;
 }
 
-@media (max-width: 750px) {
-    .menu-hide {
-        display: none;
-        transition: 1.5s ease-in-out;
-    }
-}
+
