@@ -309,9 +309,10 @@ p {
 .contact-info {
     display: flex;
     width: 100%;
-    display: flex;
     justify-content: space-between;
 }
+
+
 
 .contact-form {
     width: 60%;
@@ -592,6 +593,13 @@ footer {
     .contact-btn {
         margin-bottom: 20px;
     }
+
+}
+
+@media (max-width: 930px) {
+    .contact-info {
+        flex-direction: column;
+    }
 }
 .copyright {
     color: white;
@@ -632,4 +640,21 @@ footer {
     display: flex; 
     justify-content: center;
 
+}
+
+@media (max-width: 500px) {
+    .about-text {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+    .about-content {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+
+    .about-container {
+        width: 100%;
+    }
 }
