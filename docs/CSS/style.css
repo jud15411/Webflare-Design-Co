@@ -544,20 +544,41 @@ footer {
     box-sizing: border-box;
 }
 
+.footer-col {
+    text-align: center;
+}
+
 .footer-logo {
     height: 40px;
     margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.copyright.align-left1 {
+    text-align: center;
 }
 
 .social-links {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
+    justify-content: center;
 }
 
 .social-links a {
     color: white;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary);
+}
+
+.social-links i {
+    font-size: 1.5rem;
 }
 
 .footer-col h3 {
