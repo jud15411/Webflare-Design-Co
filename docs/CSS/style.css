@@ -310,6 +310,16 @@ body {
     padding: 6rem 20px;
     background-color: var(--light);
     box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.portfolio .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .section-header {
@@ -329,11 +339,11 @@ body {
 
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -342,6 +352,7 @@ body {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
 }
 
 .portfolio-item img {
@@ -746,8 +757,8 @@ footer {
     }
 
     .portfolio-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        padding: 0 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
 }
 
@@ -882,8 +893,17 @@ footer {
         font-size: 1.3rem;
     }
 
+    .portfolio {
+        padding: 4rem 15px;
+    }
+
+    .portfolio .container {
+        padding: 0 15px;
+    }
+
     .portfolio-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
     .portfolio-item img {
@@ -997,6 +1017,15 @@ footer {
 
     .service-card h3 {
         font-size: 1.2rem;
+    }
+
+    .portfolio {
+        padding: 3rem 15px;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .portfolio-item img {
