@@ -2,8 +2,10 @@
 {
     const nav = document.querySelector(".header");
     const hoverTrigger = document.querySelector(".nav-hover-trigger");
+    const mobileMenu = document.querySelector(".mobile-menu");
     let lastScrollY = window.scrollY;
     let isHovering = false;
+    let isMobileMenuOpen = false;
     let scrollTimeout;
 
     // Function to show navbar
@@ -13,7 +15,7 @@
 
     // Function to hide navbar
     function hideNavbar() {
-        if (!isHovering) {
+        if (!isHovering && !isMobileMenuOpen) {
             nav.classList.add("nav--hidden");
         }
     }
@@ -47,12 +49,27 @@
             }
         });
     });
-
-    // Mobile menu toggle
-    function toggleMobileMenu(menu) {
-        menu.classList.toggle('open');
-    }
 }
+
+// Mobile menu functionality
+document.addEventListener("DOMContentLoaded", function() {
+    const hamburger = document.getElementById("hamburger-icon");
+    const mobileMenu = document.querySelector(".mobile-menu");
+    let isMobileMenuOpen = false;
+
+    if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", function() {
+            this.classList.toggle("change");
+            mobileMenu.classList.toggle("active");
+            isMobileMenuOpen = !isMobileMenuOpen;
+            
+            // Show navbar when mobile menu is open
+            if (isMobileMenuOpen) {
+                document.querySelector(".header").classList.remove("nav--hidden");
+            }
+        });
+    }
+});
 
 // Lazy loading images
 document.addEventListener("DOMContentLoaded", function() {
