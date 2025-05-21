@@ -205,12 +205,14 @@ p {
 }
 
 .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 30px;
+    justify-content: center;
 }
 
 .portfolio-item {
+    flex: 0 1 350px;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
@@ -311,8 +313,6 @@ p {
     width: 100%;
     justify-content: space-between;
 }
-
-
 
 .contact-form {
     width: 60%;
@@ -494,7 +494,6 @@ footer {
     }
 }
 
-
 .navbar {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding-right: 15px;
@@ -658,8 +657,8 @@ footer {
 }
 
 .open .bar1 {
-    -webkit-transform: rotate(-45deg) translate(-6px, 6px);
-    transform: rotate(-45deg) translate(-6px, 6px);
+    -webkit-transform: rotate(-45deg) translate(-6px, 8px);
+    transform: rotate(-45deg) translate(-6px, 8px);
 }
 
 .open .bar2 { 
@@ -667,8 +666,8 @@ footer {
 }
 
 .open .bar3 {
-    -webkit-transform: rotate(45deg) translate(-6px, -8px);
-    transform: rotate(45deg) translate(-6px, -8px);
+    -webkit-transform: rotate(45deg) translate(-6px, -10px);
+    transform: rotate(45deg) translate(-6px, -10px);
 }
 
 .open .mobile-menu {
