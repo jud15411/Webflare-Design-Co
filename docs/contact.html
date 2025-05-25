@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact | Webflare Design Co.</title>
-  <link rel="icon" href="Img/webflare-favicon.png">
+  <title>Contact Us - Webflare Design Co.</title>
   <link rel="stylesheet" href="CSS/contact.css" />
+  <link rel="icon" type="image/x-icon" href="Logos/logo.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script type="text/javascript"
@@ -22,33 +22,42 @@
 <body>
   <div class="contact-section">
     <div class="header">
-      <img src="Img/fav.png" alt="Webflare Design Co. Logo" class="logo"/>
-      <h1>Webflare Design Co.</h1>
+      <img src="Logos/logo.webp" alt="Webflare Design Co. Logo" class="logo"/>
+      <h1>Contact Us</h1>
     </div>
 
-    <h2>Contact</h2>
+    <h2>Get in Touch</h2>
     <div class="contact-container">
-      <form class="contact-form" action="https://formsubmit.co/judsonwells100@gmail.com" method="POST">
-        <input type="text" name="_honey" style="display: none;">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://webflaredesignco.com/success.html">
-
-
-        <h3>Contact Us</h3>
-        <input name="name" type="text" placeholder="Name" required />
-        <input name="email" type="email" placeholder="Email" required />
-        <textarea name="message" placeholder="Message" required></textarea>
+      <form class="contact-form" action="https://formspree.io/f/mzzrwkno" method="POST">
+        <h3>Send us a Message</h3>
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="tel" name="phone" placeholder="Your Phone Number">
+        <textarea name="message" placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
 
       <div class="contact-info">
-        <p><strong>Phone:</strong> +1 (315) 590 2863</p>
+        <h3>Contact Information</h3>
         <p><strong>Email:</strong> support@webflaredesignco.com</p>
-        <p><strong>Address:</strong><br/>807 Pickering St<br/>Ogdensburg, NY 13669</p>
-        <button class="home-btn"><a href="index.html" class="home-btn-txt">Home</a></button>
+        <p><strong>Phone:</strong> (315) 590-2863</p>
+        <p><strong>Address:</strong> 807 Pickering Street, Ogdensburg, NY 13669</p>
+        <p><strong>Hours:</strong> Sunday - Saturday: 8:00 AM - 5:00 PM</p>
+        <a href="index.html" class="home-btn">Back to Home</a>
       </div>
     </div>
   </div>
 
+  <script>
+    function goBack() {
+      // Check if there's a previous page in the history
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // If no previous page, go to home page
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
 </body>
 </html>

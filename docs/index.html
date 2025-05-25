@@ -3,16 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webflare Design Co</title>
+    <title>Custom Websites for Small Businesses | Webflare Design Co.</title>
+    <meta name="description" content="Professional custom website design services for small businesses. Get a modern, responsive website that helps your business grow. Expert web design tailored for small business needs.">
+    <meta name="keywords" content="websites for small businesses, custom websites for small businesses, small business web design, professional website design, business website development">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Webflare Design Co.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://webflaredesignco.com/">
+    <meta property="og:title" content="Custom Websites for Small Businesses | Webflare Design Co.">
+    <meta property="og:description" content="Professional custom website design services for small businesses. Get a modern, responsive website that helps your business grow.">
+    <meta property="og:image" content="https://webflaredesignco.com/Logos/logo.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://webflaredesignco.com/">
+    <meta property="twitter:title" content="Custom Websites for Small Businesses | Webflare Design Co.">
+    <meta property="twitter:description" content="Professional custom website design services for small businesses. Get a modern, responsive website that helps your business grow.">
+    <meta property="twitter:image" content="https://webflaredesignco.com/Logos/logo.webp">
+
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="US-NY">
+    <meta name="geo.placename" content="Ogdensburg">
+    <meta name="geo.position" content="44.6942;-75.4863">
+    <meta name="ICBM" content="44.6942, -75.4863">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebDesignCompany",
+        "name": "Webflare Design Co.",
+        "description": "Professional custom website design services for small businesses. We create modern, responsive websites that help small businesses grow their online presence.",
+        "url": "https://webflaredesignco.com",
+        "logo": "https://webflaredesignco.com/Logos/logo.webp",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "807 Pickering St",
+            "addressLocality": "Ogdensburg",
+            "addressRegion": "NY",
+            "postalCode": "13669",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 44.6942,
+            "longitude": -75.4863
+        },
+        "telephone": "+1-315-590-2863",
+        "email": "support@webflaredesignco.com",
+        "priceRange": "$$",
+        "openingHours": "Mo-Fr 09:00-17:00",
+        "sameAs": [
+            "https://www.facebook.com/webflaredesignco",
+            "https://www.instagram.com/webflaredesignco"
+        ],
+        "areaServed": "United States",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Web Design Services",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Custom Website Design for Small Businesses",
+                        "description": "Professional website design services tailored for small businesses"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "E-commerce Website Development",
+                        "description": "Custom e-commerce solutions for small businesses"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Website Maintenance",
+                        "description": "Ongoing website maintenance and support services"
+                    }
+                }
+            ]
+        }
+    }
+    </script>
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="CSS/style.css" as="style">
+    <link rel="preload" href="Logos/logo.webp" as="image">
+    <link rel="preload" href="Img/web-dev.webp" as="image">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://salesiq.zoho.com">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="icon" href="Img/webflare-favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+    <!-- Add hover trigger area -->
+    <div class="nav-hover-trigger"></div>
+    
     <header class="header">
         <nav class="navbar">
             <div class="navdiv">
-                <div class="logo"> <a href="index.html"><img src="Logos/logo.png" alt="logo" class="logo-img"></a></div>
+                <div class="logo"> 
+                    <a href="index.html">
+                        <img src="Logos/Webflare-Design-Co.svg" alt="Webflare Design Co Logo" class="logo-img">
+                    </a>
+                </div>
                 <ul class="menu-hide">
                     <li class="link"><a href="index.html" class="link-text">Home</a></li>
                     <li class="link"><a href="#services" class="link-text">Services</a></li>
@@ -26,73 +132,49 @@
                     <div class="bar3"></div>
                     <ul class="mobile-menu">
                         <li class="link mobile-nav-menu"><a href="index.html" class="link-text">Home</a></li>
-                            <li class="link"><a href="#services" class="link-text">Services</a></li>
-                            <li class="link"><a href="#about" class="link-text">About</a></li>
-                            <li class="link"><a href="#portfolio" class="link-text">Portfolio</a></li>
-                            <button class="contact-btn"><a href="contact.html" class="btn-text" target="_blank">Contact</a></button>
+                        <li class="link"><a href="#services" class="link-text">Services</a></li>
+                        <li class="link"><a href="#about" class="link-text">About</a></li>
+                        <li class="link"><a href="#portfolio" class="link-text">Portfolio</a></li>
+                        <button class="contact-btn"><a href="contact.html" class="btn-text" target="_blank">Contact</a></button>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <section id="home" class="hero">
-        
-            <div class="container section1">
-                <div class="hero-content">
-                    <h1>Creating <span class="home-text-1">Digital Experiences</span> That Inspire</h1>
-                    <p>We specialize in crafting stunning websites and digital solutions that help businesses thrive in the digital landscape.</p>
-                    <a href="contact.html" class="btn" target="_blank">Get Started</a>
-                </div>
-            </div> 
-            <div class="hero-img">
-                <img class="hero-img-img" src="Img/web-dev.jpg" alt="Web Design Illustration">
-            </div>
-        
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Online Presence with Expert Web Design</h1>
+            <p>We create stunning, responsive websites that help small businesses stand out online. Get started with a free consultation today.</p>
+            <a href="contact.html" class="cta-button">Get Your Free Consultation</a>
+        </div>
+        <div class="hero-image">
+            <img src="Img/web-dev.webp" alt="Professional small business website design services" width="600" height="400" loading="eager">
+        </div>
     </section>
 
     <section id="services" class="services">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Services</h2>
-                <p>We offer comprehensive digital solutions tailored to your specific needs and goals.</p>
+        <h2>Small Business Website Solutions</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Custom Small Business Websites</h3>
+                <p>Professional, responsive websites designed specifically for small businesses. Get a unique online presence that reflects your brand and connects with your customers.</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span>🎨</span>
-                    </div>
-                    <h3>Web Design</h3>
-                    <p>Custom website designs that are visually appealing, user-friendly, and aligned with your brand identity.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span>💻</span>
-                    </div>
-                    <h3>Web Development</h3>
-                    <p>Full-stack development services to build robust, scalable, and high-performing websites and web applications.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span>📱</span>
-                    </div>
-                    <h3>Responsive Design</h3>
-                    <p>Mobile-first designs that ensure your website looks and functions perfectly across all devices and screen sizes.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span>🚀</span>
-                    </div>
-                    <h3>SEO Optimization</h3>
-                    <p>Strategic SEO implementation to improve your website's visibility in search engines and drive organic traffic.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span>🔄</span>
-                    </div>
-                    <h3>Website Maintenance</h3>
-                    <p>Regular updates, security checks, and optimization to keep your website running smoothly and securely.</p>
-                </div>
+            <div class="service-card">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>E-commerce Solutions</h3>
+                <p>Turn your small business into an online store. We create user-friendly e-commerce websites that make selling your products easy and secure.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-search"></i>
+                <h3>Local SEO Optimization</h3>
+                <p>Get found by customers in your area. We optimize your website to rank higher in local searches and attract more business.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile-First Design</h3>
+                <p>Ensure your small business website looks great on all devices. Our mobile-first approach means your customers can easily find you on any screen.</p>
             </div>
         </div>
     </section>
@@ -101,7 +183,7 @@
         <div class="container about-container">
             <div class="about-content">
                 <div class="about-img">
-                    <img src="Img/web-dev-2.jpg" alt="About Webflare Design">
+                    <img src="Img/web-dev-2.webp" alt="About Webflare Design">
                 </div>
                 <div class="about-text">
                     <div class="about-text-about">
@@ -124,12 +206,12 @@
                         <p>Ready for a fresh start or a redesign? We're here to bring your vision to life.</p>
                         <h3>Why Choose Us</h3>
                         <br>
-                            <ul>
-                                <li><strong>Personalized Service:</strong> We take the time to understand your vision.</li>
-                                <li><strong>Professional Design:</strong> Clean, modern websites that work across all devices.</li>
-                                <li><strong>Forward Thinking:</strong> We stay current with web trends and tools.</li>
-                                <li><strong>Client-Focused:</strong> Your satisfaction is our top priority.</li>
-                            </ul>
+                        <ul>
+                            <li><strong>Personalized Service:</strong> We take the time to understand your vision.</li>
+                            <li><strong>Professional Design:</strong> Clean, modern websites that work across all devices.</li>
+                            <li><strong>Forward Thinking:</strong> We stay current with web trends and tools.</li>
+                            <li><strong>Client-Focused:</strong> Your satisfaction is our top priority.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -145,7 +227,7 @@
             <div class="portfolio-grid">
                 <a href="https://judsonwells.com/restaurant-website/" target="_blank">
                     <div class="portfolio-item">
-                        <img src="Img/phillips-remake.png" alt="Project 3">
+                        <img src="Img/phillips-remake.webp" alt="Restaurant Website Project">
                         <div class="portfolio-overlay">
                             <h3>Restaurant Website</h3>
                             <p>Remake of a local restaurant website.</p>
@@ -154,10 +236,10 @@
                 </a>
                 <a href="https://judsonwells.com/Ecommerce-Shop/" target="_blank">
                     <div class="portfolio-item">
-                        <img src="Img/ecommerce-shop.png" alt="Project 4">
+                        <img src="Img/ecommerce-shop.webp" alt="E-commerce Shop Project">
                         <div class="portfolio-overlay">
                             <h3>Sample Ecommerce Shop</h3>
-                            <p>Made a sample ecommerce shop to show what we can do. </p>
+                            <p>Made a sample ecommerce shop to show what we can do.</p>
                         </div>
                     </div>
                 </a>
@@ -165,68 +247,45 @@
         </div>
     </section>
 
-
-<!---
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Our Clients Say</h2>
-                <p>Don't take our word for it - hear from some of our satisfied customers.</p>
-            </div>
-            
-            <div class="testimonial-card">
-                <p class="testimonial-text">"Webflare Design Co transformed our outdated website into a modern, user-friendly platform that perfectly represents our brand. Their attention to detail and commitment to quality is unmatched."</p>
-                <div class="testimonial-author">
-                    <img src="/api/placeholder/50/50" alt="Client 1">
-                    <div class="author-info">
-                        <h4>Sarah Johnson</h4>
-                        <p>CEO, Innovative Solutions</p>
-                    </div>
-                </div>
-            </div>
-        
-        </div>
-    </section>
--->
-
-
     <section id="contact" class="contact">
         <div class="container">
             <div class="section-header">
                 <h2>Get In Touch</h2>
-                <p>Have a project in mind? We'd love to hear from you. Reach out to us with your ideas. </p>
+                <p>Have a project in mind? We'd love to hear from you. Reach out to us with your ideas.</p>
                 <br>
-                <a href="contact.html" class="btn" target="_blank">Contact Us</a>
+                <button class="contact-btn"><a href="contact.html" class="btn-text" target="_blank">Contact Us</a></button>
             </div>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <span>📍</span>
-                        </div>
-                        <div>
-                            <h3>Our Location</h3>
-                            <p>807 Pickering St.<br>Ogdensburg, NY 13669</p>
-                        </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <span>📍</span>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <span>📞</span>
-                        </div>
-                        <div>
-                            <h3>Phone Number</h3>
-                            <p>+1 (315)-590-2863</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <span>✉️</span>
-                        </div>
-                        <div>
-                            <h3>Email Address</h3>
-                            <a href="mailto:support@webflaredesignco.com" target="_blank" class="email-link"><p class="email-link">support@webflaredesignco.com</p></a>
-                        </div>
+                    <div>
+                        <h3>Our Location</h3>
+                        <p>807 Pickering St.<br>Ogdensburg, NY 13669</p>
                     </div>
                 </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <span>📞</span>
+                    </div>
+                    <div>
+                        <h3>Phone Number</h3>
+                        <p>+1 (315)-590-2863</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <span>✉️</span>
+                    </div>
+                    <div>
+                        <h3>Email Address</h3>
+                        <a href="mailto:support@webflaredesignco.com" target="_blank" class="email-link">
+                            <p class="email-link">support@webflaredesignco.com</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -234,20 +293,22 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="Logos/logo.png" alt="logo" class="footer-logo">
-                    <p class="copyright align-left1" >Creating digital experiences that inspire and drive results for businesses worldwide.</p>
+                    <img src="Logos/Webflare-Design-Co.svg" alt="Webflare Design Co Logo" class="footer-logo">
+                    <p class="copyright align-left1">Creating digital experiences that inspire and drive results for businesses worldwide.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61574849023999" target="_blank"><span>fb</span></a>
+                        <a href="https://www.facebook.com/profile.php?id=61574849023999" target="_blank"><i class="fab fa-facebook-f"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h3>Our Services</h3>
                     <ul>
-                        <li><a href="#">Web Design</a></li>
-                        <li><a href="#">Web Development</a></li>
-                        <li><a href="#">Responsive Design</a></li>
-                        <li><a href="#">SEO Optimization</a></li>
-                        <li><a href="#">E-Commerce Solutions</a></li>
+                        <li><a href="#services">Custom Small Business Websites</a></li>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">Web Design</a></li>
+                        <li><a href="#services">Responsive Design</a></li>
+                        <li><a href="#services">SEO Optimization</a></li>
+                        <li><a href="#services">E-Commerce Solutions</a></li>
+                        <li><a href="#services">Mobile First Design</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -258,42 +319,27 @@
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#portfolio">Portfolio</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="privacy-policy.html" target="_blank">Prvacy Policy</a></li>
+                        <li><a href="privacy-policy.html" target="_blank">Privacy Policy</a></li>
                         <li><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a></li>
                         <li><a href="Webflare-Change-Order-Form.pdf" download="Change Order Form" target="_blank">Change Order Form</a></li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p class="copyright-text">&copy; 2025 Webflare Design Co. All rights reserved. </p>
+                <p class="copyright-text">&copy; 2025 Webflare Design Co. All rights reserved.</p>
             </div>
         </div>
     </footer>
-    <script type="text/javascript">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
-    <script type="text/javascript">var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){$zoho.salesiq.floatbutton.visible('hide');}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
 
-    <script>
-        // Enable hidden nav bar
-        {
-            const nav = document.querySelector(".header");
-            let lastScrollY = window.scrollY;
-
-            window.addEventListener("scroll", ()=> {
-                if(lastScrollY < window.scrollY) {
-                    nav.classList.add("nav--hidden");
-                }else {
-                    nav.classList.remove("nav--hidden");
-                }
-
-                lastScrollY = window.scrollY;
-            });
-
-            function toggleMobileMenu(menu) {
-                menu.classList.toggle('open');
-            }
-        }
-
-
+    <!-- Load main JavaScript file -->
+    <script src="js/main.js" defer></script>
+    
+    <!-- Load Zoho SalesIQ with async -->
+    <script type="text/javascript" async>
+        var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);
+    </script>
+    <script type="text/javascript" async>
+        var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode:"siq3077ab6865935ca0cb7ea18c7fceaa6e987869b45e43550018ee44a5703fafcc", values:{},ready:function(){$zoho.salesiq.floatbutton.visible('hide');}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zoho.com/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);
     </script>
 </body>
 </html>
