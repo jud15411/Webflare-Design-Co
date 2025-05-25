@@ -1,6 +1,48 @@
 User-agent: *
 Allow: /
-Disallow: /private/
-Disallow: /temp/
+Allow: /blog/
+Allow: /services/
+Allow: /contact.html
 
-Sitemap: https://webflaredesignco.com/sitemap.xml 
+# Prevent duplicate content issues
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search/
+Disallow: /*?*
+Disallow: /*?
+Disallow: /*.pdf$
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-content/cache/
+Disallow: /author/
+Disallow: /category/
+Disallow: /tag/
+
+# Allow CSS, JS, and Images
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.webp$
+Allow: /*.ico$
+
+# Sitemap location
+Sitemap: https://webflaredesignco.com/sitemap.xml
+
+# Allow all bots to access everything
+User-agent: Googlebot
+Allow: /
+User-agent: Googlebot-Image
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+# Prevent crawling of admin areas
+Disallow: /admin/
+Disallow: /login/
+
+# Allow crawling of important content
+Allow: /portfolio/
+Allow: /about/ 

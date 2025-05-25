@@ -1,3 +1,6 @@
+/* ==========================================================================
+   CSS Variables & Root Styles
+   ========================================================================== */
 :root {
     --primary: #3a86ff;
     --secondary: #ff006e;
@@ -6,6 +9,9 @@
     --gray: #6c757d;
 }
 
+/* ==========================================================================
+   Base Styles & Reset
+   ========================================================================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -21,7 +27,14 @@ body {
     width: 100%;
 }
 
-/* Container */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ==========================================================================
+   Layout & Container
+   ========================================================================== */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -30,7 +43,9 @@ body {
     box-sizing: border-box;
 }
 
-/* Header and Navigation */
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
 .header {
     position: fixed;
     top: 0;
@@ -67,10 +82,14 @@ body {
     height: 120px;
 }
 
+/* Logo Styles */
 .logo {
     display: flex;
     align-items: center;
     height: 100%;
+    font-size: 35px;
+    font-weight: 600;
+    margin-top: 15px;
 }
 
 .logo-img {
@@ -80,6 +99,11 @@ body {
     object-fit: contain;
 }
 
+.logo-color {
+    color: black;
+}
+
+/* Navigation Links */
 .menu-hide {
     display: flex;
     list-style: none;
@@ -91,7 +115,7 @@ body {
 .link {
     list-style: none;
     display: inline-block;
-    margin-top: 0;
+    margin-top: 8px;
     text-decoration: none;
 }
 
@@ -102,14 +126,11 @@ body {
     background-color: var(--primary);
     display: block;
     transition: .3s ease-in-out;
+    margin-top: 5px;
 }
 
 .link:hover::after {
-    content: '';
-    height: 2px;
     width: 75%;
-    background-color: var(--primary);
-    display: block;
 }
 
 .link-text {
@@ -120,6 +141,7 @@ body {
     color: var(--dark);
 }
 
+/* Contact Button */
 .contact-btn {
     background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
     margin-right: 25px;
@@ -128,6 +150,7 @@ body {
     width: 90px;
     border: none;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .contact-btn:hover {
@@ -139,9 +162,12 @@ body {
     font-weight: bold;
     font-size: 15px;
     text-decoration: none;
+    white-space: nowrap;
 }
 
-/* Hero Section */
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
 .hero {
     padding: 10rem 20px 4rem;
     display: flex;
@@ -171,21 +197,6 @@ body {
     margin-bottom: 2rem;
 }
 
-.cta-button {
-    display: inline-block;
-    background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.3s ease;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-}
-
 .hero-image {
     flex: 1;
     max-width: 600px;
@@ -198,7 +209,9 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Services Section */
+/* ==========================================================================
+   Services Section
+   ========================================================================== */
 .services {
     padding: 6rem 20px;
     background-color: white;
@@ -248,7 +261,9 @@ body {
     color: var(--gray);
 }
 
-/* About Section */
+/* ==========================================================================
+   About Section
+   ========================================================================== */
 .about {
     padding: 100px 20px;
     background-color: white;
@@ -320,7 +335,9 @@ body {
     color: var(--gray);
 }
 
-/* Portfolio Section */
+/* ==========================================================================
+   Portfolio Section
+   ========================================================================== */
 .portfolio {
     padding: 6rem 20px;
     background-color: var(--light);
@@ -420,7 +437,9 @@ body {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* Testimonials Section */
+/* ==========================================================================
+   Testimonials Section
+   ========================================================================== */
 .testimonials {
     padding: 6rem 20px;
     background-color: var(--light);
@@ -451,6 +470,28 @@ body {
     transform: translateY(-5px);
 }
 
+.testimonial-content {
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.testimonial-content i {
+    color: var(--primary);
+    font-size: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.8;
+}
+
+.testimonial-content p {
+    color: var(--dark);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+}
+
 .testimonial-author {
     display: flex;
     align-items: center;
@@ -476,45 +517,9 @@ body {
     font-size: 0.9rem;
 }
 
-.testimonial-content {
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-left: 2rem;
-}
-
-.testimonial-content i {
-    color: var(--primary);
-    font-size: 1.5rem;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0.8;
-}
-
-.testimonial-content p {
-    color: var(--dark);
-    font-style: italic;
-    line-height: 1.6;
-    margin: 0;
-}
-
-@media (max-width: 768px) {
-    .testimonials {
-        padding: 4rem 15px;
-    }
-
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .testimonial-card {
-        padding: 1.5rem;
-    }
-}
-
-/* Contact Section */
+/* ==========================================================================
+   Contact Section
+   ========================================================================== */
 .contact {
     padding: 6rem 20px;
     background-color: var(--light);
@@ -619,232 +624,99 @@ body {
     margin-top: 5px;
 }
 
-.footer-col ul li a:hover {
-    color: white;
-}
-
-.social-links {
-    display: flex;
-    gap: 15px;
-}
-
-.social-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    transition: background-color 0.3s;
-}
-
-.social-links a:hover {
-    background-color: var(--primary);
-}
-
-.copyright {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-}
-
-@media (max-width: 992px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        padding-top: 100px;
-        height: auto;
-    }
-    
-    .hero-content, .hero-img {
-        width: 100%;
-    }
-    
-    .hero-content {
-        margin-bottom: 50px;
-    }
-    
-    .about-content {
-        flex-direction: column;
-    }
-    
-    .about-img, .about-text {
-        width: 100%;
-    }
-    
-    .contact-container {
-        flex-direction: column;
-    }
-    
-    .contact-info, .contact-form {
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .navdiv {
-        height: 80px;
-        padding: 0 15px;
-    }
-
-    .logo-img {
-        height: 85px !important;
-        margin: 0;
-    }
-
-    #hamburger-icon {
-        transform: scale(0.9);
-    }
-
-    nav {
-        flex-direction: column;
-    }
-    
-    .nav-links {
-        margin-top: 20px;
-        justify-content: center;
-    }
-    
-    .nav-links li {
-        margin: 0 15px;
-    }
-    
-    h1 {
-        font-size: 2.5rem;
-    }
-    
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 0 15px;
-    }
-
-    .portfolio-item {
-        aspect-ratio: 16/9;
-        height: 250px;
-        max-height: 250px;
-    }
-
-    .portfolio-item img {
-        height: 100%;
-        width: 100%;
-        object-position: center;
-    }
-
-    .portfolio-overlay {
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, 
-            rgba(0, 0, 0, 0.95) 0%, 
-            rgba(0, 0, 0, 0.7) 50%, 
-            rgba(0, 0, 0, 0.2) 100%);
-    }
-}
-
-@media (max-width: 576px) {
-    .navdiv {
-        height: 70px;
-        padding: 0 12px;
-    }
-
-    .logo-img {
-        height: 75px !important;
-        margin: 0;
-    }
-
-    #hamburger-icon {
-        transform: scale(0.85);
-    }
-
-    .portfolio-item {
-        height: 200px;
-        max-height: 200px;
-        aspect-ratio: auto;
-    }
-
-    .portfolio-overlay {
-        padding: 12px;
-    }
-
-    .portfolio-overlay h3 {
-        font-size: 1.1rem;
-        margin-bottom: 4px;
-    }
-
-    .portfolio-overlay p {
-        font-size: 0.9rem;
-        line-height: 1.3;
-        margin: 0;
-    }
-}
-
-.logo {
-    font-size: 35px;
-    font-weight: 600px;
-    margin-top: 15px;
-}
-
-.logo-color {
-    color: black;
-}
-
-.link {
-    list-style: none;
-    display: inline-block;
-    margin-top: 8px;
-    text-decoration: none;
-}
-
-.link::after {
-    content: '';
-    height: 2px;
-    width: 0%;
-    background-color: #3a96ff;
-    display: block;
-    margin-top: 5px;
-}
-
 .email-link:hover {
     color: var(--secondary);
 }
 
-.contact .cta-button {
-    background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
-    margin-right: 25px;
-    border-radius: 50px;
-    padding: 10px 40px 10px 20px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    white-space: nowrap;
+/* ==========================================================================
+   Blog Post Styles
+   ========================================================================== */
+.blog-post {
+    max-width: 800px;
+    margin: 120px auto 60px;
+    padding: 0 20px;
+}
+
+.blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.blog-header h1 {
+    font-size: 2.5rem;
+    color: var(--dark);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.post-meta {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.post-meta span {
+    margin: 0 10px;
+}
+
+.post-content {
+    line-height: 1.8;
+}
+
+.post-content h2 {
+    color: var(--dark);
+    font-size: 1.8rem;
+    margin: 40px 0 20px;
+}
+
+.post-content p {
+    margin-bottom: 20px;
+    color: var(--dark);
+}
+
+.post-content ul,
+.post-content ol {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.post-content li {
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+/* CTA Section */
+.cta-section {
+    background: var(--light);
+    padding: 40px;
+    border-radius: 10px;
+    margin: 40px 0;
     text-align: center;
 }
 
-.contact .btn-text {
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-    text-decoration: none;
-    white-space: nowrap;
+.cta-section h3 {
+    color: var(--dark);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.cta-button {
     display: inline-block;
+    background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease;
 }
 
-.contact .cta-button:hover {
-    transform: translateY(-2px);
+.cta-button:hover {
+    transform: translateY(-3px);
 }
 
-/* Footer */
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 footer {
     background-color: var(--dark);
     color: white;
@@ -881,10 +753,6 @@ footer {
     height: 250px;
     object-fit: contain;
     margin: -50px 0;
-}
-
-.copyright.align-left1 {
-    margin-top: -20px;
 }
 
 .social-links {
@@ -939,7 +807,9 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile Menu */
+/* ==========================================================================
+   Mobile Menu
+   ========================================================================== */
 #hamburger-icon {
     display: none;
     cursor: pointer;
@@ -958,24 +828,15 @@ footer {
 }
 
 .open .bar1 {
-    -webkit-transform: rotate(-45deg) translate(-6px, 8px);
     transform: rotate(-45deg) translate(-6px, 8px);
 }
 
-.open .bar2 { 
+.open .bar2 {
     opacity: 0;
 }
 
 .open .bar3 {
-    -webkit-transform: rotate(45deg) translate(-6px, -10px);
     transform: rotate(45deg) translate(-6px, -10px);
-}
-
-.open .mobile-menu {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
 }
 
 .mobile-menu {
@@ -992,25 +853,12 @@ footer {
     border-left: 2px solid rgba(58, 134, 255, 0.1);
     transform: translateX(100%);
     transition: transform 0.3s ease-out;
-    display: flex;
     flex-direction: column;
     overflow-y: auto;
 }
 
 .mobile-menu.active {
-    display: flex;
     transform: translateX(0);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
 }
 
 .mobile-menu ul {
@@ -1045,7 +893,7 @@ footer {
 .mobile-menu .contact-btn {
     background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
     border-radius: 50px;
-    padding: 10px 30px 10px 20px;
+    padding: 10px 30px;
     width: fit-content;
     text-align: center;
     display: block;
@@ -1062,403 +910,9 @@ footer {
     white-space: nowrap;
 }
 
-/* Animation for mobile menu */
-.change .bar1 {
-    transform: rotate(-45deg) translate(-5px, 6px);
-    background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
-    position: relative;
-    z-index: 1002;
-}
-
-.change .bar2 {
-    opacity: 0;
-}
-
-.change .bar3 {
-    transform: rotate(45deg) translate(-5px, -6px);
-    background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
-    position: relative;
-    z-index: 1002;
-}
-
-@media (max-width: 768px) {
-    #hamburger-icon {
-        display: block;
-    }
-
-    .mobile-menu {
-        display: none;
-    }
-
-    .mobile-menu.active {
-        display: flex;
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-    .about {
-        padding: 80px 0;
-    }
-
-    .about-content {
-        gap: 40px;
-    }
-
-    .about-img {
-        width: 80%;
-    }
-
-    .about-text {
-        width: 90%;
-        padding: 25px;
-    }
-
-    .about-text h3 {
-        font-size: 2.2rem;
-    }
-
-    .contact-info {
-        flex-direction: column;
-    }
-    
-    .contact-item {
-        width: 100%;
-    }
-
-    .hero {
-        padding: 8rem 1rem 3rem;
-        gap: 2rem;
-    }
-
-    .hero h1 {
-        font-size: 2.8rem;
-    }
-
-    .services-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        padding: 0 1rem;
-    }
-
-    .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .container,
-    .navdiv,
-    .hero,
-    .services-grid,
-    .about-container,
-    .portfolio-grid,
-    .contact-info,
-    .footer-grid {
-        padding: 0 15px;
-    }
-
-    .hero, 
-    .services, 
-    .about, 
-    .portfolio, 
-    .contact {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    .header {
-        transform: translateY(0);
-        transition: transform 0.3s ease;
-    }
-
-    .header.nav--hidden {
-        transform: translateY(-100%);
-    }
-
-    .menu-hide {
-        display: none;
-    }
-
-    #hamburger-icon {
-        display: block;
-    }
-
-    .mobile-menu {
-        display: none;
-    }
-
-    .mobile-menu.active {
-        display: flex;
-    }
-
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        padding-top: 6rem;
-    }
-
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero p {
-        font-size: 1.1rem;
-    }
-
-    .hero-image {
-        max-width: 100%;
-    }
-
-    .about {
-        padding: 4rem 15px;
-    }
-
-    .about-content {
-        gap: 30px;
-    }
-
-    .about-img {
-        width: 100%;
-        max-width: 500px;
-    }
-
-    .about-text {
-        width: 100%;
-        padding: 25px;
-        margin: 0;
-        display: block;
-    }
-
-    .about-text-about {
-        margin: 0;
-    }
-
-    .about-text h3 {
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .about-text p {
-        text-align: left;
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-    }
-
-    .about-text ul {
-        display: block;
-        margin: 0;
-        padding: 0;
-    }
-
-    .about-text li {
-        text-align: left;
-        justify-content: flex-start;
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-        padding-left: 0;
-    }
-
-    .about-text li:last-child {
-        margin-bottom: 0;
-    }
-
-    .services h2, 
-    .section-header h2 {
-        font-size: 2rem;
-    }
-
-    .service-card {
-        padding: 1.5rem;
-    }
-
-    .service-card h3 {
-        font-size: 1.3rem;
-    }
-
-    .portfolio {
-        padding: 4rem 15px;
-    }
-
-    .portfolio .container {
-        padding: 0 15px;
-    }
-
-    .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    .portfolio-item img {
-        height: 200px;
-    }
-
-    .contact {
-        padding: 4rem 15px;
-    }
-
-    .contact .section-header {
-        margin-bottom: 30px;
-    }
-
-    .contact .section-header h2 {
-        font-size: 2rem;
-    }
-
-    .contact-info {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
-
-    .contact-item {
-        width: 100%;
-        margin-bottom: 0;
-        padding: 20px;
-        min-width: 0;
-    }
-
-    .contact-icon {
-        width: 45px;
-        height: 45px;
-        min-width: 45px;
-        min-height: 45px;
-        max-width: 45px;
-        max-height: 45px;
-        font-size: 1.1rem;
-        aspect-ratio: 1/1;
-        overflow: hidden;
-    }
-
-    .contact-item h3 {
-        font-size: 1.1rem;
-    }
-
-    .contact-item p {
-        font-size: 1rem;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .social-links {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 1.8rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-    }
-
-    .cta-button {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .about {
-        padding: 40px 15px;
-    }
-
-    .about-content {
-        gap: 25px;
-    }
-
-    .about-text {
-        padding: 20px;
-    }
-
-    .about-text h3 {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
-    }
-
-    .about-text p {
-        font-size: 1rem;
-        margin-bottom: 15px;
-    }
-
-    .about-text li {
-        font-size: 1rem;
-        margin-bottom: 12px;
-    }
-
-    .services h2, 
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-
-    .service-card {
-        padding: 1.2rem;
-    }
-
-    .service-card h3 {
-        font-size: 1.2rem;
-    }
-
-    .portfolio {
-        padding: 3rem 15px;
-    }
-
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .portfolio-item img {
-        height: 180px;
-    }
-
-    .contact {
-        padding: 3rem 15px;
-    }
-
-    .contact .section-header h2 {
-        font-size: 1.8rem;
-    }
-
-    .contact-item {
-        padding: 15px;
-    }
-
-    .contact-icon {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        min-height: 40px;
-        max-width: 40px;
-        max-height: 40px;
-        font-size: 1rem;
-        margin-right: 12px;
-        aspect-ratio: 1/1;
-        overflow: hidden;
-    }
-
-    .contact-item h3 {
-        font-size: 1rem;
-        margin-bottom: 8px;
-    }
-
-    .contact-item p {
-        font-size: 0.9rem;
-    }
-
-    .footer {
-        padding: 3rem 1rem 1.5rem;
-    }
-
-    .copyright {
-        font-size: 0.9rem;
-    }
-}
-
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
 /* Large Devices (Desktops) */
 @media (max-width: 1200px) {
     .container,
@@ -1502,52 +956,57 @@ footer {
 
     .about-content {
         flex-direction: column;
-        gap: 40px;
     }
     
     .about-img, .about-text {
         width: 100%;
-        max-width: 700px;
-        margin: 0 auto;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+    }
+    
+    .contact-info, .contact-form {
+        width: 100%;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
-
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-
-    .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-
-    .contact-info {
-        flex-direction: column;
-    }
-
-    .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem;
-    }
 }
 
 /* Small Devices (Landscape Phones) */
 @media (max-width: 768px) {
-    .header {
-        padding: 0.5rem 1rem;
+    .navdiv {
+        height: 80px;
+        padding: 0 15px;
+    }
+
+    .logo-img {
+        height: 85px !important;
+        margin: 0;
+    }
+
+    #hamburger-icon {
+        display: block;
+        transform: scale(0.9);
     }
 
     .menu-hide {
         display: none;
     }
 
-    #hamburger-icon {
-        display: block;
+    .mobile-menu {
+        display: none;
     }
 
     .mobile-menu.active {
@@ -1566,45 +1025,65 @@ footer {
         font-size: 1.1rem;
     }
 
-    .section-header h2 {
-        font-size: 2rem;
-    }
-
-    .testimonials-grid,
     .services-grid,
     .portfolio-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .about-text h3 {
-        font-size: 1.8rem;
-        text-align: center;
-    }
-
-    .about-text p {
-        text-align: left;
-        font-size: 1.1rem;
-    }
-
-    .portfolio-item {
-        aspect-ratio: 16/12;
     }
 
     .footer-grid {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 2rem;
     }
 
     .footer-logo-img {
         height: 160px;
         margin: -30px 0;
     }
+
+    .blog-post {
+        margin: 100px auto 40px;
+        padding: 0 15px;
+    }
+
+    .blog-header h1 {
+        font-size: 2rem;
+    }
+
+    .post-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .testimonials {
+        padding: 4rem 15px;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .testimonial-card {
+        padding: 1.5rem;
+    }
 }
 
 /* Extra Small Devices (Portrait Phones) */
 @media (max-width: 576px) {
+    .navdiv {
+        height: 70px;
+        padding: 0 12px;
+    }
+
+    .logo-img {
+        height: 75px !important;
+        margin: 0;
+    }
+
+    #hamburger-icon {
+        transform: scale(0.85);
+    }
+
     .hero {
         padding: 5rem 15px 2rem;
     }
@@ -1622,65 +1101,33 @@ footer {
         font-size: 0.9rem;
     }
 
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-
-    .section-header p {
-        font-size: 1rem;
-    }
-
-    .testimonial-card,
-    .service-card {
-        padding: 1.2rem;
-    }
-
-    .about {
-        padding: 40px 15px;
-    }
-
-    .about-text {
-        padding: 20px 15px;
-    }
-
-    .about-text h3 {
-        font-size: 1.6rem;
-    }
-
-    .portfolio-overlay h3 {
-        font-size: 1.2rem;
-    }
-
-    .portfolio-overlay p {
-        font-size: 0.9rem;
-    }
-
-    .contact-item {
-        padding: 15px;
-    }
-
-    .contact-icon {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        font-size: 1rem;
-    }
-
-    .contact-item h3 {
-        font-size: 1.1rem;
-    }
-
-    .contact-item p {
-        font-size: 0.9rem;
-    }
-
-    .footer-col:first-child {
-        margin-top: -15px;
-    }
-
     .footer-logo-img {
         height: 150px;
         margin: -25px 0;
+    }
+
+    .blog-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .post-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .post-content {
+        font-size: 0.95rem;
+    }
+
+    .testimonial-card {
+        padding: 1.2rem;
+    }
+
+    .testimonial-content {
+        padding-left: 1.5rem;
+    }
+
+    .testimonial-content i {
+        font-size: 1.2rem;
     }
 }
 
@@ -1696,13 +1143,7 @@ footer {
     }
 }
 
-/* Ensure images don't overflow on very small devices */
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Improve touch targets on mobile */
+/* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
     .link-text,
     .contact-btn,
@@ -1724,27 +1165,5 @@ img {
     .section-header h2 {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-    }
-}
-
-@media (max-width: 768px) {
-    .footer-col:first-child {
-        margin-top: -20px;
-    }
-
-    .footer-logo-img {
-        height: 160px;
-        margin: -30px 0;
-    }
-}
-
-@media (max-width: 576px) {
-    .footer-col:first-child {
-        margin-top: -15px;
-    }
-
-    .footer-logo-img {
-        height: 150px;
-        margin: -25px 0;
     }
 }

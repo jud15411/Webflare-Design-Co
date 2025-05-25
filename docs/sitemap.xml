@@ -1,33 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Sitemap for Webflare Design Co. Website -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Main Pages -->
     <url>
         <loc>https://webflaredesignco.com/</loc>
-        <lastmod>2024-03-19</lastmod>
+        <lastmod>2024-03-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://webflaredesignco.com/contact.html</loc>
-        <lastmod>2024-03-19</lastmod>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Service Pages -->
+    <url>
+        <loc>https://webflaredesignco.com/services/small-business-websites.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/services/ecommerce-solutions.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/services/local-seo.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Blog Posts -->
+    <url>
+        <loc>https://webflaredesignco.com/blog/why-small-businesses-need-professional-websites.html</loc>
+        <lastmod>2024-03-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://webflaredesignco.com/blog/how-much-does-a-small-business-website-cost.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/small-business-ecommerce-website-guide.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/local-seo-guide-small-business-websites.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/small-business-website-design-trends.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/small-business-website-security-guide.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/website-maintenance-and-seo-guide.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/modern-web-development-technologies-guide.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://webflaredesignco.com/blog/responsive-web-design-guide.html</loc>
+        <lastmod>2024-03-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Legal Pages -->
+    <url>
         <loc>https://webflaredesignco.com/privacy-policy.html</loc>
-        <lastmod>2024-03-19</lastmod>
+        <lastmod>2024-03-20</lastmod>
         <changefreq>yearly</changefreq>
-        <priority>0.5</priority>
+        <priority>0.3</priority>
     </url>
     <url>
         <loc>https://webflaredesignco.com/terms-and-conditions.html</loc>
-        <lastmod>2024-03-19</lastmod>
+        <lastmod>2024-03-20</lastmod>
         <changefreq>yearly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://webflaredesignco.com/cookie-policy.html</loc>
-        <lastmod>2024-03-19</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.5</priority>
+        <priority>0.3</priority>
     </url>
 </urlset> 
