@@ -151,6 +151,7 @@ body {
     margin: 0 auto;
     gap: 4rem;
     box-sizing: border-box;
+    background-color: white;
 }
 
 .hero-content {
@@ -200,7 +201,7 @@ body {
 /* Services Section */
 .services {
     padding: 6rem 20px;
-    background-color: var(--light);
+    background-color: white;
     box-sizing: border-box;
 }
 
@@ -368,12 +369,15 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     width: 100%;
     aspect-ratio: 16/10;
+    display: flex;
+    align-items: stretch;
 }
 
 .portfolio-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
     transition: transform 0.5s ease;
 }
 
@@ -419,7 +423,7 @@ body {
 /* Testimonials Section */
 .testimonials {
     padding: 6rem 20px;
-    background-color: white;
+    background-color: var(--light);
     box-sizing: border-box;
 }
 
@@ -682,6 +686,20 @@ body {
 }
 
 @media (max-width: 768px) {
+    .navdiv {
+        height: 80px;
+        padding: 0 15px;
+    }
+
+    .logo-img {
+        height: 85px !important;
+        margin: 0;
+    }
+
+    #hamburger-icon {
+        transform: scale(0.9);
+    }
+
     nav {
         flex-direction: column;
     }
@@ -701,6 +719,72 @@ body {
     
     .portfolio-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 15px;
+    }
+
+    .portfolio-item {
+        aspect-ratio: 16/9;
+        height: 250px;
+        max-height: 250px;
+    }
+
+    .portfolio-item img {
+        height: 100%;
+        width: 100%;
+        object-position: center;
+    }
+
+    .portfolio-overlay {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, 
+            rgba(0, 0, 0, 0.95) 0%, 
+            rgba(0, 0, 0, 0.7) 50%, 
+            rgba(0, 0, 0, 0.2) 100%);
+    }
+}
+
+@media (max-width: 576px) {
+    .navdiv {
+        height: 70px;
+        padding: 0 12px;
+    }
+
+    .logo-img {
+        height: 75px !important;
+        margin: 0;
+    }
+
+    #hamburger-icon {
+        transform: scale(0.85);
+    }
+
+    .portfolio-item {
+        height: 200px;
+        max-height: 200px;
+        aspect-ratio: auto;
+    }
+
+    .portfolio-overlay {
+        padding: 12px;
+    }
+
+    .portfolio-overlay h3 {
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .portfolio-overlay p {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        margin: 0;
     }
 }
 
@@ -995,6 +1079,20 @@ footer {
     background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
     position: relative;
     z-index: 1002;
+}
+
+@media (max-width: 768px) {
+    #hamburger-icon {
+        display: block;
+    }
+
+    .mobile-menu {
+        display: none;
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
 }
 
 /* Responsive Design */
@@ -1358,5 +1456,295 @@ footer {
 
     .copyright {
         font-size: 0.9rem;
+    }
+}
+
+/* Large Devices (Desktops) */
+@media (max-width: 1200px) {
+    .container,
+    .navdiv,
+    .hero,
+    .services-grid,
+    .about-container,
+    .portfolio-grid,
+    .contact-info,
+    .footer-grid {
+        padding: 0 30px;
+    }
+
+    .hero {
+        padding-top: 8rem;
+        gap: 3rem;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+}
+
+/* Medium Devices (Tablets) */
+@media (max-width: 992px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 8rem 20px 4rem;
+    }
+    
+    .hero-content, .hero-image {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    .about-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .about-img, .about-text {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .contact-info {
+        flex-direction: column;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+}
+
+/* Small Devices (Landscape Phones) */
+@media (max-width: 768px) {
+    .header {
+        padding: 0.5rem 1rem;
+    }
+
+    .menu-hide {
+        display: none;
+    }
+
+    #hamburger-icon {
+        display: block;
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    .hero {
+        padding: 6rem 20px 3rem;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .testimonials-grid,
+    .services-grid,
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .about-text h3 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .about-text p {
+        text-align: left;
+        font-size: 1.1rem;
+    }
+
+    .portfolio-item {
+        aspect-ratio: 16/12;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .footer-logo-img {
+        height: 160px;
+        margin: -30px 0;
+    }
+}
+
+/* Extra Small Devices (Portrait Phones) */
+@media (max-width: 576px) {
+    .hero {
+        padding: 5rem 15px 2rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .section-header p {
+        font-size: 1rem;
+    }
+
+    .testimonial-card,
+    .service-card {
+        padding: 1.2rem;
+    }
+
+    .about {
+        padding: 40px 15px;
+    }
+
+    .about-text {
+        padding: 20px 15px;
+    }
+
+    .about-text h3 {
+        font-size: 1.6rem;
+    }
+
+    .portfolio-overlay h3 {
+        font-size: 1.2rem;
+    }
+
+    .portfolio-overlay p {
+        font-size: 0.9rem;
+    }
+
+    .contact-item {
+        padding: 15px;
+    }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        font-size: 1rem;
+    }
+
+    .contact-item h3 {
+        font-size: 1.1rem;
+    }
+
+    .contact-item p {
+        font-size: 0.9rem;
+    }
+
+    .footer-col:first-child {
+        margin-top: -15px;
+    }
+
+    .footer-logo-img {
+        height: 150px;
+        margin: -25px 0;
+    }
+}
+
+/* Height-based Media Queries */
+@media (max-height: 700px) {
+    .hero {
+        padding-top: 6rem;
+        min-height: auto;
+    }
+
+    .mobile-menu {
+        padding-top: 60px;
+    }
+}
+
+/* Ensure images don't overflow on very small devices */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+    .link-text,
+    .contact-btn,
+    .portfolio-item,
+    .service-card {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .link-text,
+    .contact-btn {
+        padding: 10px;
+    }
+}
+
+/* High-resolution screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero h1,
+    .section-header h2 {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-col:first-child {
+        margin-top: -20px;
+    }
+
+    .footer-logo-img {
+        height: 160px;
+        margin: -30px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-col:first-child {
+        margin-top: -15px;
+    }
+
+    .footer-logo-img {
+        height: 150px;
+        margin: -25px 0;
     }
 }
