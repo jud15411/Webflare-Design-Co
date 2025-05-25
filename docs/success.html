@@ -1,43 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact | Webflare Design Co.</title>
-  <link rel="icon" href="Img/webflare-favicon.png">
-  <link rel="stylesheet" href="CSS/contact.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-    </script>
-    <script type="text/javascript">
-    (function(){
-        emailjs.init({
-            publicKey: "tAPyZLxsCqU_CP0H-",
-        });
-    })();
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Success | Webflare Design Co.</title>
+    <link rel="icon" href="Img/webflare-favicon.png">
+    <link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        .success-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            margin: 20px;
+        }
+        .logo-container {
+            margin-bottom: 30px;
+        }
+        .logo-img {
+            width: auto;
+            height: 250px;
+            object-fit: contain;
+        }
+        .success-icon {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .success-title {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .success-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .return-button {
+            display: inline-block;
+            background-image: linear-gradient(90deg, hsla(203, 56%, 30%, 1) 0%, hsla(215, 68%, 70%, 1) 80%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+        .return-button:hover {
+            transform: translateY(-3px);
+        }
+        @media (max-width: 768px) {
+            .logo-img {
+                height: 200px;
+            }
+        }
+        @media (max-width: 576px) {
+            .logo-img {
+                height: 180px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="contact-section">
-    <div class="header">
-      <img src="Img/fav.png" alt="Webflare Design Co. Logo" class="logo"/>
-      <h1>Webflare Design Co.</h1>
+    <div class="success-container">
+        <div class="logo-container">
+            <img src="Logos/Webflare_Design_Co.webp" alt="Webflare Design Co. Logo" class="logo-img">
+        </div>
+        <i class="fas fa-check-circle success-icon"></i>
+        <h1 class="success-title">Message Sent Successfully!</h1>
+        <p class="success-message">
+            Thank you for reaching out! We've received your message and will get back to you within 24-48 hours.
+        </p>
+        <a href="index.html" class="return-button">Return to Homepage</a>
     </div>
-
-    <h2>Contact</h2>
-    <div class="contact-container">
-      <p>Success! We will get back to you very shortly!</p>
-
-      <div class="contact-info">
-        <p><strong>Phone:</strong> +1 (315) 590 2863</p>
-        <p><strong>Email:</strong> support@webflaredesignco.com</p>
-        <p><strong>Address:</strong><br/>807 Pickering St<br/>Ogdensburg, NY 13669</p>
-        <button class="home-btn"><a href="index.html" class="home-btn-txt">Home</a></button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
