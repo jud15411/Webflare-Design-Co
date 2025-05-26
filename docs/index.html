@@ -131,21 +131,41 @@
                     <li class="link"><a href="#portfolio" class="link-text">Portfolio</a></li>
                     <button class="contact-btn"><a href="contact.html" class="btn-text" target="_blank">Contact</a></button>
                 </ul>
-                <div id="hamburger-icon" onclick="toggleMobileMenu(this)">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-                    <ul class="mobile-menu">
-                        <li class="link mobile-nav-menu"><a href="index.html" class="link-text">Home</a></li>
-                        <li class="link"><a href="#services" class="link-text">Services</a></li>
-                        <li class="link"><a href="#about" class="link-text">About</a></li>
-                        <li class="link"><a href="#portfolio" class="link-text">Portfolio</a></li>
-                        <button class="contact-btn"><a href="contact.html" class="btn-text" target="_blank">Contact</a></button>
-                    </ul>
+                <!-- Hamburger Menu -->
+                <div id="hamburger-icon">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav">
+        <button class="mobile-close">
+            <span class="close-icon"></span>
+        </button>
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-header">
+                <img src="Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo" class="mobile-logo">
+            </div>
+            <nav class="mobile-nav-menu">
+                <ul class="mobile-menu-list">
+                    <li><a href="index.html" class="mobile-link">Home</a></li>
+                    <li><a href="#services" class="mobile-link">Services</a></li>
+                    <li><a href="#about" class="mobile-link">About</a></li>
+                    <li><a href="#portfolio" class="mobile-link">Portfolio</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-contact">
+                <a href="contact.html" class="mobile-contact-btn" target="_blank">Contact Us</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay"></div>
 
     <section class="hero">
         <div class="hero-content">
@@ -269,7 +289,6 @@
                 <div class="about-text">
                     <div class="about-text-about">
                         <h3>About Webflare Design Co</h3>
-                        <br>
                         <p>At Webflare Design Co, we build professional, custom websites that help 
                             businesses stand out online. Founded by a father-son team, we combine 
                             creativity and technology to deliver clean, effective web solutions tailored to your goals.</p>
@@ -277,22 +296,17 @@
                             SUNY Canton College of Technology. With a strong foundation in technology 
                             and a passion for design, I'm committed to helping clients succeed 
                             in the digital world.</p>
-                    </div>
-                    <div class="about-text-about">
-                        <h3>Our Vision</h3>
-                        <br>
-                        <p>At Webflare Design Co, our goal is simple: to build websites that inspire,
-                            engage, and deliver results. We combine modern design with the latest 
-                            technology to help businesses grow and stand out online.</p>
-                        <p>Ready for a fresh start or a redesign? We're here to bring your vision to life.</p>
+                        <p>Our goal is simple: to build websites that inspire, engage, and deliver results. 
+                            We combine modern design with the latest technology to help businesses grow 
+                            and stand out online.</p>
                         <h3>Why Choose Us</h3>
-                        <br>
                         <ul>
                             <li><strong>Personalized Service:</strong> We take the time to understand your vision.</li>
                             <li><strong>Professional Design:</strong> Clean, modern websites that work across all devices.</li>
                             <li><strong>Forward Thinking:</strong> We stay current with web trends and tools.</li>
                             <li><strong>Client-Focused:</strong> Your satisfaction is our top priority.</li>
                         </ul>
+                        <p>Ready for a fresh start or a redesign? We're here to bring your vision to life.</p>
                     </div>
                 </div>
             </div>

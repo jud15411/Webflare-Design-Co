@@ -2,7 +2,6 @@
 {
     const nav = document.querySelector(".header");
     const hoverTrigger = document.querySelector(".nav-hover-trigger");
-    const mobileMenu = document.querySelector(".mobile-menu");
     let lastScrollY = window.scrollY;
     let isHovering = false;
     let isMobileMenuOpen = false;
@@ -54,21 +53,56 @@
 // Mobile menu functionality
 document.addEventListener("DOMContentLoaded", function() {
     const hamburger = document.getElementById("hamburger-icon");
-    const mobileMenu = document.querySelector(".mobile-menu");
-    let isMobileMenuOpen = false;
+    const mobileNav = document.querySelector(".mobile-nav");
+    const overlay = document.querySelector(".mobile-menu-overlay");
+    const mobileLinks = document.querySelectorAll(".mobile-link");
+    const closeButton = document.querySelector(".mobile-close");
+    const body = document.body;
 
-    if (hamburger && mobileMenu) {
-        hamburger.addEventListener("click", function() {
-            this.classList.toggle("change");
-            mobileMenu.classList.toggle("active");
-            isMobileMenuOpen = !isMobileMenuOpen;
+    function toggleMenu() {
+        hamburger.classList.toggle("active");
+        mobileNav.classList.toggle("active");
+        overlay.classList.toggle("active");
+        body.classList.toggle("menu-open");
+        
+        // Show navbar when mobile menu is open
+        if (mobileNav.classList.contains("active")) {
+            document.querySelector(".header").classList.remove("nav--hidden");
+        }
+    }
+
+    // Toggle menu on hamburger click
+    hamburger.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking close button
+    closeButton.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking overlay
+    overlay.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking a link
+    mobileLinks.forEach(link => {
+        link.addEventListener("click", (event) => {
+            toggleMenu();
             
-            // Show navbar when mobile menu is open
-            if (isMobileMenuOpen) {
-                document.querySelector(".header").classList.remove("nav--hidden");
+            // Smooth scroll to section
+            const href = link.getAttribute("href");
+            if (href.startsWith("#")) {
+                event.preventDefault();
+                const section = document.querySelector(href);
+                if (section) {
+                    section.scrollIntoView({ behavior: "smooth" });
+                }
             }
         });
-    }
+    });
+
+    // Close menu on escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("active")) {
+            toggleMenu();
+        }
+    });
 });
 
 // Lazy loading images
