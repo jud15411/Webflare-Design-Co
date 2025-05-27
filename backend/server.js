@@ -6,7 +6,6 @@ const morgan = require('morgan');
 const path = require('path');
 
 // Import routes
-const authRoutes = require('./routes/auth');
 const customerRoutes = require('./routes/customers');
 const contractRoutes = require('./routes/contracts');
 const projectRoutes = require('./routes/projects');
@@ -23,7 +22,6 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '../docs')));
 
 // Routes
-app.use('/api/admin/auth', authRoutes);
 app.use('/api/admin/customers', customerRoutes);
 app.use('/api/admin/contracts', contractRoutes);
 app.use('/api/admin/projects', projectRoutes);

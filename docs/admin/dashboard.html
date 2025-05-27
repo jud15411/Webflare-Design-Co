@@ -3,117 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Webflare Design Co.</title>
+    <title>Dashboard - Webflare Design Co.</title>
     <link rel="icon" href="../Img/webflare-favicon.png">
     <link rel="stylesheet" href="../CSS/style.css">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <nav class="top-nav">
-        <a href="dashboard.html" class="nav-brand">
-            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
-        </a>
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
-            <li><a href="customers.html" class="nav-link">Customers</a></li>
-            <li><a href="contracts.html" class="nav-link">Contracts</a></li>
-            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
-        </ul>
-        <div class="user-menu">
-            <a href="settings.html" class="settings-btn" title="Settings">
-                <i class="fas fa-cog"></i>
+<body class="admin-body">
+    <!-- Navigation -->
+    <nav class="admin-nav">
+        <div class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="nav-logo">
+        </div>
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
             </a>
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">A</div>
-                <span id="userName">Admin</span>
-            </div>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
+            <a href="customers.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="contracts.html" class="nav-item">
+                <i class="fas fa-file-contract"></i>
+                <span>Contracts</span>
+            </a>
+            <a href="invoices.html" class="nav-item">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
         </div>
     </nav>
 
-    <div class="menu-overlay" id="menuOverlay"></div>
-
+    <!-- Main Content -->
     <main class="main-content">
-        <div class="content-header">
-            <h1>Dashboard</h1>
-            <button class="btn btn-secondary" id="printSalesBtn">
-                <i class="fas fa-print"></i> Print Sales Report
-            </button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon customers">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-label">Total Customers</div>
-                    <div class="stat-value" id="totalCustomers">0</div>
-                </div>
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome to the Admin Dashboard</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon contracts">
-                    <i class="fas fa-file-contract"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-label">Active Contracts</div>
-                    <div class="stat-value" id="activeContracts">0</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon invoices">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-label">Pending Invoices</div>
-                    <div class="stat-value" id="pendingInvoices">0</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon revenue">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-label">Monthly Revenue</div>
-                    <div class="stat-value" id="monthlyRevenue">$0</div>
-                </div>
+            <div class="header-actions">
+                <button id="printReportBtn" class="btn btn-primary">
+                    <i class="fas fa-print"></i>
+                    Print Report
+                </button>
             </div>
         </div>
 
-        <div class="recent-activity">
-            <div class="activity-header">
-                <h2 class="activity-title">Recent Activity</h2>
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: rgba(37, 99, 235, 0.1);">
+                        <i class="fas fa-chart-line" style="color: #2563eb;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Revenue</h3>
+                        <p id="totalRevenue">$0</p>
+                        <small id="revenueChange">+0% from last month</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: rgba(34, 197, 94, 0.1);">
+                        <i class="fas fa-users" style="color: #22c55e;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Customers</h3>
+                        <p id="activeCustomers">0</p>
+                        <small id="customerChange">+0 this month</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1);">
+                        <i class="fas fa-file-contract" style="color: #f59e0b;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Projects</h3>
+                        <p id="activeProjects">0</p>
+                        <small id="projectChange">0 in progress</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: rgba(239, 68, 68, 0.1);">
+                        <i class="fas fa-file-invoice-dollar" style="color: #ef4444;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pending Invoices</h3>
+                        <p id="pendingInvoices">$0</p>
+                        <small id="invoiceChange">0 invoices pending</small>
+                    </div>
+                </div>
             </div>
-            <div class="activity-list" id="activityList">
-                <!-- Activity items will be added dynamically -->
+
+            <!-- Charts Section -->
+            <div class="dashboard-charts">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Revenue Overview</h3>
+                        <div class="card-actions">
+                            <select id="revenueTimeframe" class="select-sm">
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Project Status</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="projectChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                        <button class="btn-text" id="refreshActivity">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="location.href='customers.html#new'">
+                            <i class="fas fa-user-plus"></i>
+                            <span>New Customer</span>
+                        </button>
+                        <button class="action-btn" onclick="location.href='contracts.html#new'">
+                            <i class="fas fa-file-signature"></i>
+                            <span>New Contract</span>
+                        </button>
+                        <button class="action-btn" onclick="location.href='invoices.html#new'">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>New Invoice</span>
+                        </button>
+                        <button class="action-btn" onclick="location.href='settings.html'">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <div class="modal" id="confirmModal">
+    <!-- Print Report Modal -->
+    <div id="printModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Confirm Action</h3>
+                <h3>Print Report</h3>
+                <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p id="modalMessage">Are you sure you want to proceed?</p>
+                <div class="form-group">
+                    <label>Time Period</label>
+                    <select id="reportPeriod" class="form-control">
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div id="customDateRange" class="form-group" style="display: none;">
+                    <div class="date-range">
+                        <div>
+                            <label>Start Date</label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>
+                        <div>
+                            <label>End Date</label>
+                            <input type="date" id="endDate" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Include in Report</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="includeSummary" checked>
+                            Summary Statistics
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" id="includeCharts" checked>
+                            Charts and Graphs
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" id="includeActivity" checked>
+                            Recent Activity
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="modalCancel">Cancel</button>
-                <button class="btn btn-danger" id="modalConfirm">Confirm</button>
+                <button id="cancelPrint" class="btn btn-secondary">Cancel</button>
+                <button id="confirmPrint" class="btn btn-primary">Generate Report</button>
             </div>
         </div>
     </div>
 
-    <script src="dashboard.js"></script>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/admin.js"></script>
+    <script>
+        // Initialize admin functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            Admin.init();
+        });
+    </script>
 </body>
 </html> 

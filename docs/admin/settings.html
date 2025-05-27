@@ -6,173 +6,298 @@
     <title>Settings - Webflare Design Co.</title>
     <link rel="icon" href="../Img/webflare-favicon.png">
     <link rel="stylesheet" href="../CSS/style.css">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav class="top-nav">
-        <a href="dashboard.html" class="nav-brand">
-            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
-        </a>
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
-            <li><a href="customers.html" class="nav-link">Customers</a></li>
-            <li><a href="contracts.html" class="nav-link">Contracts</a></li>
-            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
-            <li><a href="settings.html" class="nav-link active">Settings</a></li>
-        </ul>
-        <div class="user-menu">
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">A</div>
-                <span id="userName">Admin</span>
-            </div>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
+<body class="admin-body">
+    <!-- Navigation -->
+    <nav class="admin-nav">
+        <div class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="nav-logo">
+        </div>
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="customers.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="contracts.html" class="nav-item">
+                <i class="fas fa-file-contract"></i>
+                <span>Contracts</span>
+            </a>
+            <a href="invoices.html" class="nav-item">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
         </div>
     </nav>
 
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-    <main class="main-content">
+    <!-- Main Content -->
+    <main class="admin-main">
         <div class="content-header">
             <h1>Settings</h1>
         </div>
 
-        <div class="content-body">
-            <div class="settings-container">
-                <div class="settings-section">
-                    <h2>Company Settings</h2>
-                    <form id="settingsForm">
-                        <div class="form-group">
+        <!-- Settings Sections -->
+        <div class="settings-container">
+            <!-- Account Settings -->
+            <section class="settings-section">
+                <h2>Account Settings</h2>
+                <form id="accountForm" class="settings-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="accountName">Name</label>
+                            <input type="text" id="accountName" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="accountEmail">Email</label>
+                            <input type="email" id="accountEmail" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountPhone">Phone</label>
+                        <input type="tel" id="accountPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountAvatar">Profile Picture</label>
+                        <div class="avatar-upload">
+                            <img id="avatarPreview" src="" alt="Profile Picture">
+                            <input type="file" id="accountAvatar" accept="image/*">
+                            <button type="button" class="btn-secondary" id="uploadAvatarBtn">
+                                <i class="fas fa-upload"></i>
+                                Upload Image
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Account Settings</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Company Information -->
+            <section class="settings-section">
+                <h2>Company Information</h2>
+                <form id="companyForm" class="settings-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
                             <label for="companyName">Company Name</label>
-                            <input type="text" id="companyName" name="companyName" required>
+                            <input type="text" id="companyName" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             <label for="companyEmail">Company Email</label>
-                            <input type="email" id="companyEmail" name="companyEmail" required>
+                            <input type="email" id="companyEmail" required>
                         </div>
-                        <div class="form-group">
-                            <label for="companyPhone">Company Phone</label>
-                            <input type="tel" id="companyPhone" name="companyPhone">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="companyPhone">Phone</label>
+                            <input type="tel" id="companyPhone" required>
                         </div>
-                        <div class="form-group">
-                            <label for="companyAddress">Company Address</label>
-                            <textarea id="companyAddress" name="companyAddress"></textarea>
+                        <div class="form-group col-md-6">
+                            <label for="companyWebsite">Website</label>
+                            <input type="url" id="companyWebsite" required>
                         </div>
-                        <div class="form-group">
-                            <label for="invoicePrefix">Invoice Prefix</label>
-                            <input type="text" id="invoicePrefix" name="invoicePrefix" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyAddress">Address</label>
+                        <textarea id="companyAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyLogo">Company Logo</label>
+                        <div class="logo-upload">
+                            <img id="logoPreview" src="" alt="Company Logo">
+                            <input type="file" id="companyLogo" accept="image/*">
+                            <button type="button" class="btn-secondary" id="uploadLogoBtn">
+                                <i class="fas fa-upload"></i>
+                                Upload Logo
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="contractPrefix">Contract Prefix</label>
-                            <input type="text" id="contractPrefix" name="contractPrefix" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="taxRate">Tax Rate (%)</label>
-                            <input type="number" id="taxRate" name="taxRate" min="0" max="100" step="0.01">
-                        </div>
-                        <div class="form-group">
-                            <label for="currency">Currency</label>
-                            <select id="currency" name="currency" required>
-                                <option value="USD">USD ($)</option>
-                                <option value="EUR">EUR (€)</option>
-                                <option value="GBP">GBP (£)</option>
-                                <option value="CAD">CAD ($)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="dateFormat">Date Format</label>
-                            <select id="dateFormat" name="dateFormat" required>
-                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="timeFormat">Time Format</label>
-                            <select id="timeFormat" name="timeFormat" required>
-                                <option value="12h">12-hour</option>
-                                <option value="24h">24-hour</option>
-                            </select>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Save Settings</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Company Information</button>
+                    </div>
+                </form>
+            </section>
 
-                <div class="settings-section">
-                    <h2>Change Password</h2>
-                    <div class="settings-card">
-                        <form id="passwordForm">
-                            <div id="errorMessage" class="error-message"></div>
-                            <div class="form-group">
-                                <label for="currentPassword">Current Password</label>
-                                <input type="password" id="currentPassword" name="currentPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="newPassword">New Password</label>
-                                <input type="password" id="newPassword" name="newPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">Confirm New Password</label>
-                                <input type="password" id="confirmPassword" name="confirmPassword" required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Update Password</button>
-                            </div>
-                        </form>
+            <!-- Invoice Settings -->
+            <section class="settings-section">
+                <h2>Invoice Settings</h2>
+                <form id="invoiceSettingsForm" class="settings-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="defaultTaxRate">Default Tax Rate (%)</label>
+                            <input type="number" id="defaultTaxRate" min="0" max="100" step="0.01">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="defaultDueDays">Default Payment Terms (Days)</label>
+                            <input type="number" id="defaultDueDays" min="0" value="30">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceNotes">Default Invoice Notes</label>
+                        <textarea id="invoiceNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentInstructions">Payment Instructions</label>
+                        <textarea id="paymentInstructions" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoSendInvoices">
+                            Automatically send invoices when created
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoReminders">
+                            Enable automatic payment reminders
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Invoice Settings</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Notification Settings -->
+            <section class="settings-section">
+                <h2>Notification Settings</h2>
+                <form id="notificationSettingsForm" class="settings-form">
+                    <div class="form-group">
+                        <h3>Email Notifications</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyNewCustomer">
+                            New customer registration
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyNewContract">
+                            New contract created
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyPaymentReceived">
+                            Payment received
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyInvoiceOverdue">
+                            Invoice overdue
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <h3>System Notifications</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showDesktopNotifications">
+                            Enable desktop notifications
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showSoundNotifications">
+                            Enable sound notifications
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Notification Settings</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Data Management -->
+            <section class="settings-section">
+                <h2>Data Management</h2>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <h3>Export Data</h3>
+                        <div class="button-group">
+                            <button type="button" class="btn-secondary" id="exportCustomersBtn">
+                                <i class="fas fa-users"></i>
+                                Export Customers
+                            </button>
+                            <button type="button" class="btn-secondary" id="exportContractsBtn">
+                                <i class="fas fa-file-contract"></i>
+                                Export Contracts
+                            </button>
+                            <button type="button" class="btn-secondary" id="exportInvoicesBtn">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                Export Invoices
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h3>Import Data</h3>
+                        <div class="button-group">
+                            <button type="button" class="btn-secondary" id="importCustomersBtn">
+                                <i class="fas fa-upload"></i>
+                                Import Customers
+                            </button>
+                            <button type="button" class="btn-secondary" id="importContractsBtn">
+                                <i class="fas fa-upload"></i>
+                                Import Contracts
+                            </button>
+                            <button type="button" class="btn-secondary" id="importInvoicesBtn">
+                                <i class="fas fa-upload"></i>
+                                Import Invoices
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h3>Backup & Restore</h3>
+                        <div class="button-group">
+                            <button type="button" class="btn-primary" id="backupDataBtn">
+                                <i class="fas fa-download"></i>
+                                Backup All Data
+                            </button>
+                            <button type="button" class="btn-secondary" id="restoreDataBtn">
+                                <i class="fas fa-upload"></i>
+                                Restore from Backup
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <h3>Data Cleanup</h3>
+                        <div class="button-group">
+                            <button type="button" class="btn-danger" id="clearDataBtn">
+                                <i class="fas fa-trash-alt"></i>
+                                Clear All Data
+                            </button>
+                        </div>
+                        <p class="text-muted">Warning: This action cannot be undone. Please backup your data first.</p>
                     </div>
                 </div>
-
-                <div class="settings-section">
-                    <h2>Admin Users</h2>
-                    <div class="admin-users-list" id="adminUsersList">
-                        <!-- Admin users will be loaded here -->
-                    </div>
-                    <button class="btn btn-primary" id="addAdminBtn">Add New Admin</button>
-                </div>
-            </div>
+            </section>
         </div>
     </main>
 
-    <!-- Add Admin Modal -->
-    <div class="modal" id="addAdminModal">
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Admin</h2>
-            <form id="addAdminForm">
-                <div class="form-group">
-                    <label for="adminName">Name</label>
-                    <input type="text" id="adminName" required>
+            <div class="modal-header">
+                <h2 id="confirmationTitle">Confirm Action</h2>
+                <button class="close-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationMessage">Are you sure you want to proceed with this action?</p>
+                <div id="confirmationWarning" class="alert alert-warning" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span></span>
                 </div>
-                <div class="form-group">
-                    <label for="adminEmail">Email</label>
-                    <input type="email" id="adminEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminRole">Role</label>
-                    <select id="adminRole" required>
-                        <option value="admin">Admin</option>
-                        <option value="cfo">Chief Financial Officer</option>
-                        <option value="editor">Editor</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Admin</button>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="confirmActionBtn" class="btn-primary">Confirm</button>
+            </div>
         </div>
     </div>
 
-    <script src="settings.js"></script>
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/settings.js"></script>
 </body>
 </html> 

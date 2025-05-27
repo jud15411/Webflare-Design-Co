@@ -1397,10 +1397,16 @@ body.menu-open {
 .admin-btn {
     background-color: #2c3e50;
     margin-left: 10px;
+    padding: 8px 15px;
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.3s ease;
 }
 
 .admin-btn:hover {
     background-color: #34495e;
+    transform: translateY(-2px);
 }
 
 .mobile-admin-btn {
@@ -1409,11 +1415,13 @@ body.menu-open {
     color: white;
     text-decoration: none;
     padding: 12px 20px;
-    border-radius: 5px;
-    margin-top: 10px;
+    border-radius: 50px;
+    margin-top: 20px;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
 .mobile-admin-btn:hover {
     background-color: #34495e;
+    transform: translateY(-2px);
 }
