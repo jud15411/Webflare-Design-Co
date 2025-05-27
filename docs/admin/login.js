@@ -26,24 +26,30 @@ function checkLoginStatus() {
     }
 }
 
-// Initialize CEO account if not exists
-function initializeCEOAccount() {
-    const admins = JSON.parse(localStorage.getItem('admins')) || [];
-    const ceoExists = admins.some(admin => admin.role === 'ceo');
+// Initialize login page
+function initializeLogin() {
+    // Check if this is the first time running the app
+    const isFirstRun = !localStorage.getItem('admins');
     
-    if (!ceoExists) {
-        const ceoAccount = {
-            name: 'Judson Wells',
+    if (isFirstRun) {
+        // Set up initial admin (CEO) account
+        const initialAdmin = {
+            name: 'Judson',
             email: 'judsonwells100@gmail.com',
-            password: 'Judson07190715!',
+            password: 'Judson07190715!', // Your original password
             role: 'ceo',
-            passwordChanged: false,
+            passwordChanged: true, // Set to true since you've already changed it
             createdAt: new Date().toISOString()
         };
         
-        admins.push(ceoAccount);
-        localStorage.setItem('admins', JSON.stringify(admins));
+        // Store the admin in the admins array
+        localStorage.setItem('admins', JSON.stringify([initialAdmin]));
+        
+        // Set up activity log
+        localStorage.setItem('activities', JSON.stringify([]));
     }
+    
+    setupEventListeners();
 }
 
 // Handle login form submission
@@ -53,40 +59,44 @@ function handleLogin(e) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
-    // Get all admins
+    // Get admins from localStorage
     const admins = JSON.parse(localStorage.getItem('admins')) || [];
+    
+    // Find admin with matching email
     const admin = admins.find(a => a.email === email);
     
-    if (admin && admin.password === password) {
-        handleSuccessfulLogin(admin);
-    } else {
+    if (!admin || admin.password !== password) {
         showError('Invalid email or password');
+        return;
     }
-}
-
-// Handle successful login
-function handleSuccessfulLogin(admin) {
-    // Set login status
+    
+    // Set current admin
+    localStorage.setItem('currentAdmin', JSON.stringify(admin));
     localStorage.setItem('isAdminLoggedIn', 'true');
     localStorage.setItem('adminLoginTime', new Date().toISOString());
-    localStorage.setItem('currentAdmin', JSON.stringify(admin));
+    
+    // Check if password needs to be changed
+    if (!admin.passwordChanged) {
+        localStorage.setItem('needsPasswordChange', 'true');
+    }
     
     // Add login activity
     const activities = JSON.parse(localStorage.getItem('activities')) || [];
     activities.push({
         type: 'login',
-        description: `${admin.role === 'ceo' ? 'CEO' : 'Admin'} ${admin.name} logged in`,
+        description: `${admin.name} logged in`,
         timestamp: new Date().toISOString()
     });
     localStorage.setItem('activities', JSON.stringify(activities));
     
-    // Check if password change is needed
-    if (!admin.passwordChanged) {
-        localStorage.setItem('needsPasswordChange', 'true');
-        window.location.href = 'change-password.html';
-    } else {
-        window.location.href = 'dashboard.html';
-    }
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', handleLogin);
 }
 
 // Show error message
@@ -98,18 +108,6 @@ function showError(message) {
     setTimeout(() => {
         errorElement.style.display = 'none';
     }, 3000);
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-}
-
-// Initialize page
-function initializeLogin() {
-    initializeCEOAccount();
-    checkLoginStatus();
-    setupEventListeners();
 }
 
 // Initialize page on load

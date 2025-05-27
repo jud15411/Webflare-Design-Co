@@ -831,10 +831,12 @@ body {
     border-color: var(--primary);
 }
 
-/* Mobile Styles for List Items */
+/* Mobile Responsive Styles */
 @media (max-width: 768px) {
+    /* Top Navigation */
     .top-nav {
         padding: 0.75rem;
+        flex-wrap: wrap;
     }
 
     .nav-brand img {
@@ -852,6 +854,7 @@ body {
         box-shadow: var(--shadow);
         flex-direction: column;
         gap: 0.5rem;
+        z-index: 1000;
     }
 
     .nav-menu.active {
@@ -862,70 +865,25 @@ body {
         padding: 0.75rem;
         width: 100%;
         text-align: center;
+        border-radius: 6px;
+    }
+
+    .nav-link:hover {
+        background: var(--light);
     }
 
     .user-menu {
-        gap: 0.5rem;
+        margin-left: auto;
     }
 
     .user-info span {
         display: none;
     }
 
+    /* Main Content */
     .main-content {
         margin-top: 60px;
         padding: 1rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stat-card {
-        padding: 1rem;
-    }
-
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.25rem;
-    }
-
-    .stat-value {
-        font-size: 1.25rem;
-    }
-
-    .recent-activity {
-        padding: 1rem;
-    }
-
-    .activity-header {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
-    }
-
-    .activity-item {
-        padding: 0.75rem;
-    }
-
-    .activity-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-    }
-
-    .modal-content {
-        padding: 1.5rem;
-        width: 95%;
-    }
-
-    .modal-footer {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
     }
 
     .content-header {
@@ -938,28 +896,191 @@ body {
         font-size: 1.5rem;
     }
 
-    .list-item {
+    /* Settings Page */
+    .settings-container {
+        padding: 1rem;
+    }
+
+    .settings-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .settings-card {
+        padding: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.625rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .form-actions {
+        margin-top: 1.5rem;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    /* Login Page */
+    .login-container {
+        padding: 1.5rem;
+        margin: 1rem;
+        width: auto;
+    }
+
+    .login-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-form {
+        gap: 1rem;
+    }
+
+    /* Admin Users List */
+    .admin-card {
         flex-direction: column;
-        align-items: flex-start;
         gap: 1rem;
         padding: 1rem;
     }
 
-    .list-item-actions {
+    .admin-info {
+        width: 100%;
+    }
+
+    .admin-actions {
         width: 100%;
         justify-content: flex-end;
     }
 
-    .empty-state {
-        padding: 2rem 1rem;
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+        padding: 1.5rem;
     }
 
-    .empty-state i {
-        font-size: 2.5rem;
+    .modal-header {
+        margin-bottom: 1rem;
     }
 
-    .empty-state p {
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    /* Activity List */
+    .activity-item {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .activity-icon {
+        width: 32px;
+        height: 32px;
         font-size: 1rem;
+    }
+
+    /* Error and Success Messages */
+    .error-message,
+    .success-message {
+        width: 90%;
+        margin: 1rem auto;
+        text-align: center;
+    }
+}
+
+/* Additional Mobile Optimizations */
+@media (max-width: 480px) {
+    .top-nav {
+        padding: 0.5rem;
+    }
+
+    .nav-brand img {
+        height: 28px;
+    }
+
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.875rem;
+    }
+
+    .main-content {
+        padding: 0.75rem;
+    }
+
+    .settings-card {
+        padding: 1rem;
+    }
+
+    .login-container {
+        padding: 1rem;
+        margin: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.625rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .btn,
+    .nav-link,
+    .action-btn {
+        padding: 0.75rem 1rem; /* Larger touch targets */
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.75rem; /* Larger touch targets */
+    }
+}
+
+/* Landscape Mode Optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+    .nav-menu {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .login-container {
+        max-height: 90vh;
+        overflow-y: auto;
     }
 }
 
@@ -1059,4 +1180,98 @@ body {
     box-shadow: var(--shadow);
     z-index: 2000;
     animation: slideIn 0.3s ease-out;
+}
+
+/* Settings Card */
+.settings-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.settings-section h2 {
+    color: var(--dark);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--light);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-actions {
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.error-message {
+    background: var(--danger);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 } 

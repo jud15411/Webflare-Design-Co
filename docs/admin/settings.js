@@ -20,6 +20,18 @@ const ADMIN_ROLES = {
         level: 3,
         permissions: ['all']
     },
+    cfo: {
+        name: 'Chief Financial Officer',
+        level: 2,
+        permissions: [
+            'view_dashboard',
+            'view_customers',
+            'view_contracts',
+            'manage_invoices',
+            'view_reports',
+            'view_settings'
+        ]
+    },
     manager: {
         name: 'Manager',
         level: 2,
