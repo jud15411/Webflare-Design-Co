@@ -4,30 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Webflare Design Co.</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <img src="../images/logo.png" alt="Webflare Design Co. Logo" class="logo">
-            <span>Webflare Design Co.</span>
-        </div>
-        <button id="menuToggle" class="menu-toggle">
+    <nav class="top-nav">
+        <a href="dashboard.html" class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle">
             <i class="fas fa-bars"></i>
         </button>
-        <div id="navMenu" class="nav-menu">
-            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
-            <a href="customers.html"><i class="fas fa-users"></i> Customers</a>
-            <a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a>
-            <a href="invoices.html"><i class="fas fa-file-invoice-dollar"></i> Invoices</a>
-            <a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a>
-            <button id="logoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="customers.html" class="nav-link">Customers</a></li>
+            <li><a href="contracts.html" class="nav-link">Contracts</a></li>
+            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
+            <li><a href="settings.html" class="nav-link active">Settings</a></li>
+        </ul>
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <span id="userName">Admin</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
         </div>
-        <div id="menuOverlay" class="menu-overlay"></div>
     </nav>
 
-    <main class="content">
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main class="main-content">
         <div class="content-header">
             <h1>Settings</h1>
         </div>
@@ -116,9 +128,47 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="settings-section">
+                    <h2>Admin Users</h2>
+                    <div class="admin-users-list" id="adminUsersList">
+                        <!-- Admin users will be loaded here -->
+                    </div>
+                    <button class="btn btn-primary" id="addAdminBtn">Add New Admin</button>
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Add Admin Modal -->
+    <div class="modal" id="addAdminModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Admin</h2>
+            <form id="addAdminForm">
+                <div class="form-group">
+                    <label for="adminName">Name</label>
+                    <input type="text" id="adminName" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminRole">Role</label>
+                    <select id="adminRole" required>
+                        <option value="admin">Admin</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Admin</button>
+            </form>
+        </div>
+    </div>
 
     <script src="settings.js"></script>
 </body>

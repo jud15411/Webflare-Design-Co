@@ -1,7 +1,7 @@
 :root {
-    --primary: #3a86ff;
-    --primary-dark: #2a75e6;
-    --secondary: #ff006e;
+    --primary: #007bff;
+    --primary-dark: #0056b3;
+    --secondary: #6c757d;
     --dark: #212529;
     --light: #f8f9fa;
     --gray: #6c757d;
@@ -21,7 +21,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #f5f7fa;
     min-height: 100vh;
     color: var(--dark);
@@ -994,4 +994,69 @@ body {
 
 .menu-overlay.active {
     display: block;
+}
+
+/* Admin Users Section */
+.admin-users-list {
+    margin-bottom: 1.5rem;
+}
+
+.admin-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--dark);
+    font-size: 1.1rem;
+}
+
+.admin-info p {
+    margin: 0 0 0.5rem 0;
+    color: var(--gray);
+}
+
+.admin-role {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--light);
+    color: var(--gray);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-admin {
+    background: var(--warning);
+    color: var(--dark);
+}
+
+.delete-admin {
+    background: var(--danger);
+    color: white;
+}
+
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    z-index: 2000;
+    animation: slideIn 0.3s ease-out;
 } 

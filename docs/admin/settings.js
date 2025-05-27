@@ -49,6 +49,7 @@ const ADMIN_ROLES = {
 function initializeSettings() {
     loadCurrentSettings();
     loadAdmins();
+    loadAdminUsers();
     setupEventListeners();
     updateUserInfo();
     checkPermissions();
@@ -127,6 +128,108 @@ function loadAdmins() {
     }
 }
 
+// Check if current user is CEO
+function isCEO() {
+    const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+    return currentAdmin && currentAdmin.role === 'ceo';
+}
+
+// Load admin users
+function loadAdminUsers() {
+    const adminUsersList = document.getElementById('adminUsersList');
+    const admins = JSON.parse(localStorage.getItem('admins')) || [];
+    
+    // Only show admin users section if current user is CEO
+    const adminSection = document.querySelector('.settings-section:last-child');
+    if (!isCEO()) {
+        adminSection.style.display = 'none';
+        return;
+    }
+    
+    adminUsersList.innerHTML = '';
+    
+    admins.forEach(admin => {
+        if (admin.role !== 'ceo') {
+            const adminCard = document.createElement('div');
+            adminCard.className = 'admin-card';
+            adminCard.innerHTML = `
+                <div class="admin-info">
+                    <h3>${admin.name}</h3>
+                    <p>${admin.email}</p>
+                    <span class="admin-role">${admin.role}</span>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn btn-warning edit-admin" data-email="${admin.email}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger delete-admin" data-email="${admin.email}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            adminUsersList.appendChild(adminCard);
+        }
+    });
+}
+
+// Add new admin
+function addNewAdmin(adminData) {
+    const admins = JSON.parse(localStorage.getItem('admins')) || [];
+    
+    // Check if email already exists
+    if (admins.some(admin => admin.email === adminData.email)) {
+        showError('An admin with this email already exists');
+        return false;
+    }
+    
+    const newAdmin = {
+        name: adminData.name,
+        email: adminData.email,
+        password: adminData.password,
+        role: adminData.role,
+        passwordChanged: false,
+        createdAt: new Date().toISOString()
+    };
+    
+    admins.push(newAdmin);
+    localStorage.setItem('admins', JSON.stringify(admins));
+    
+    // Add activity log
+    const activities = JSON.parse(localStorage.getItem('activities')) || [];
+    const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+    activities.push({
+        type: 'admin_add',
+        description: `CEO ${currentAdmin.name} added new ${newAdmin.role} ${newAdmin.name}`,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('activities', JSON.stringify(activities));
+    
+    return true;
+}
+
+// Delete admin
+function deleteAdmin(email) {
+    const admins = JSON.parse(localStorage.getItem('admins')) || [];
+    const adminToDelete = admins.find(admin => admin.email === email);
+    
+    if (!adminToDelete) return false;
+    
+    const updatedAdmins = admins.filter(admin => admin.email !== email);
+    localStorage.setItem('admins', JSON.stringify(updatedAdmins));
+    
+    // Add activity log
+    const activities = JSON.parse(localStorage.getItem('activities')) || [];
+    const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+    activities.push({
+        type: 'admin_delete',
+        description: `CEO ${currentAdmin.name} deleted ${adminToDelete.role} ${adminToDelete.name}`,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('activities', JSON.stringify(activities));
+    
+    return true;
+}
+
 // Setup event listeners
 function setupEventListeners() {
     // Settings form submission
@@ -149,6 +252,50 @@ function setupEventListeners() {
     
     // Logout button
     document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+    // Add Admin Modal
+    const addAdminBtn = document.getElementById('addAdminBtn');
+    const addAdminModal = document.getElementById('addAdminModal');
+    const cancelAddAdmin = document.getElementById('cancelAddAdmin');
+    const confirmAddAdmin = document.getElementById('confirmAddAdmin');
+    
+    addAdminBtn.addEventListener('click', () => {
+        addAdminModal.classList.add('active');
+    });
+    
+    cancelAddAdmin.addEventListener('click', () => {
+        addAdminModal.classList.remove('active');
+    });
+    
+    confirmAddAdmin.addEventListener('click', () => {
+        const form = document.getElementById('addAdminForm');
+        const formData = {
+            name: form.adminName.value,
+            email: form.adminEmail.value,
+            password: form.adminPassword.value,
+            role: form.adminRole.value
+        };
+        
+        if (addNewAdmin(formData)) {
+            addAdminModal.classList.remove('active');
+            form.reset();
+            loadAdminUsers();
+            showSuccess('Admin user added successfully');
+        }
+    });
+    
+    // Delete Admin
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.delete-admin')) {
+            const email = e.target.closest('.delete-admin').dataset.email;
+            if (confirm('Are you sure you want to delete this admin user?')) {
+                if (deleteAdmin(email)) {
+                    loadAdminUsers();
+                    showSuccess('Admin user deleted successfully');
+                }
+            }
+        }
+    });
 }
 
 // Handle settings update
@@ -349,7 +496,7 @@ function handleLogout() {
 
 // Update user info
 function updateUserInfo() {
-    const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin')) || { name: 'Admin', role: 'ceo' };
+    const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin')) || { name: 'Judson', role: 'ceo' };
     document.getElementById('userName').textContent = currentAdmin.name;
     document.getElementById('userAvatar').textContent = currentAdmin.name.charAt(0);
     
@@ -380,6 +527,18 @@ function showError(message) {
     
     setTimeout(() => {
         errorElement.style.display = 'none';
+    }, 3000);
+}
+
+// Show success message
+function showSuccess(message) {
+    const successElement = document.createElement('div');
+    successElement.className = 'success-message';
+    successElement.textContent = message;
+    document.body.appendChild(successElement);
+    
+    setTimeout(() => {
+        successElement.remove();
     }, 3000);
 }
 

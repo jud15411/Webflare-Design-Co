@@ -34,8 +34,8 @@ function initializeCEOAccount() {
     if (!ceoExists) {
         const ceoAccount = {
             name: 'Judson Wells',
-            email: 'judson@webflare.com',
-            password: 'admin123',
+            email: 'judsonwells100@gmail.com',
+            password: 'Judson07190715!',
             role: 'ceo',
             passwordChanged: false,
             createdAt: new Date().toISOString()

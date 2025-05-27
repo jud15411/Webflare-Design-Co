@@ -4,36 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Webflare Design Co.</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="login-page">
-    <div class="login-container">
-        <div class="login-header">
-            <img src="../images/logo.png" alt="Webflare Design Co. Logo" class="logo">
-            <h1>Webflare Design Co.</h1>
-        </div>
-        
-        <form id="loginForm" class="login-form">
-            <div id="errorMessage" class="error-message"></div>
-            
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+<body class="admin-body">
+    <div class="admin-login-container">
+        <div class="admin-login-box">
+            <div class="admin-login-header">
+                <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co. Logo" class="admin-logo">
+                <h1>Webflare Design Co.</h1>
             </div>
             
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+            <form id="loginForm" class="admin-login-form">
+                <div id="errorMessage" class="login-error"></div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="admin-login-btn">Login</button>
+            </form>
             
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
-        
-        <div class="login-footer">
-            <p>Default credentials:</p>
-            <p>Email: admin@webflare.com</p>
-            <p>Password: admin123</p>
+            <div class="login-footer">
+                <p>Default credentials:</p>
+                <p>Email: judsonwells100@gmail.com</p>
+                <p>Password: Judson07190715!</p>
+            </div>
         </div>
     </div>
 
