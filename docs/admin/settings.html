@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Webflare Design Co.</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="../images/logo.png" alt="Webflare Design Co. Logo" class="logo">
+            <span>Webflare Design Co.</span>
+        </div>
+        <button id="menuToggle" class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div id="navMenu" class="nav-menu">
+            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="customers.html"><i class="fas fa-users"></i> Customers</a>
+            <a href="contracts.html"><i class="fas fa-file-contract"></i> Contracts</a>
+            <a href="invoices.html"><i class="fas fa-file-invoice-dollar"></i> Invoices</a>
+            <a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a>
+            <button id="logoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+        <div id="menuOverlay" class="menu-overlay"></div>
+    </nav>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Settings</h1>
+        </div>
+
+        <div class="content-body">
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h2>Company Settings</h2>
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" name="companyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="companyEmail">Company Email</label>
+                            <input type="email" id="companyEmail" name="companyEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="companyPhone">Company Phone</label>
+                            <input type="tel" id="companyPhone" name="companyPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="companyAddress">Company Address</label>
+                            <textarea id="companyAddress" name="companyAddress"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="invoicePrefix">Invoice Prefix</label>
+                            <input type="text" id="invoicePrefix" name="invoicePrefix" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contractPrefix">Contract Prefix</label>
+                            <input type="text" id="contractPrefix" name="contractPrefix" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxRate">Tax Rate (%)</label>
+                            <input type="number" id="taxRate" name="taxRate" min="0" max="100" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <select id="currency" name="currency" required>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="CAD">CAD ($)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateFormat">Date Format</label>
+                            <select id="dateFormat" name="dateFormat" required>
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeFormat">Time Format</label>
+                            <select id="timeFormat" name="timeFormat" required>
+                                <option value="12h">12-hour</option>
+                                <option value="24h">24-hour</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Change Password</h2>
+                    <form id="passwordForm">
+                        <div id="errorMessage" class="error-message"></div>
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="settings.js"></script>
+</body>
+</html> 

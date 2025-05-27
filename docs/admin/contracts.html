@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contracts - Webflare Design Co.</title>
+    <link rel="icon" href="../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="dashboard.html" class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="customers.html" class="nav-link">Customers</a></li>
+            <li><a href="contracts.html" class="nav-link active">Contracts</a></li>
+            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
+        </ul>
+        <div class="user-menu">
+            <a href="settings.html" class="settings-btn" title="Settings">
+                <i class="fas fa-cog"></i>
+            </a>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <span id="userName">Admin</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Contracts</h1>
+            <button class="btn btn-primary" id="addContractBtn">
+                <i class="fas fa-plus"></i> Add New Contract
+            </button>
+        </div>
+
+        <div class="contracts-container">
+            <div class="contracts-list" id="contractsList">
+                <!-- Contracts will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="contractModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Contract</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="addContractForm">
+                <div class="form-group">
+                    <label for="title">Contract Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerId">Customer</label>
+                    <select id="customerId" name="customerId" required>
+                        <option value="">Select Customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="value">Contract Value ($)</label>
+                    <input type="number" id="value" name="value" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="terms">Terms and Conditions</label>
+                    <textarea id="terms" name="terms" rows="4" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelContract">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitContract">Add Contract</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="contracts.js"></script>
+</body>
+</html> 

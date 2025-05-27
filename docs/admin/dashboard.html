@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Webflare Design Co.</title>
+    <link rel="icon" href="../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="dashboard.html" class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+            <li><a href="customers.html" class="nav-link">Customers</a></li>
+            <li><a href="contracts.html" class="nav-link">Contracts</a></li>
+            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
+        </ul>
+        <div class="user-menu">
+            <a href="settings.html" class="settings-btn" title="Settings">
+                <i class="fas fa-cog"></i>
+            </a>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <span id="userName">Admin</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Dashboard</h1>
+            <button class="btn btn-secondary" id="printSalesBtn">
+                <i class="fas fa-print"></i> Print Sales Report
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon customers">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Customers</div>
+                    <div class="stat-value" id="totalCustomers">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon contracts">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Active Contracts</div>
+                    <div class="stat-value" id="activeContracts">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon invoices">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Pending Invoices</div>
+                    <div class="stat-value" id="pendingInvoices">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon revenue">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Monthly Revenue</div>
+                    <div class="stat-value" id="monthlyRevenue">$0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <div class="activity-header">
+                <h2 class="activity-title">Recent Activity</h2>
+            </div>
+            <div class="activity-list" id="activityList">
+                <!-- Activity items will be added dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn btn-danger" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html> 

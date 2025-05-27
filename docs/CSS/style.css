@@ -1393,3 +1393,27 @@ body.menu-open {
         padding-bottom: 10px;
     }
 }
+
+.admin-btn {
+    background-color: #2c3e50;
+    margin-left: 10px;
+}
+
+.admin-btn:hover {
+    background-color: #34495e;
+}
+
+.mobile-admin-btn {
+    display: block;
+    background-color: #2c3e50;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.mobile-admin-btn:hover {
+    background-color: #34495e;
+}

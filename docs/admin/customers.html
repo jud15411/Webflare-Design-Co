@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers - Webflare Design Co.</title>
+    <link rel="icon" href="../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="dashboard.html" class="nav-brand">
+            <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co Logo">
+        </a>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="customers.html" class="nav-link active">Customers</a></li>
+            <li><a href="contracts.html" class="nav-link">Contracts</a></li>
+            <li><a href="invoices.html" class="nav-link">Invoices</a></li>
+        </ul>
+        <div class="user-menu">
+            <a href="settings.html" class="settings-btn" title="Settings">
+                <i class="fas fa-cog"></i>
+            </a>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <span id="userName">Admin</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Customers</h1>
+            <button class="btn btn-primary" id="addCustomerBtn">
+                <i class="fas fa-plus"></i> Add Customer
+            </button>
+        </div>
+
+        <div class="content-body">
+            <div class="list-container" id="customersList">
+                <!-- Customer items will be added dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Customer Modal -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Customer</h3>
+            </div>
+            <div class="modal-body">
+                <form id="customerForm">
+                    <div class="form-group">
+                        <label for="customerName">Name</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" id="customerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Address</label>
+                        <textarea id="customerAddress" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelCustomer">Cancel</button>
+                <button class="btn btn-primary" id="saveCustomer">Save Customer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to delete this customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn btn-danger" id="modalConfirm">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="customers.js"></script>
+</body>
+</html> 
