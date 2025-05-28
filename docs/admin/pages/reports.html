@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Webflare Design Co.</title>
+    <link rel="icon" href="../../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .report-container {
+                padding: 20px !important;
+                margin: 0 !important;
+            }
+        }
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg no-print flex flex-col">
+            <div class="p-6">
+                <img src="../../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="w-32 h-32 mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+            </div>
+            
+            <nav class="px-6 flex-grow">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="../components/dashboard.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customers.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Customers
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-file-contract mr-3"></i>
+                            Contracts
+                        </a>
+                    </li>
+                    <li>
+                        <a href="invoices.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-file-invoice-dollar mr-3"></i>
+                            Invoices
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projects.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-project-diagram mr-3"></i>
+                            Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center px-4 py-3 text-gray-700 bg-blue-50 text-blue-600 rounded-lg">
+                            <i class="fas fa-chart-bar mr-3"></i>
+                            Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
+                            <i class="fas fa-cog mr-3"></i>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="p-6 border-t border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-600">Webflare Design Co.</p>
+                        <p class="text-xs text-gray-500">&copy; 2025 All rights reserved</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm no-print">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-xl font-semibold text-gray-800">Reports</h1>
+                    <div class="flex items-center space-x-4">
+                        <select id="reportType" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="sales">Sales Report</option>
+                            <option value="customers">Customer Report</option>
+                            <option value="contracts">Contracts Report</option>
+                            <option value="invoices">Invoices Report</option>
+                        </select>
+                        <select id="timeFrame" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        <button onclick="printReport()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <i class="fas fa-print mr-2"></i>
+                            Print Report
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Report Content -->
+            <div class="p-6 report-container">
+                <!-- Report Header -->
+                <div class="print-only mb-8">
+                    <div class="flex justify-between items-center">
+                        <img src="../../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="h-16">
+                        <div class="text-right">
+                            <h2 class="text-2xl font-bold text-gray-800" id="reportTitle">Sales Report</h2>
+                            <p class="text-gray-600" id="reportDate">Generated on: <span id="currentDate"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Report -->
+                <div id="salesReport" class="space-y-6">
+                    <!-- Summary Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-white rounded-lg shadow p-4">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-dollar-sign text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-500">Total Revenue</p>
+                                    <p class="text-2xl font-semibold text-gray-900">$24,500</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-4">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                    <i class="fas fa-file-invoice text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-500">Total Invoices</p>
+                                    <p class="text-2xl font-semibold text-gray-900">45</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-4">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                    <i class="fas fa-users text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-500">New Customers</p>
+                                    <p class="text-2xl font-semibold text-gray-900">12</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-4">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                    <i class="fas fa-project-diagram text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-500">Active Projects</p>
+                                    <p class="text-2xl font-semibold text-gray-900">8</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Revenue Trend</h3>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Service Distribution</h3>
+                            <canvas id="serviceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Table -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-03-15</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Smith's Auto Repair</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Website Redesign</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$2,500</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check if user is CEO
+        function isCEO() {
+            const userRole = localStorage.getItem('userRole');
+            return userRole === 'CEO';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get user role from localStorage
+            const userRole = localStorage.getItem('userRole');
+            
+            // Redirect non-CEO users to dashboard
+            if (!isCEO()) {
+                window.location.href = '../components/dashboard.html';
+                return;
+            }
+
+            // Set current date
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('currentDate').textContent = currentDate;
+
+            // Initialize charts
+            initializeCharts();
+        });
+
+        // Initialize charts
+        function initializeCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [12000, 19000, 15000, 25000, 22000, 24500],
+                        borderColor: 'rgb(59, 130, 246)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            // Service Distribution Chart
+            const serviceCtx = document.getElementById('serviceChart').getContext('2d');
+            new Chart(serviceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Website Design', 'E-commerce', 'SEO', 'Maintenance'],
+                    datasets: [{
+                        data: [40, 25, 20, 15],
+                        backgroundColor: [
+                            'rgb(59, 130, 246)',
+                            'rgb(16, 185, 129)',
+                            'rgb(245, 158, 11)',
+                            'rgb(139, 92, 246)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        }
+
+        // Print report
+        function printReport() {
+            window.print();
+        }
+
+        // Update report based on type and timeframe
+        document.getElementById('reportType').addEventListener('change', function(e) {
+            const reportType = e.target.value;
+            document.getElementById('reportTitle').textContent = `${reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report`;
+            // Add logic to update report content based on type
+        });
+
+        document.getElementById('timeFrame').addEventListener('change', function(e) {
+            const timeFrame = e.target.value;
+            // Add logic to update report content based on timeframe
+        });
+    </script>
+</body>
+</html> 

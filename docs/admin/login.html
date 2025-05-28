@@ -3,77 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Webflare Design Co.</title>
+    <title>Admin Login - Webflare Design Co.</title>
     <link rel="icon" href="../Img/webflare-favicon.png">
-    <link rel="stylesheet" href="../CSS/style.css">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-header h1 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        .auth-header p {
+            color: #718096;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #2c5282;
+        }
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 1rem;
+            color: #718096;
+        }
+        .forgot-password a {
+            color: #3182ce;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="login-body">
-    <div class="login-container">
-        <div class="login-box">
-            <div class="login-header">
-                <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="login-logo">
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="w-32 h-32 mx-auto mb-4">
                 <h1>Admin Login</h1>
+                <p>Access your business management portal</p>
             </div>
-            <form id="loginForm" class="login-form">
+            
+            <form id="loginForm" class="space-y-4">
                 <div class="form-group">
-                    <label for="username">
-                        <i class="fas fa-user"></i>
-                        Username
-                    </label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="username" name="username" required 
+                           class="form-control" placeholder="Enter your username">
                 </div>
+
                 <div class="form-group">
-                    <label for="password">
-                        <i class="fas fa-lock"></i>
-                        Password
-                    </label>
-                    <div class="password-input">
-                        <input type="password" id="password" name="password" required>
-                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="form-control" placeholder="Enter your email">
                 </div>
+
                 <div class="form-group">
-                    <button type="submit" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Login
-                    </button>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required 
+                           class="form-control" placeholder="Enter your password">
                 </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn-primary">Sign In</button>
+                </div>
+
+                <div class="error-message" id="errorMessage"></div>
             </form>
-            <div id="loginError" class="login-error"></div>
-        </div>
-        <div class="login-footer">
-            <p>&copy; 2025 Webflare Design Co. All rights reserved.</p>
+
+            <div class="forgot-password">
+                <a href="#">Forgot your password?</a>
+            </div>
         </div>
     </div>
 
-    <!-- Toast Notifications Container -->
-    <div id="toastContainer" class="toast-container"></div>
-
-    <!-- Scripts -->
-    <script src="js/login.js"></script>
     <script>
-        // Initialize login functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                // Initialize login module
-                AdminLogin.init();
-                
-                // Check for existing token
-                const token = localStorage.getItem('adminToken');
-                if (token) {
-                    // Clear token and redirect to login
-                    localStorage.removeItem('adminToken');
-                    localStorage.removeItem('adminUser');
-                }
-            } catch (error) {
-                console.error('Error initializing login:', error);
+        // Simulated user credentials
+        const defaultUsers = {
+            'CEO': { 
+                password: 'ceo123', 
+                role: 'CEO',
+                email: 'ceo@webflaredesignco.com'
+            },
+            'CFO': { 
+                password: 'cfo123', 
+                role: 'CFO',
+                email: 'cfo@webflaredesignco.com'
             }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in
+            const userRole = localStorage.getItem('userRole');
+            if (userRole) {
+                // Redirect to dashboard if already logged in
+                window.location.href = './components/dashboard.html';
+                return;
+            }
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.querySelector('#username').value.toUpperCase();
+                const email = document.querySelector('#email').value;
+                const password = document.querySelector('#password').value;
+
+                // Clear any previous error messages
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.textContent = '';
+                }
+
+                try {
+                    // Get stored users or use default users
+                    const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
+                    const users = Object.keys(storedUsers).length > 0 ? storedUsers : defaultUsers;
+
+                    // Check if user exists and credentials match
+                    const user = users[username];
+                    if (!user) {
+                        throw new Error('Invalid username');
+                    }
+
+                    if (user.password !== password) {
+                        throw new Error('Invalid password');
+                    }
+
+                    if (user.email !== email) {
+                        throw new Error('Invalid email');
+                    }
+
+                    // Store user credentials in localStorage
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('userRole', user.role);
+                    localStorage.setItem('userEmail', email);
+                    
+                    // Redirect to dashboard
+                    window.location.href = './components/dashboard.html';
+                } catch (error) {
+                    if (errorMessage) {
+                        errorMessage.textContent = error.message;
+                    }
+                }
+            });
         });
     </script>
 </body>
-</html> 
+</html>

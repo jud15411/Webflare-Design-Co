@@ -12,19 +12,15 @@
 /* ==========================================================================
    Base Styles & Reset
    ========================================================================== */
-html, body {
+body {
     margin: 0;
     padding: 0;
     width: 100%;
     overflow-x: hidden;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
     line-height: 1.6;
     color: var(--dark);
     position: relative;
-    width: 100%;
 }
 
 img {
@@ -340,43 +336,13 @@ img {
    ========================================================================== */
 .portfolio {
     padding: 6rem 20px;
-    background-color: var(--light);
-    box-sizing: border-box;
-    width: 100%;
-    overflow-x: hidden;
-}
-
-.portfolio .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 80px;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-.section-header p {
-    max-width: 600px;
-    margin: 0 auto;
+    background-color: white;
 }
 
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 .portfolio-item {
@@ -384,10 +350,6 @@ img {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    aspect-ratio: 16/10;
-    display: flex;
-    align-items: stretch;
 }
 
 .portfolio-item img {
