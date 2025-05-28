@@ -2,11 +2,120 @@
 const Customers = {
     // Initialize customers page
     init() {
-        this.customers = JSON.parse(localStorage.getItem('customers') || '[]');
-        this.currentPage = 1;
-        this.itemsPerPage = 10;
-        this.setupEventListeners();
-        this.loadCustomers();
+        try {
+            console.log('Customers module initialized');
+            
+            // Check if user is logged in
+            const user = JSON.parse(localStorage.getItem('adminUser') || '{}');
+            if (!user.id) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Update user display
+            updateUserInfo();
+
+            // Initialize navigation
+            initNavigation();
+
+            // Initialize mobile touch support
+            this.initTouchSupport();
+
+            // Initialize all event listeners
+            this.setupEventListeners();
+
+            // Initialize all modals
+            this.initModals();
+
+            // Initialize all filters
+            this.initFilters();
+
+            // Initialize all tables
+            this.initTables();
+
+            // Initialize all forms
+            this.initForms();
+
+            // Check user role and update UI accordingly
+            this.checkUserRole();
+
+            // Initialize tooltips
+            initTooltips();
+
+            // Initialize mobile menu
+            this.initMobileMenu();
+
+            console.log('Customers module initialization complete');
+        } catch (error) {
+            console.error('Error initializing customers module:', error);
+        }
+    },
+
+    // Mobile Touch Support
+    initTouchSupport() {
+        // Add touch support for filter dropdown
+        const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+        filterDropdowns.forEach(dropdown => {
+            dropdown.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.toggleFilterMenu(dropdown);
+            });
+        });
+
+        // Add touch support for pagination
+        const paginationButtons = document.querySelectorAll('.pagination button');
+        paginationButtons.forEach(button => {
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                button.click();
+            });
+        });
+
+        // Add touch support for table rows
+        const tableRows = document.querySelectorAll('.data-table tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                row.classList.toggle('selected');
+            });
+        });
+    },
+
+    // Mobile Menu Functions
+    initMobileMenu() {
+        const nav = document.querySelector('.admin-nav');
+        if (nav) {
+            // Close menu when clicking outside
+            document.addEventListener('touchstart', (e) => {
+                if (!nav.contains(e.target) && !document.querySelector('.mobile-menu-toggle').contains(e.target)) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+    },
+
+    // Close mobile menu when clicking outside
+    closeMobileMenu() {
+        const nav = document.querySelector('.admin-nav');
+        if (nav && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+        }
+    },
+
+    // Handle mobile form submissions
+    handleMobileFormSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        // Process form data
+        this.processFormData(formData);
+        
+        // Close any open modals
+        const modal = document.querySelector('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     },
 
     // Setup event listeners
@@ -61,9 +170,17 @@ const Customers = {
 
     // Show add/edit customer modal
     showModal(customerId = null) {
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'CFO') {
+            alert('Only CEO can create or edit customers');
+            return;
+        }
+
         const modal = document.getElementById('customerModal');
         const modalTitle = document.getElementById('modalTitle');
         const form = document.getElementById('customerForm');
+
+        if (!modal || !modalTitle || !form) return;
 
         if (customerId) {
             const customer = this.customers.find(c => c.id === customerId);
@@ -98,6 +215,12 @@ const Customers = {
     // Handle form submission
     handleSubmit(e) {
         e.preventDefault();
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'CFO') {
+            alert('Only CEO can create or edit customers');
+            return;
+        }
+
         const form = e.target;
         const customerId = form.dataset.customerId;
 
@@ -149,9 +272,15 @@ const Customers = {
 
     // Delete customer
     deleteCustomer() {
-        const modal = document.getElementById('deleteModal');
-        const customerId = modal.dataset.customerId;
-        
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'CFO') {
+            alert('Only CEO can delete customers');
+            return;
+        }
+
+        const customerId = document.getElementById('deleteModal').dataset.customerId;
+        if (!customerId) return;
+
         if (customerId) {
             this.customers = this.customers.filter(c => c.id !== customerId);
             this.saveCustomers();

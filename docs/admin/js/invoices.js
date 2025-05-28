@@ -1,16 +1,130 @@
-// Invoices Module
+// Invoices module
 const Invoices = {
     // Initialize invoices page
     init() {
-        this.invoices = JSON.parse(localStorage.getItem('invoices') || '[]');
-        this.customers = JSON.parse(localStorage.getItem('customers') || '[]');
-        this.contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
-        this.currentPage = 1;
-        this.itemsPerPage = 10;
-        this.setupEventListeners();
-        this.populateFilters();
-        this.loadInvoices();
-        this.updateSummaryCards();
+        try {
+            console.log('Invoices module initialized');
+            
+            // Check if user is logged in
+            const user = JSON.parse(localStorage.getItem('adminUser') || '{}');
+            if (!user.id) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Update user display
+            updateUserInfo();
+
+            // Initialize navigation
+            initNavigation();
+
+            // Initialize mobile touch support
+            this.initTouchSupport();
+
+            // Initialize all event listeners
+            this.setupEventListeners();
+
+            // Initialize all modals
+            this.initModals();
+
+            // Initialize all filters
+            this.initFilters();
+
+            // Initialize all tables
+            this.initTables();
+
+            // Initialize all forms
+            this.initForms();
+
+            // Check user role and update UI accordingly
+            this.checkUserRole();
+
+            // Initialize tooltips
+            initTooltips();
+
+            // Initialize mobile menu
+            this.initMobileMenu();
+
+            console.log('Invoices module initialization complete');
+        } catch (error) {
+            console.error('Error initializing invoices module:', error);
+        }
+    },
+
+    // Mobile Touch Support
+    initTouchSupport() {
+        // Add touch support for filter dropdown
+        const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+        filterDropdowns.forEach(dropdown => {
+            dropdown.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.toggleFilterMenu(dropdown);
+            });
+        });
+
+        // Add touch support for pagination
+        const paginationButtons = document.querySelectorAll('.pagination button');
+        paginationButtons.forEach(button => {
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                button.click();
+            });
+        });
+
+        // Add touch support for table rows
+        const tableRows = document.querySelectorAll('.data-table tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                row.classList.toggle('selected');
+            });
+        });
+
+        // Add touch support for date picker
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+            input.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                input.showPicker();
+            });
+        });
+    },
+
+    // Mobile Menu Functions
+    initMobileMenu() {
+        const nav = document.querySelector('.admin-nav');
+        if (nav) {
+            // Close menu when clicking outside
+            document.addEventListener('touchstart', (e) => {
+                if (!nav.contains(e.target) && !document.querySelector('.mobile-menu-toggle').contains(e.target)) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+    },
+
+    // Close mobile menu when clicking outside
+    closeMobileMenu() {
+        const nav = document.querySelector('.admin-nav');
+        if (nav && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+        }
+    },
+
+    // Handle mobile form submissions
+    handleMobileFormSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        // Process form data
+        this.processFormData(formData);
+        
+        // Close any open modals
+        const modal = document.querySelector('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     },
 
     // Setup event listeners

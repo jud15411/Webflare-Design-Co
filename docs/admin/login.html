@@ -54,6 +54,26 @@
     <!-- Toast Notifications Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Scripts -->
     <script src="js/login.js"></script>
+    <script>
+        // Initialize login functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Initialize login module
+                AdminLogin.init();
+                
+                // Check for existing token
+                const token = localStorage.getItem('adminToken');
+                if (token) {
+                    // Clear token and redirect to login
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminUser');
+                }
+            } catch (error) {
+                console.error('Error initializing login:', error);
+            }
+        });
+    </script>
 </body>
 </html> 

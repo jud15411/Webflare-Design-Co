@@ -1,0 +1,248 @@
+/* Mobile Navigation */
+.admin-nav {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.admin-nav.active {
+    transform: translateX(0);
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Mobile Content Area */
+.admin-content {
+    margin-left: 0;
+    padding: 1rem;
+}
+
+/* Mobile Header */
+.header-content {
+    padding: 1rem;
+}
+
+/* Mobile Search Bar */
+.search-bar-container {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.search-box {
+    width: 100%;
+}
+
+.filter-dropdown-container {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Mobile Content Header */
+.content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.content-header h1 {
+    margin: 0;
+}
+
+/* Mobile Buttons */
+.btn-primary,
+.btn-icon {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+/* Mobile Table */
+.data-table {
+    display: block;
+    overflow-x: auto;
+}
+
+.data-table th,
+.data-table td {
+    min-width: 120px;
+}
+
+/* Mobile Pagination */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow);
+    margin-top: 1rem;
+}
+
+/* Mobile Filter Menu */
+.filter-menu {
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.filter-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* Mobile Modal */
+.modal {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal-content {
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Mobile Form Elements */
+.form-group {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+}
+
+/* Mobile Grid Layout */
+.grid-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Card */
+.card {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Stats */
+.stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.stat-card {
+    width: 100%;
+}
+
+/* Mobile Dashboard Charts */
+.chart-container {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Recent Items */
+.recent-items {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Quick Actions */
+.quick-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Notifications */
+.notifications {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Activity */
+.activity-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Calendar */
+.calendar-container {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Settings */
+.settings-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Profile */
+.profile-card {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Dashboard Analytics */
+.analytics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Reports */
+.reports-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Tasks */
+.tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Messages */
+.messages-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Mobile Dashboard Files */
+.files-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
