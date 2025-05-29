@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webflare Design Co. - Secure Admin Access</title>
+    <title>Admin Login - Webflare Design Co.</title>
     <link rel="icon" href="../Img/webflare-favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,7 +28,7 @@
             border-radius: 2rem;
             padding: 2.5rem;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         .auth-header {
@@ -56,14 +56,24 @@
             font-size: 1rem;
             background: rgba(255, 255, 255, 0.05);
             color: white;
+            transition: all 0.3s ease;
         }
         .form-control:focus {
             border-color: #3182ce;
             box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
             outline: none;
+            background: rgba(255, 255, 255, 0.08);
         }
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.5);
+        }
+        /* Add styles for select options */
+        select.form-control option {
+            background-color: #1a1a2e;
+            color: white;
+        }
+        select.form-control:focus option {
+            background-color: #16213e;
         }
         .btn-primary {
             width: 100%;
@@ -77,11 +87,16 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(49, 130, 206, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(49, 130, 206, 0.3);
             background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
         }
         .error-message {
             color: #ff6b6b;
@@ -91,6 +106,7 @@
             padding: 0.5rem;
             background: rgba(255, 107, 107, 0.1);
             border-radius: 0.5rem;
+            display: none;
         }
         .forgot-password {
             text-align: center;
@@ -101,8 +117,10 @@
             color: #3182ce;
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
         .forgot-password a:hover {
+            color: #63b3ed;
             text-decoration: underline;
         }
         .security-note {
@@ -110,10 +128,51 @@
             text-align: center;
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         .security-note i {
             color: #3182ce;
-            margin-right: 0.5rem;
+        }
+        .password-strength {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+        }
+        .strength-weak { background: #ff6b6b; width: 33.33%; }
+        .strength-medium { background: #ffd93d; width: 66.66%; }
+        .strength-strong { background: #51cf66; width: 100%; }
+        .login-attempts {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .two-factor-section {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .qr-code {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem auto;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -122,8 +181,8 @@
         <div class="auth-card">
             <div class="auth-header">
                 <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="w-32 h-32 mx-auto mb-4">
-                <h1>Secure Admin Access</h1>
-                <p>Enter your credentials to access the business management portal</p>
+                <h1>Admin Login</h1>
+                <p>Secure access to your business management portal</p>
             </div>
             
             <form id="loginForm" class="space-y-4">
@@ -139,7 +198,8 @@
                 <div class="form-group">
                     <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                     <input type="email" id="email" name="email" required 
-                           class="form-control" placeholder="Enter your email">
+                           class="form-control" placeholder="Enter your email"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
                 </div>
 
                 <div class="form-group">
@@ -150,56 +210,60 @@
                         <i class="fas fa-eye absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" 
                            onclick="togglePasswordVisibility()"></i>
                     </div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn-primary">Sign In <i class="fas fa-arrow-right ml-2"></i></button>
+                    <button type="submit" class="btn-primary">
+                        <span class="button-text">Sign In</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
                 </div>
 
                 <div class="error-message" id="errorMessage"></div>
+                <div class="login-attempts" id="loginAttempts"></div>
             </form>
 
             <div class="forgot-password">
-                <a href="#">Forgot your password?</a>
+                <a href="#" onclick="showPasswordReset()">Forgot your password?</a>
             </div>
 
             <div class="security-note">
                 <i class="fas fa-shield-alt"></i>
-                <span>Secure login with encrypted connection</span>
+                <span>Protected by advanced security measures</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Simulated user credentials
-        const defaultUsers = {
-            'CEO': { 
-                password: 'ceo123', 
-                email: 'ceo@webflaredesignco.com',
-                permissions: {
-                    canManageProjects: true,
-                    canViewReports: true,
-                    canManageUsers: true,
-                    canManageContracts: true,
-                    canManageInvoices: true,
-                    canManageCustomers: true,
-                    canViewFinancials: true
-                }
-            },
-            'CFO': { 
-                password: 'cfo123', 
-                email: 'cfo@webflaredesignco.com',
-                permissions: {
-                    canManageProjects: false,
-                    canViewReports: true,
-                    canManageUsers: false,
-                    canManageContracts: true,
-                    canManageInvoices: true,
-                    canManageCustomers: true,
-                    canViewFinancials: true
-                }
+        // Enhanced security features
+        const MAX_LOGIN_ATTEMPTS = 5;
+        const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
+        let loginAttempts = 0;
+        let lockoutEndTime = 0;
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const strengthBar = document.querySelector('.password-strength-bar');
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[a-z]+/)) strength += 1;
+            if (password.match(/[A-Z]+/)) strength += 1;
+            if (password.match(/[0-9]+/)) strength += 1;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
             }
-        };
+        }
 
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
@@ -216,46 +280,101 @@
             }
         }
 
+        function showPasswordReset() {
+            // Implement password reset functionality
+            alert('Password reset functionality will be implemented here.');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const form = document.querySelector('form');
+            const form = document.getElementById('loginForm');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('errorMessage');
+            const loginAttemptsDisplay = document.getElementById('loginAttempts');
+
+            // Check for existing lockout
+            const storedLockoutEnd = localStorage.getItem('lockoutEndTime');
+            if (storedLockoutEnd) {
+                lockoutEndTime = parseInt(storedLockoutEnd);
+                if (Date.now() < lockoutEndTime) {
+                    const remainingTime = Math.ceil((lockoutEndTime - Date.now()) / 1000 / 60);
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `Account locked. Please try again in ${remainingTime} minutes.`;
+                    form.querySelector('button[type="submit"]').disabled = true;
+                } else {
+                    localStorage.removeItem('lockoutEndTime');
+                    localStorage.removeItem('loginAttempts');
+                }
+            }
+
+            // Password strength checker
+            passwordInput.addEventListener('input', (e) => {
+                checkPasswordStrength(e.target.value);
+            });
+
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const role = document.querySelector('#role').value;
-                const email = document.querySelector('#email').value;
-                const password = document.querySelector('#password').value;
-                const errorMessage = document.getElementById('errorMessage');
+                
+                if (Date.now() < lockoutEndTime) {
+                    return;
+                }
 
-                errorMessage.textContent = '';
+                const role = document.getElementById('role').value;
+                const email = document.getElementById('email').value;
+                const password = passwordInput.value;
+
+                errorMessage.style.display = 'none';
+                loginAttemptsDisplay.textContent = '';
 
                 if (!role) {
+                    errorMessage.style.display = 'block';
                     errorMessage.textContent = 'Please select your role';
                     return;
                 }
 
                 try {
-                    const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
-                    const users = Object.keys(storedUsers).length > 0 ? storedUsers : defaultUsers;
-                    const user = users[role];
+                    // Get stored credentials
+                    const storedCredentials = JSON.parse(localStorage.getItem('userCredentials') || '[]');
+                    const user = storedCredentials.find(cred => 
+                        cred.role === role && 
+                        cred.email === email && 
+                        cred.password === password
+                    );
 
                     if (!user) {
-                        throw new Error('Invalid role');
+                        throw new Error('Invalid credentials');
                     }
 
-                    if (user.password !== password) {
-                        throw new Error('Invalid password');
-                    }
+                    // Successful login
+                    loginAttempts = 0;
+                    localStorage.removeItem('loginAttempts');
+                    localStorage.removeItem('lockoutEndTime');
 
-                    if (user.email !== email) {
-                        throw new Error('Invalid email');
-                    }
+                    // Store user session
+                    const sessionData = {
+                        role: user.role,
+                        email: user.email,
+                        loginTime: Date.now()
+                    };
+                    localStorage.setItem('userSession', JSON.stringify(sessionData));
 
-                    localStorage.setItem('userRole', role);
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userPermissions', JSON.stringify(user.permissions));
-                    
+                    // Redirect to dashboard
                     window.location.href = 'dashboard.html';
+
                 } catch (error) {
-                    errorMessage.textContent = error.message;
+                    loginAttempts++;
+                    localStorage.setItem('loginAttempts', loginAttempts.toString());
+                    
+                    if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+                        lockoutEndTime = Date.now() + LOCKOUT_DURATION;
+                        localStorage.setItem('lockoutEndTime', lockoutEndTime.toString());
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = `Too many failed attempts. Account locked for 15 minutes.`;
+                        form.querySelector('button[type="submit"]').disabled = true;
+                    } else {
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = error.message;
+                        loginAttemptsDisplay.textContent = `${MAX_LOGIN_ATTEMPTS - loginAttempts} attempts remaining`;
+                    }
                 }
             });
         });
