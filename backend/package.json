@@ -1,5 +1,5 @@
 {
-  "name": "webflare-admin-backend",
+  "name": "webflare-design-co-backend",
   "version": "1.0.0",
   "description": "Backend for Webflare Design Co. admin system",
   "main": "server.js",

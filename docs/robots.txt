@@ -5,7 +5,7 @@ Allow: /services/
 Allow: /contact.html
 
 # Prevent duplicate content issues
-Disallow: /wp-admin/
+
 Disallow: /wp-includes/
 Disallow: /search/
 Disallow: /*?*
@@ -39,10 +39,9 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-# Prevent crawling of admin areas
-Disallow: /admin/
+
 Disallow: /login/
 
 # Allow crawling of important content
 Allow: /portfolio/
-Allow: /about/ 
+Allow: /about/

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Webflare Design Co.</title>
+    <link rel="icon" href="../Img/webflare-favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        .user-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .sidebar-header {
+            margin-bottom: 2rem;
+        }
+        .sidebar-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card:last-child {
+            margin-bottom: 0;
+        }
+        .stat-info {
+            flex: 1;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        .stat-icon {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .action-card:hover {
+            transform: translateY(-2px);
+        }
+        .action-icon {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+        .action-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .action-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Design Co." class="w-32 h-32">
+                <h2>Business Management</h2>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/customers.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Customers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/contracts.html" class="nav-link">
+                        <i class="fas fa-file-contract"></i>
+                        Contracts
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/invoices.html" class="nav-link">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Invoices
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/reports.html" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar">CEO</div>
+                    <div class="user-name">CEO</div>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">125</div>
+                        <div class="stat-label">Active Projects</div>
+                    </div>
+                    <i class="fas fa-project-diagram stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">35</div>
+                        <div class="stat-label">New Customers</div>
+                    </div>
+                    <i class="fas fa-users stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">$45,000</div>
+                        <div class="stat-label">Monthly Revenue</div>
+                    </div>
+                    <i class="fas fa-dollar-sign stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">28</div>
+                        <div class="stat-label">Pending Invoices</div>
+                    </div>
+                    <i class="fas fa-file-invoice stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Customer Satisfaction</div>
+                    </div>
+                    <i class="fas fa-smile stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Contracts</div>
+                    </div>
+                    <i class="fas fa-file-contract stat-icon"></i>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card">
+                    <i class="fas fa-user-plus action-icon"></i>
+                    <div class="action-title">Add New Customer</div>
+                    <div class="action-description">Create a new customer profile</div>
+                </div>
+                <div class="action-card">
+                    <i class="fas fa-file-invoice action-icon"></i>
+                    <div class="action-title">Create Invoice</div>
+                    <div class="action-description">Generate a new invoice</div>
+                </div>
+                <div class="action-card">
+                    <i class="fas fa-file-contract action-icon"></i>
+                    <div class="action-title">New Contract</div>
+                    <div class="action-description">Draft a new contract</div>
+                </div>
+                <div class="action-card">
+                    <i class="fas fa-chart-line action-icon"></i>
+                    <div class="action-title">View Reports</div>
+                    <div class="action-description">Analyze business metrics</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Role-based access control
+        const userRole = localStorage.getItem('userRole');
+        const userPermissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
+
+        // Hide non-permitted menu items
+        const navItems = document.querySelectorAll('.nav-link');
+        navItems.forEach(item => {
+            const menuAction = item.textContent.trim().toLowerCase();
+            
+            // Map menu items to permission keys
+            const permissionMap = {
+                'customers': 'canManageCustomers',
+                'contracts': 'canManageContracts',
+                'invoices': 'canManageInvoices',
+                'reports': 'canViewReports',
+                'settings': 'canManageUsers'
+            };
+
+            const permissionKey = Object.keys(permissionMap).find(key => 
+                menuAction.includes(key)
+            );
+
+            if (permissionKey && !userPermissions[permissionMap[permissionKey]]) {
+                item.parentElement.style.display = 'none';
+            }
+        });
+
+        // Update user info
+        const userAvatar = document.querySelector('.user-avatar');
+        const userName = document.querySelector('.user-name');
+        
+        if (userRole) {
+            userAvatar.textContent = userRole;
+            userName.textContent = userRole;
+        }
+
+        // Logout functionality
+        document.querySelector('.user-info').addEventListener('click', () => {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userPermissions');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

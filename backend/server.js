@@ -21,14 +21,7 @@ app.use(morgan('dev'));
 // Serve static files from the docs directory
 app.use(express.static(path.join(__dirname, '../docs')));
 
-// Routes
-app.use('/api/admin/customers', customerRoutes);
-app.use('/api/admin/contracts', contractRoutes);
-app.use('/api/admin/projects', projectRoutes);
-app.use('/api/admin/activity', activityRoutes);
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/webflare-admin', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/webflare', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
