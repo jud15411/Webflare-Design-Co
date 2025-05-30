@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients - Webflare Design Co.</title>
+    <title>Contracts - Webflare Design Co.</title>
     <link rel="icon" href="../../Img/webflare-favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -415,10 +415,6 @@
             color: var(--success-color);
         }
 
-        .spacer {
-            width: 2rem;
-        }
-
         .status-inactive {
             background: #fef2f2;
             color: var(--danger-color);
@@ -569,7 +565,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="clients.html" class="nav-link active">
+                    <a href="clients.html" class="nav-link">
                         <i class="fas fa-users"></i>
                         Clients
                     </a>
@@ -581,7 +577,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="contracts.html" class="nav-link">
+                    <a href="contracts.html" class="nav-link active">
                         <i class="fas fa-file-contract"></i>
                         Contracts
                     </a>
@@ -617,20 +613,36 @@
         <main class="main-content">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <h1 class="text-2xl font-bold text-gray-800">Clients</h1>
+                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800">Contracts</h1>
                 </div>
 
                 <div class="header-right">
                     <div class="search-bar">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="search-input" placeholder="Search clients...">
+                        <input type="text" class="search-input" placeholder="Search contracts...">
                     </div>
-                    <div class="spacer"></div>
+
                     <div class="user-info" onclick="toggleUserDropdown(event)">
                         <div class="user-avatar">CEO</div>
                         <div class="user-name">CEO</div>
                         <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name">CEO</div>
+                                <div class="user-dropdown-email">ceo@webflaredesignco.com</div>
+                            </div>
                             <div class="user-dropdown-menu">
+                                <a href="profile.html" class="user-dropdown-item">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                                <a href="settings.html" class="user-dropdown-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="user-dropdown-divider"></div>
                                 <a href="#" class="user-dropdown-item logout" onclick="logout()">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout
@@ -643,8 +655,8 @@
 
             <div class="content-wrapper">
                 <div class="page-header">
-                    <h2 class="page-title">Client Management</h2>
-                    <p class="page-description">View and manage all your clients and their projects</p>
+                    <h2 class="page-title">Contract Management</h2>
+                    <p class="page-description">View and manage all client contracts and agreements</p>
                 </div>
 
                 <div class="action-bar">
@@ -652,39 +664,41 @@
                         <select class="filter-select">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                            <option value="expired">Expired</option>
                         </select>
                         <select class="filter-select">
-                            <option value="">All Projects</option>
+                            <option value="">All Types</option>
                             <option value="website">Website Development</option>
                             <option value="ecommerce">E-commerce</option>
                             <option value="maintenance">Maintenance</option>
                         </select>
                     </div>
-                    <button id="newClientBtn" class="btn btn-primary" style="display: none;">
+                    <button id="newContractBtn" class="btn btn-primary" style="display: none;">
                         <i class="fas fa-plus"></i>
-                        New Client
+                        New Contract
                     </button>
                 </div>
 
                 <div class="table-container">
                     <div class="table-header">
-                        <h3 class="table-title">All Clients</h3>
+                        <h3 class="table-title">All Contracts</h3>
                     </div>
                     <div class="table-content">
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Contract ID</th>
                                     <th>Client</th>
-                                    <th>Contact</th>
-                                    <th>Projects</th>
+                                    <th>Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
                                     <th>Status</th>
-                                    <th>Last Activity</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="clientsTableBody">
-                                <!-- Clients will be loaded here -->
+                            <tbody id="contractsTableBody">
+                                <!-- Contracts will be loaded here -->
                             </tbody>
                         </table>
                     </div>
@@ -693,71 +707,93 @@
         </main>
     </div>
 
-    <!-- New Client Modal -->
-    <div id="clientModal" class="modal" onclick="handleModalClick(event)">
+    <!-- New Contract Modal -->
+    <div id="contractModal" class="modal" onclick="handleModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">New Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">New Contract</h2>
                 <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="clientForm">
+            <form id="contractForm">
                 <div class="form-group">
-                    <label for="clientName">Client Name</label>
-                    <input type="text" id="clientName" name="clientName" class="form-control" required>
+                    <label for="clientName">Client</label>
+                    <select id="clientName" name="clientName" class="form-control" required>
+                        <!-- Client options will be loaded dynamically -->
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="contactName">Contact Name</label>
-                    <input type="text" id="contactName" name="contactName" class="form-control" required>
+                    <label for="contractType">Contract Type</label>
+                    <select id="contractType" name="contractType" class="form-control" required>
+                        <option value="website">Website Development</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="contactEmail">Contact Email</label>
-                    <input type="email" id="contactEmail" name="contactEmail" class="form-control" required>
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select id="status" name="status" class="form-control" required>
                         <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                        <option value="expired">Expired</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeModal()" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Client</button>
+                    <button type="submit" class="btn btn-primary">Create Contract</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Client Modal -->
-    <div id="editClientModal" class="modal" onclick="handleEditModalClick(event)">
+    <!-- Edit Contract Modal -->
+    <div id="editContractModal" class="modal" onclick="handleEditModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">Edit Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">Edit Contract</h2>
                 <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="editClientForm">
-                <input type="hidden" id="editClientIndex">
+            <form id="editContractForm">
+                <input type="hidden" id="editContractIndex">
                 <div class="form-group">
-                    <label for="editClientName">Client Name</label>
-                    <input type="text" id="editClientName" name="clientName" class="form-control" required>
+                    <label for="editClientName">Client</label>
+                    <select id="editClientName" name="clientName" class="form-control" required>
+                        <!-- Client options will be loaded dynamically -->
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="editContactName">Contact Name</label>
-                    <input type="text" id="editContactName" name="contactName" class="form-control" required>
+                    <label for="editContractType">Contract Type</label>
+                    <select id="editContractType" name="contractType" class="form-control" required>
+                        <option value="website">Website Development</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="editContactEmail">Contact Email</label>
-                    <input type="email" id="editContactEmail" name="contactEmail" class="form-control" required>
+                    <label for="editStartDate">Start Date</label>
+                    <input type="date" id="editStartDate" name="startDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEndDate">End Date</label>
+                    <input type="date" id="editEndDate" name="endDate" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="editStatus">Status</label>
                     <select id="editStatus" name="status" class="form-control" required>
                         <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                        <option value="expired">Expired</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
@@ -805,108 +841,102 @@
             const dropdownName = document.querySelector('.user-dropdown-name');
             const dropdownEmail = document.querySelector('.user-dropdown-email');
             
-            // Get user details from adminUsers
-            const users = JSON.parse(localStorage.getItem('adminUsers') || '[]');
-            const currentUser = users.find(user => user.role === userSession.role);
-            
-            if (currentUser) {
-                userAvatar.textContent = currentUser.name;
-                userName.textContent = currentUser.name;
-                dropdownName.textContent = currentUser.name;
-                dropdownEmail.textContent = currentUser.email;
-            } else {
-                userAvatar.textContent = userSession.role;
-                userName.textContent = userSession.role;
-                dropdownName.textContent = userSession.role;
-                dropdownEmail.textContent = userSession.email || `${userSession.role.toLowerCase()}@webflaredesignco.com`;
-            }
+            userAvatar.textContent = userSession.role;
+            userName.textContent = userSession.role;
+            dropdownName.textContent = userSession.role;
+            dropdownEmail.textContent = userSession.email || `${userSession.role.toLowerCase()}@webflaredesignco.com`;
 
-            // Show/hide New Client button based on role
-            const newClientBtn = document.getElementById('newClientBtn');
+            // Show/hide New Contract button based on role
+            const newContractBtn = document.getElementById('newContractBtn');
             if (userSession.role === 'CEO') {
-                newClientBtn.style.display = 'inline-flex';
+                newContractBtn.style.display = 'inline-flex';
             } else {
-                newClientBtn.style.display = 'none';
+                newContractBtn.style.display = 'none';
             }
 
-            // Initialize sample clients if none exist
-            if (!localStorage.getItem('clients')) {
-                const sampleClients = [
+            // Initialize sample contracts if none exist
+            if (!localStorage.getItem('contracts')) {
+                const sampleContracts = [
                     {
-                        name: 'Local Cafe',
-                        contactName: 'Sarah Johnson',
-                        contactEmail: 'sarah@localcafe.com',
-                        status: 'active',
-                        lastActivity: '2024-12-15'
+                        id: 'CT-2024-001',
+                        client: 'Local Cafe',
+                        type: 'E-commerce Website',
+                        startDate: '2024-01-01',
+                        endDate: '2024-12-31',
+                        status: 'active'
                     },
                     {
-                        name: 'Phillips Diner',
-                        contactName: 'Mike Anderson',
-                        contactEmail: 'mike@phillipsdiner.com',
-                        status: 'active',
-                        lastActivity: '2025-01-20'
+                        id: 'CT-2024-002',
+                        client: 'Phillips Diner',
+                        type: 'Website Redesign',
+                        startDate: '2024-02-01',
+                        endDate: '2025-01-31',
+                        status: 'active'
                     },
                     {
-                        name: 'John Smith',
-                        contactName: 'John Smith',
-                        contactEmail: 'john@example.com',
-                        status: 'inactive',
-                        lastActivity: '2024-11-30'
+                        id: 'CT-2023-015',
+                        client: 'John Smith',
+                        type: 'Portfolio Website',
+                        startDate: '2023-01-01',
+                        endDate: '2023-12-31',
+                        status: 'expired'
                     }
                 ];
-                localStorage.setItem('clients', JSON.stringify(sampleClients));
+                localStorage.setItem('contracts', JSON.stringify(sampleContracts));
             }
 
-            // Load clients
-            loadClients();
+            // Load contracts
+            loadContracts();
 
-            // Add click handler for new client button
-            newClientBtn.addEventListener('click', showModal);
+            // Add click handler for new contract button
+            newContractBtn.addEventListener('click', showModal);
 
-            // Handle client form submission
-            const newClientForm = document.getElementById('clientForm');
-            if (newClientForm) {
-                newClientForm.addEventListener('submit', function(e) {
+            // Handle contract form submission
+            const newContractForm = document.getElementById('contractForm');
+            if (newContractForm) {
+                newContractForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    const clientData = {
-                        name: document.getElementById('clientName').value,
-                        contactName: document.getElementById('contactName').value,
-                        contactEmail: document.getElementById('contactEmail').value,
-                        status: document.getElementById('status').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
+                    const contractData = {
+                        id: generateContractId(),
+                        client: document.getElementById('clientName').value,
+                        type: document.getElementById('contractType').value,
+                        startDate: document.getElementById('startDate').value,
+                        endDate: document.getElementById('endDate').value,
+                        status: document.getElementById('status').value
                     };
 
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients.push(clientData);
-                    localStorage.setItem('clients', JSON.stringify(clients));
+                    const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+                    contracts.push(contractData);
+                    localStorage.setItem('contracts', JSON.stringify(contracts));
 
                     closeModal();
-                    loadClients();
+                    loadContracts();
                 });
             }
 
             // Handle edit form submission
-            const editClientForm = document.getElementById('editClientForm');
-            if (editClientForm) {
-                editClientForm.addEventListener('submit', function(e) {
+            const editContractForm = document.getElementById('editContractForm');
+            if (editContractForm) {
+                editContractForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    const index = parseInt(document.getElementById('editClientIndex').value);
-                    const clientData = {
-                        name: document.getElementById('editClientName').value,
-                        contactName: document.getElementById('editContactName').value,
-                        contactEmail: document.getElementById('editContactEmail').value,
-                        status: document.getElementById('editStatus').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
+                    const index = parseInt(document.getElementById('editContractIndex').value);
+                    const contractData = {
+                        id: document.getElementById('editContractIndex').value,
+                        client: document.getElementById('editClientName').value,
+                        type: document.getElementById('editContractType').value,
+                        startDate: document.getElementById('editStartDate').value,
+                        endDate: document.getElementById('editEndDate').value,
+                        status: document.getElementById('editStatus').value
                     };
 
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients[index] = clientData;
-                    localStorage.setItem('clients', JSON.stringify(clients));
+                    const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+                    contracts[index] = contractData;
+                    localStorage.setItem('contracts', JSON.stringify(contracts));
 
                     closeEditModal();
-                    loadClients();
+                    loadContracts();
                 });
             }
         });
@@ -921,19 +951,27 @@
             window.location.href = '../login.html';
         }
 
-        function loadClients() {
-            const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-            const tbody = document.getElementById('clientsTableBody');
+        function generateContractId() {
+            const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+            const year = new Date().getFullYear();
+            const count = contracts.length + 1;
+            return `CT-${year}-${count.toString().padStart(3, '0')}`;
+        }
+
+        function loadContracts() {
+            const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+            const tbody = document.getElementById('contractsTableBody');
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             const isCEO = userSession && userSession.role === 'CEO';
             
-            tbody.innerHTML = clients.map((client, index) => `
+            tbody.innerHTML = contracts.map((contract, index) => `
                 <tr>
-                    <td>${client.name}</td>
-                    <td>${client.contactName}<br>${client.contactEmail}</td>
-                    <td>${client.name} Project</td>
-                    <td><span class="status-badge status-${client.status}">${client.status}</span></td>
-                    <td>${client.lastActivity}</td>
+                    <td>${contract.id}</td>
+                    <td>${contract.client}</td>
+                    <td>${contract.type}</td>
+                    <td>${formatDate(contract.startDate)}</td>
+                    <td>${formatDate(contract.endDate)}</td>
+                    <td><span class="status-badge status-${contract.status}">${contract.status}</span></td>
                     <td>
                         ${isCEO ? `
                             <button onclick="openEditModal(${index})" class="btn btn-primary">
@@ -951,23 +989,28 @@
             `).join('');
         }
 
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
         function showModal() {
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             if (userSession && userSession.role === 'CEO') {
-                const modal = document.getElementById('clientModal');
+                const modal = document.getElementById('contractModal');
                 modal.classList.add('active');
             }
         }
 
         function closeModal() {
-            const modal = document.getElementById('clientModal');
-            const form = document.getElementById('clientForm');
+            const modal = document.getElementById('contractModal');
+            const form = document.getElementById('contractForm');
             modal.classList.remove('active');
             form.reset();
         }
 
         function handleModalClick(event) {
-            const modal = document.getElementById('clientModal');
+            const modal = document.getElementById('contractModal');
             if (event.target === modal) {
                 closeModal();
             }
@@ -976,29 +1019,30 @@
         function openEditModal(index) {
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             if (userSession && userSession.role === 'CEO') {
-                const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                const client = clients[index];
+                const contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+                const contract = contracts[index];
                 
-                document.getElementById('editClientIndex').value = index;
-                document.getElementById('editClientName').value = client.name;
-                document.getElementById('editContactName').value = client.contactName;
-                document.getElementById('editContactEmail').value = client.contactEmail;
-                document.getElementById('editStatus').value = client.status;
+                document.getElementById('editContractIndex').value = index;
+                document.getElementById('editClientName').value = contract.client;
+                document.getElementById('editContractType').value = contract.type;
+                document.getElementById('editStartDate').value = contract.startDate;
+                document.getElementById('editEndDate').value = contract.endDate;
+                document.getElementById('editStatus').value = contract.status;
                 
-                const modal = document.getElementById('editClientModal');
+                const modal = document.getElementById('editContractModal');
                 modal.classList.add('active');
             }
         }
 
         function closeEditModal() {
-            const modal = document.getElementById('editClientModal');
-            const form = document.getElementById('editClientForm');
+            const modal = document.getElementById('editContractModal');
+            const form = document.getElementById('editContractForm');
             modal.classList.remove('active');
             form.reset();
         }
 
         function handleEditModalClick(event) {
-            const modal = document.getElementById('editClientModal');
+            const modal = document.getElementById('editContractModal');
             if (event.target === modal) {
                 closeEditModal();
             }

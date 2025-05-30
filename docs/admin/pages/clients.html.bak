@@ -415,10 +415,6 @@
             color: var(--success-color);
         }
 
-        .spacer {
-            width: 2rem;
-        }
-
         .status-inactive {
             background: #fef2f2;
             color: var(--danger-color);
@@ -617,6 +613,9 @@
         <main class="main-content">
             <header class="dashboard-header">
                 <div class="header-left">
+                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
                     <h1 class="text-2xl font-bold text-gray-800">Clients</h1>
                 </div>
 
@@ -625,12 +624,25 @@
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" class="search-input" placeholder="Search clients...">
                     </div>
-                    <div class="spacer"></div>
+
                     <div class="user-info" onclick="toggleUserDropdown(event)">
                         <div class="user-avatar">CEO</div>
                         <div class="user-name">CEO</div>
                         <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name">CEO</div>
+                                <div class="user-dropdown-email">ceo@webflaredesignco.com</div>
+                            </div>
                             <div class="user-dropdown-menu">
+                                <a href="profile.html" class="user-dropdown-item">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                                <a href="settings.html" class="user-dropdown-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="user-dropdown-divider"></div>
                                 <a href="#" class="user-dropdown-item logout" onclick="logout()">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout

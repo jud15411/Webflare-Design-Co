@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients - Webflare Design Co.</title>
+    <title>Projects - Webflare Design Co.</title>
     <link rel="icon" href="../../Img/webflare-favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -415,13 +415,51 @@
             color: var(--success-color);
         }
 
-        .spacer {
-            width: 2rem;
+        .status-pending {
+            background: #fefce8;
+            color: var(--warning-color);
         }
 
-        .status-inactive {
-            background: #fef2f2;
-            color: var(--danger-color);
+        .status-completed {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+
+        .progress-cell {
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.active {
+            background: var(--success-color);
+        }
+
+        .progress-fill.pending {
+            background: var(--warning-color);
+        }
+
+        .progress-fill.completed {
+            background: var(--primary-color);
+        }
+
+        .progress-text {
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: right;
         }
 
         .mobile-menu-toggle {
@@ -436,69 +474,6 @@
 
         .mobile-menu-toggle:hover {
             background: #f8fafc;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #1e293b;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.625rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
         }
 
         @media (max-width: 1024px) {
@@ -544,6 +519,85 @@
                 min-width: 0;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -563,13 +617,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="projects.html" class="nav-link">
+                    <a href="projects.html" class="nav-link active">
                         <i class="fas fa-project-diagram"></i>
                         Projects
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="clients.html" class="nav-link active">
+                    <a href="clients.html" class="nav-link">
                         <i class="fas fa-users"></i>
                         Clients
                     </a>
@@ -617,20 +671,36 @@
         <main class="main-content">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <h1 class="text-2xl font-bold text-gray-800">Clients</h1>
+                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800">Projects</h1>
                 </div>
 
                 <div class="header-right">
                     <div class="search-bar">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="search-input" placeholder="Search clients...">
+                        <input type="text" class="search-input" placeholder="Search projects...">
                     </div>
-                    <div class="spacer"></div>
+
                     <div class="user-info" onclick="toggleUserDropdown(event)">
                         <div class="user-avatar">CEO</div>
                         <div class="user-name">CEO</div>
                         <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name">CEO</div>
+                                <div class="user-dropdown-email">ceo@webflaredesignco.com</div>
+                            </div>
                             <div class="user-dropdown-menu">
+                                <a href="profile.html" class="user-dropdown-item">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                                <a href="settings.html" class="user-dropdown-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="user-dropdown-divider"></div>
                                 <a href="#" class="user-dropdown-item logout" onclick="logout()">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout
@@ -643,8 +713,8 @@
 
             <div class="content-wrapper">
                 <div class="page-header">
-                    <h2 class="page-title">Client Management</h2>
-                    <p class="page-description">View and manage all your clients and their projects</p>
+                    <h2 class="page-title">Project Management</h2>
+                    <p class="page-description">View and manage all your active projects</p>
                 </div>
 
                 <div class="action-bar">
@@ -652,39 +722,40 @@
                         <select class="filter-select">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
                         </select>
                         <select class="filter-select">
-                            <option value="">All Projects</option>
-                            <option value="website">Website Development</option>
-                            <option value="ecommerce">E-commerce</option>
-                            <option value="maintenance">Maintenance</option>
+                            <option value="">All Clients</option>
+                            <option value="local-cafe">Local Cafe</option>
+                            <option value="phillips-diner">Phillips Diner</option>
+                            <option value="john-smith">John Smith</option>
                         </select>
                     </div>
-                    <button id="newClientBtn" class="btn btn-primary" style="display: none;">
+                    <button id="newProjectBtn" class="btn btn-primary" style="display: none;">
                         <i class="fas fa-plus"></i>
-                        New Client
+                        New Project
                     </button>
                 </div>
 
                 <div class="table-container">
                     <div class="table-header">
-                        <h3 class="table-title">All Clients</h3>
+                        <h3 class="table-title">All Projects</h3>
                     </div>
                     <div class="table-content">
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Project</th>
                                     <th>Client</th>
-                                    <th>Contact</th>
-                                    <th>Projects</th>
                                     <th>Status</th>
-                                    <th>Last Activity</th>
+                                    <th>Progress</th>
+                                    <th>Due Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="clientsTableBody">
-                                <!-- Clients will be loaded here -->
+                            <tbody id="projectsTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Projects will be loaded here -->
                             </tbody>
                         </table>
                     </div>
@@ -693,72 +764,92 @@
         </main>
     </div>
 
-    <!-- New Client Modal -->
-    <div id="clientModal" class="modal" onclick="handleModalClick(event)">
+    <!-- New Project Modal -->
+    <div id="projectModal" class="modal" onclick="handleModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">New Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">New Project</h2>
                 <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="clientForm">
+            <form id="projectForm">
                 <div class="form-group">
-                    <label for="clientName">Client Name</label>
-                    <input type="text" id="clientName" name="clientName" class="form-control" required>
+                    <label for="projectName">Project Name</label>
+                    <input type="text" id="projectName" name="projectName" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="contactName">Contact Name</label>
-                    <input type="text" id="contactName" name="contactName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="contactEmail">Contact Email</label>
-                    <input type="email" id="contactEmail" name="contactEmail" class="form-control" required>
+                    <label for="client">Client</label>
+                    <select id="client" name="client" class="form-control" required>
+                        <option value="">Select a client</option>
+                        <option value="Local Cafe">Local Cafe</option>
+                        <option value="Phillips Diner">Phillips Diner</option>
+                        <option value="John Smith">John Smith</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select id="status" name="status" class="form-control" required>
                         <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="progress">Progress (0-100%)</label>
+                    <input type="number" id="progress" name="progress" min="0" max="100" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" id="dueDate" name="dueDate" class="form-control" required>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeModal()" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Client</button>
+                    <button type="submit" class="btn btn-primary">Create Project</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Client Modal -->
-    <div id="editClientModal" class="modal" onclick="handleEditModalClick(event)">
+    <!-- Edit Project Modal -->
+    <div id="editProjectModal" class="modal" onclick="handleEditModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">Edit Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">Edit Project</h2>
                 <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="editClientForm">
-                <input type="hidden" id="editClientIndex">
+            <form id="editProjectForm">
+                <input type="hidden" id="editProjectIndex">
                 <div class="form-group">
-                    <label for="editClientName">Client Name</label>
-                    <input type="text" id="editClientName" name="clientName" class="form-control" required>
+                    <label for="editProjectName">Project Name</label>
+                    <input type="text" id="editProjectName" name="projectName" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="editContactName">Contact Name</label>
-                    <input type="text" id="editContactName" name="contactName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="editContactEmail">Contact Email</label>
-                    <input type="email" id="editContactEmail" name="contactEmail" class="form-control" required>
+                    <label for="editClient">Client</label>
+                    <select id="editClient" name="client" class="form-control" required>
+                        <option value="">Select a client</option>
+                        <option value="Local Cafe">Local Cafe</option>
+                        <option value="Phillips Diner">Phillips Diner</option>
+                        <option value="John Smith">John Smith</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="editStatus">Status</label>
                     <select id="editStatus" name="status" class="form-control" required>
                         <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="editProgress">Progress (0-100%)</label>
+                    <input type="number" id="editProgress" name="progress" min="0" max="100" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDueDate">Due Date</label>
+                    <input type="date" id="editDueDate" name="dueDate" class="form-control" required>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeEditModal()" class="btn btn-secondary">Cancel</button>
@@ -821,92 +912,68 @@
                 dropdownEmail.textContent = userSession.email || `${userSession.role.toLowerCase()}@webflaredesignco.com`;
             }
 
-            // Show/hide New Client button based on role
-            const newClientBtn = document.getElementById('newClientBtn');
+            // Show/hide New Project button based on role
+            const newProjectBtn = document.getElementById('newProjectBtn');
             if (userSession.role === 'CEO') {
-                newClientBtn.style.display = 'inline-flex';
+                newProjectBtn.style.display = 'inline-flex';
             } else {
-                newClientBtn.style.display = 'none';
+                newProjectBtn.style.display = 'none';
             }
 
-            // Initialize sample clients if none exist
-            if (!localStorage.getItem('clients')) {
-                const sampleClients = [
+            // Initialize sample projects if none exist
+            if (!localStorage.getItem('projects')) {
+                const sampleProjects = [
                     {
-                        name: 'Local Cafe',
-                        contactName: 'Sarah Johnson',
-                        contactEmail: 'sarah@localcafe.com',
+                        name: 'E-commerce Website',
+                        client: 'Local Cafe',
                         status: 'active',
-                        lastActivity: '2024-12-15'
+                        progress: 75,
+                        dueDate: '2024-12-15'
                     },
                     {
-                        name: 'Phillips Diner',
-                        contactName: 'Mike Anderson',
-                        contactEmail: 'mike@phillipsdiner.com',
-                        status: 'active',
-                        lastActivity: '2025-01-20'
+                        name: 'Restaurant Redesign',
+                        client: 'Phillips Diner',
+                        status: 'pending',
+                        progress: 45,
+                        dueDate: '2025-01-20'
                     },
                     {
-                        name: 'John Smith',
-                        contactName: 'John Smith',
-                        contactEmail: 'john@example.com',
-                        status: 'inactive',
-                        lastActivity: '2024-11-30'
+                        name: 'Portfolio Website',
+                        client: 'John Smith',
+                        status: 'completed',
+                        progress: 100,
+                        dueDate: '2024-11-30'
                     }
                 ];
-                localStorage.setItem('clients', JSON.stringify(sampleClients));
+                localStorage.setItem('projects', JSON.stringify(sampleProjects));
             }
 
-            // Load clients
-            loadClients();
+            // Load projects
+            loadProjects();
 
-            // Add click handler for new client button
-            newClientBtn.addEventListener('click', showModal);
-
-            // Handle client form submission
-            const newClientForm = document.getElementById('clientForm');
-            if (newClientForm) {
-                newClientForm.addEventListener('submit', function(e) {
+            // Handle project form submission
+            const newProjectForm = document.getElementById('projectForm');
+            if (newProjectForm) {
+                newProjectForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    const clientData = {
-                        name: document.getElementById('clientName').value,
-                        contactName: document.getElementById('contactName').value,
-                        contactEmail: document.getElementById('contactEmail').value,
+                    const projectData = {
+                        name: document.getElementById('projectName').value,
+                        client: document.getElementById('client').value,
                         status: document.getElementById('status').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
+                        progress: parseInt(document.getElementById('progress').value),
+                        dueDate: document.getElementById('dueDate').value
                     };
 
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients.push(clientData);
-                    localStorage.setItem('clients', JSON.stringify(clients));
+                    // Get existing projects
+                    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+                    projects.push(projectData);
+                    localStorage.setItem('projects', JSON.stringify(projects));
 
-                    closeModal();
-                    loadClients();
-                });
-            }
-
-            // Handle edit form submission
-            const editClientForm = document.getElementById('editClientForm');
-            if (editClientForm) {
-                editClientForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const index = parseInt(document.getElementById('editClientIndex').value);
-                    const clientData = {
-                        name: document.getElementById('editClientName').value,
-                        contactName: document.getElementById('editContactName').value,
-                        contactEmail: document.getElementById('editContactEmail').value,
-                        status: document.getElementById('editStatus').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
-                    };
-
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients[index] = clientData;
-                    localStorage.setItem('clients', JSON.stringify(clients));
-
-                    closeEditModal();
-                    loadClients();
+                    // Close modal and refresh
+                    document.getElementById('projectModal').classList.remove('active');
+                    newProjectForm.reset();
+                    loadProjects();
                 });
             }
         });
@@ -921,20 +988,44 @@
             window.location.href = '../login.html';
         }
 
-        function loadClients() {
-            const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-            const tbody = document.getElementById('clientsTableBody');
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            const form = document.getElementById('projectForm');
+            modal.classList.remove('active');
+            form.reset();
+        }
+
+        function handleModalClick(event) {
+            const modal = document.getElementById('projectModal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            // If the click was on the modal background (not the content)
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        function loadProjects() {
+            const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            const tbody = document.getElementById('projectsTableBody');
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             const isCEO = userSession && userSession.role === 'CEO';
             
-            tbody.innerHTML = clients.map((client, index) => `
+            tbody.innerHTML = projects.map((project, index) => `
                 <tr>
-                    <td>${client.name}</td>
-                    <td>${client.contactName}<br>${client.contactEmail}</td>
-                    <td>${client.name} Project</td>
-                    <td><span class="status-badge status-${client.status}">${client.status}</span></td>
-                    <td>${client.lastActivity}</td>
-                    <td>
+                    <td class="px-6 py-4 whitespace-nowrap">${project.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${project.client}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="status-badge status-${project.status}">${project.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${project.progress}%"></div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">${project.progress}%</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">${project.dueDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
                         ${isCEO ? `
                             <button onclick="openEditModal(${index})" class="btn btn-primary">
                                 <i class="fas fa-edit"></i>
@@ -951,58 +1042,100 @@
             `).join('');
         }
 
+        // Show modal
         function showModal() {
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             if (userSession && userSession.role === 'CEO') {
-                const modal = document.getElementById('clientModal');
-                modal.classList.add('active');
+                document.getElementById('projectModal').classList.add('active');
             }
         }
 
-        function closeModal() {
-            const modal = document.getElementById('clientModal');
-            const form = document.getElementById('clientForm');
-            modal.classList.remove('active');
-            form.reset();
-        }
-
-        function handleModalClick(event) {
-            const modal = document.getElementById('clientModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
+        // Show edit modal
         function openEditModal(index) {
             const userSession = JSON.parse(localStorage.getItem('userSession'));
             if (userSession && userSession.role === 'CEO') {
-                const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                const client = clients[index];
+                const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+                const project = projects[index];
                 
-                document.getElementById('editClientIndex').value = index;
-                document.getElementById('editClientName').value = client.name;
-                document.getElementById('editContactName').value = client.contactName;
-                document.getElementById('editContactEmail').value = client.contactEmail;
-                document.getElementById('editStatus').value = client.status;
+                document.getElementById('editProjectIndex').value = index;
+                document.getElementById('editProjectName').value = project.name;
+                document.getElementById('editClient').value = project.client;
+                document.getElementById('editStatus').value = project.status;
+                document.getElementById('editProgress').value = project.progress;
+                document.getElementById('editDueDate').value = project.dueDate;
                 
-                const modal = document.getElementById('editClientModal');
-                modal.classList.add('active');
+                document.getElementById('editProjectModal').classList.add('active');
             }
         }
 
+        // Close edit modal
         function closeEditModal() {
-            const modal = document.getElementById('editClientModal');
-            const form = document.getElementById('editClientForm');
+            const modal = document.getElementById('editProjectModal');
+            const form = document.getElementById('editProjectForm');
             modal.classList.remove('active');
             form.reset();
         }
 
+        // Handle clicks outside edit modal content
         function handleEditModalClick(event) {
-            const modal = document.getElementById('editClientModal');
+            const modal = document.getElementById('editProjectModal');
             if (event.target === modal) {
                 closeEditModal();
             }
         }
+
+        // Handle form submission
+        document.getElementById('projectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userSession = JSON.parse(localStorage.getItem('userSession'));
+            if (userSession && userSession.role === 'CEO') {
+                const projectData = {
+                    name: document.getElementById('projectName').value,
+                    client: document.getElementById('client').value,
+                    status: document.getElementById('status').value,
+                    progress: parseInt(document.getElementById('progress').value),
+                    dueDate: document.getElementById('dueDate').value
+                };
+
+                const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+                projects.push(projectData);
+                localStorage.setItem('projects', JSON.stringify(projects));
+
+                closeModal();
+                loadProjects();
+            }
+        });
+
+        // Handle edit form submission
+        document.getElementById('editProjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userSession = JSON.parse(localStorage.getItem('userSession'));
+            if (userSession && userSession.role === 'CEO') {
+                const index = parseInt(document.getElementById('editProjectIndex').value);
+                const projectData = {
+                    name: document.getElementById('editProjectName').value,
+                    client: document.getElementById('editClient').value,
+                    status: document.getElementById('editStatus').value,
+                    progress: parseInt(document.getElementById('editProgress').value),
+                    dueDate: document.getElementById('editDueDate').value
+                };
+
+                const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+                projects[index] = projectData;
+                localStorage.setItem('projects', JSON.stringify(projects));
+
+                closeEditModal();
+                loadProjects();
+            }
+        });
+
+        // Add click handler for new project button
+        document.getElementById('newProjectBtn').addEventListener('click', showModal);
+
+        // Initial setup
+        loadProjects();
     </script>
 </body>
 </html> 

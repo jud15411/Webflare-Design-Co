@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients - Webflare Design Co.</title>
+    <title>Team - Webflare Design Co.</title>
     <link rel="icon" href="../../Img/webflare-favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -310,14 +310,8 @@
         }
 
         .filter-select {
-            height: 40px;
-            padding: 0 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            background: white;
-            color: #475569;
-            font-size: 0.875rem;
-            min-width: 150px;
+            flex: 1;
+            min-width: 0;
         }
 
         .btn {
@@ -415,10 +409,6 @@
             color: var(--success-color);
         }
 
-        .spacer {
-            width: 2rem;
-        }
-
         .status-inactive {
             background: #fef2f2;
             color: var(--danger-color);
@@ -436,6 +426,50 @@
 
         .mobile-menu-toggle:hover {
             background: #f8fafc;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .dashboard-header {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dashboard-header {
+                padding: 0 1rem;
+            }
+
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-wrap: wrap;
+            }
+
+            .filter-select {
+                flex: 1;
+                min-width: 0;
+            }
         }
 
         /* Modal Styles */
@@ -501,48 +535,29 @@
             background: #e2e8f0;
         }
 
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1;
+        }
 
-            .sidebar.active {
-                transform: translateX(0);
-            }
+        .role-ceo {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
 
-            .main-content {
-                margin-left: 0;
-            }
+        .role-cfo {
+            background: #f0fdf4;
+            color: var(--success-color);
+        }
 
-            .dashboard-header {
-                left: 0;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .dashboard-header {
-                padding: 0 1rem;
-            }
-
-            .content-wrapper {
-                padding: 1rem;
-            }
-
-            .action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-group {
-                flex-wrap: wrap;
-            }
-
-            .filter-select {
-                flex: 1;
-                min-width: 0;
-            }
+        .role-admin {
+            background: #fef3c7;
+            color: var(--warning-color);
         }
     </style>
 </head>
@@ -569,7 +584,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="clients.html" class="nav-link active">
+                    <a href="clients.html" class="nav-link">
                         <i class="fas fa-users"></i>
                         Clients
                     </a>
@@ -599,7 +614,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="team.html" class="nav-link">
+                    <a href="team.html" class="nav-link active">
                         <i class="fas fa-user-friends"></i>
                         Team
                     </a>
@@ -617,20 +632,36 @@
         <main class="main-content">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <h1 class="text-2xl font-bold text-gray-800">Clients</h1>
+                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800">Team</h1>
                 </div>
 
                 <div class="header-right">
                     <div class="search-bar">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="search-input" placeholder="Search clients...">
+                        <input type="text" class="search-input" placeholder="Search team members...">
                     </div>
-                    <div class="spacer"></div>
+
                     <div class="user-info" onclick="toggleUserDropdown(event)">
                         <div class="user-avatar">CEO</div>
                         <div class="user-name">CEO</div>
                         <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name">CEO</div>
+                                <div class="user-dropdown-email">ceo@webflaredesignco.com</div>
+                            </div>
                             <div class="user-dropdown-menu">
+                                <a href="profile.html" class="user-dropdown-item">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                                <a href="settings.html" class="user-dropdown-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="user-dropdown-divider"></div>
                                 <a href="#" class="user-dropdown-item logout" onclick="logout()">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Logout
@@ -643,48 +674,42 @@
 
             <div class="content-wrapper">
                 <div class="page-header">
-                    <h2 class="page-title">Client Management</h2>
-                    <p class="page-description">View and manage all your clients and their projects</p>
+                    <h2 class="page-title">Team Management</h2>
+                    <p class="page-description">View and manage your team members and their roles</p>
                 </div>
 
                 <div class="action-bar">
                     <div class="filter-group">
                         <select class="filter-select">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                        <select class="filter-select">
-                            <option value="">All Projects</option>
-                            <option value="website">Website Development</option>
-                            <option value="ecommerce">E-commerce</option>
-                            <option value="maintenance">Maintenance</option>
+                            <option value="">All Roles</option>
+                            <option value="CEO">CEO</option>
+                            <option value="CFO">CFO</option>
+                            <option value="Staff">Staff</option>
                         </select>
                     </div>
-                    <button id="newClientBtn" class="btn btn-primary" style="display: none;">
+                    <button id="newUserBtn" class="btn btn-primary" style="display: none;">
                         <i class="fas fa-plus"></i>
-                        New Client
+                        New User
                     </button>
                 </div>
 
                 <div class="table-container">
                     <div class="table-header">
-                        <h3 class="table-title">All Clients</h3>
+                        <h3 class="table-title">Team Members</h3>
                     </div>
                     <div class="table-content">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Client</th>
-                                    <th>Contact</th>
-                                    <th>Projects</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
                                     <th>Status</th>
-                                    <th>Last Activity</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="clientsTableBody">
-                                <!-- Clients will be loaded here -->
+                            <tbody id="teamTableBody">
+                                <!-- Team members will be loaded here -->
                             </tbody>
                         </table>
                     </div>
@@ -693,71 +718,69 @@
         </main>
     </div>
 
-    <!-- New Client Modal -->
-    <div id="clientModal" class="modal" onclick="handleModalClick(event)">
+    <!-- New User Modal -->
+    <div id="userModal" class="modal" onclick="handleModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">New Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">New User</h2>
                 <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="clientForm">
+            <form id="userForm">
                 <div class="form-group">
-                    <label for="clientName">Client Name</label>
-                    <input type="text" id="clientName" name="clientName" class="form-control" required>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="contactName">Contact Name</label>
-                    <input type="text" id="contactName" name="contactName" class="form-control" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="contactEmail">Contact Email</label>
-                    <input type="email" id="contactEmail" name="contactEmail" class="form-control" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status" class="form-control" required>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                    <label for="role">Role</label>
+                    <select id="role" name="role" class="form-control" required>
+                        <option value="Staff">Staff</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeModal()" class="btn btn-secondary">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Client</button>
+                    <button type="submit" class="btn btn-primary">Create User</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Client Modal -->
-    <div id="editClientModal" class="modal" onclick="handleEditModalClick(event)">
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal" onclick="handleEditModalClick(event)">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-900">Edit Client</h2>
+                <h2 class="text-xl font-bold text-gray-900">Edit User</h2>
                 <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <form id="editClientForm">
-                <input type="hidden" id="editClientIndex">
+            <form id="editUserForm">
+                <input type="hidden" id="editUserIndex">
                 <div class="form-group">
-                    <label for="editClientName">Client Name</label>
-                    <input type="text" id="editClientName" name="clientName" class="form-control" required>
+                    <label for="editName">Full Name</label>
+                    <input type="text" id="editName" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="editContactName">Contact Name</label>
-                    <input type="text" id="editContactName" name="contactName" class="form-control" required>
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="editContactEmail">Contact Email</label>
-                    <input type="email" id="editContactEmail" name="contactEmail" class="form-control" required>
+                    <label for="editPassword">New Password (leave blank to keep current)</label>
+                    <input type="password" id="editPassword" name="password" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="editStatus">Status</label>
-                    <select id="editStatus" name="status" class="form-control" required>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                    <label for="editRole">Role</label>
+                    <select id="editRole" name="role" class="form-control" required>
+                        <option value="Staff">Staff</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
@@ -799,6 +822,12 @@
                 return;
             }
 
+            // Check if user is CEO
+            if (userSession.role !== 'CEO') {
+                window.location.href = '../dashboard.html';
+                return;
+            }
+
             // Update user info
             const userAvatar = document.querySelector('.user-avatar');
             const userName = document.querySelector('.user-name');
@@ -821,92 +850,151 @@
                 dropdownEmail.textContent = userSession.email || `${userSession.role.toLowerCase()}@webflaredesignco.com`;
             }
 
-            // Show/hide New Client button based on role
-            const newClientBtn = document.getElementById('newClientBtn');
-            if (userSession.role === 'CEO') {
-                newClientBtn.style.display = 'inline-flex';
-            } else {
-                newClientBtn.style.display = 'none';
-            }
+            // Show New User button (only visible to CEO)
+            const newUserBtn = document.getElementById('newUserBtn');
+            newUserBtn.style.display = 'inline-flex';
 
-            // Initialize sample clients if none exist
-            if (!localStorage.getItem('clients')) {
-                const sampleClients = [
+            // Initialize sample users if none exist
+            if (!localStorage.getItem('adminUsers')) {
+                const sampleUsers = [
                     {
-                        name: 'Local Cafe',
-                        contactName: 'Sarah Johnson',
-                        contactEmail: 'sarah@localcafe.com',
-                        status: 'active',
-                        lastActivity: '2024-12-15'
+                        name: 'CEO',
+                        email: 'ceo@webflaredesignco.com',
+                        password: 'ceo123',
+                        role: 'CEO',
+                        status: 'active'
                     },
                     {
-                        name: 'Phillips Diner',
-                        contactName: 'Mike Anderson',
-                        contactEmail: 'mike@phillipsdiner.com',
-                        status: 'active',
-                        lastActivity: '2025-01-20'
-                    },
-                    {
-                        name: 'John Smith',
-                        contactName: 'John Smith',
-                        contactEmail: 'john@example.com',
-                        status: 'inactive',
-                        lastActivity: '2024-11-30'
+                        name: 'CFO',
+                        email: 'cfo@webflaredesignco.com',
+                        password: 'cfo123',
+                        role: 'CFO',
+                        status: 'active'
                     }
                 ];
-                localStorage.setItem('clients', JSON.stringify(sampleClients));
+                localStorage.setItem('adminUsers', JSON.stringify(sampleUsers));
             }
 
-            // Load clients
-            loadClients();
+            // Load team members
+            loadTeamMembers();
 
-            // Add click handler for new client button
-            newClientBtn.addEventListener('click', showModal);
+            // Add click handler for new user button
+            newUserBtn.addEventListener('click', showModal);
 
-            // Handle client form submission
-            const newClientForm = document.getElementById('clientForm');
-            if (newClientForm) {
-                newClientForm.addEventListener('submit', function(e) {
+            // Handle edit form submission
+            const editUserForm = document.getElementById('editUserForm');
+            if (editUserForm) {
+                editUserForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    const clientData = {
-                        name: document.getElementById('clientName').value,
-                        contactName: document.getElementById('contactName').value,
-                        contactEmail: document.getElementById('contactEmail').value,
-                        status: document.getElementById('status').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
+                    const index = parseInt(document.getElementById('editUserIndex').value);
+                    const users = JSON.parse(localStorage.getItem('adminUsers') || '[]');
+                    const currentUser = users[index];
+                    
+                    const userData = {
+                        name: document.getElementById('editName').value,
+                        email: document.getElementById('editEmail').value,
+                        password: document.getElementById('editPassword').value || currentUser.password,
+                        role: currentUser.role, // Keep the same role
+                        status: currentUser.status
                     };
 
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients.push(clientData);
-                    localStorage.setItem('clients', JSON.stringify(clients));
+                    // Check if email already exists (excluding current user)
+                    if (users.some((user, i) => i !== index && user.email === userData.email)) {
+                        alert('A user with this email already exists.');
+                        return;
+                    }
 
-                    closeModal();
-                    loadClients();
+                    // Update the user in the adminUsers array
+                    users[index] = userData;
+                    localStorage.setItem('adminUsers', JSON.stringify(users));
+
+                    // If editing own account (CEO), update session
+                    if (userSession.role === currentUser.role) {
+                        const updatedSession = {
+                            ...userSession,
+                            name: userData.name,
+                            email: userData.email
+                        };
+                        localStorage.setItem('userSession', JSON.stringify(updatedSession));
+                        
+                        // Update UI to reflect changes
+                        const userAvatar = document.querySelector('.user-avatar');
+                        const userName = document.querySelector('.user-name');
+                        const dropdownName = document.querySelector('.user-dropdown-name');
+                        const dropdownEmail = document.querySelector('.user-dropdown-email');
+                        
+                        userAvatar.textContent = userData.name;
+                        userName.textContent = userData.name;
+                        dropdownName.textContent = userData.name;
+                        dropdownEmail.textContent = userData.email;
+                    }
+
+                    // Update stored credentials for login
+                    const storedCredentials = JSON.parse(localStorage.getItem('userCredentials') || '[]');
+                    const credentialIndex = storedCredentials.findIndex(cred => 
+                        cred.email === currentUser.email || cred.email === userData.email
+                    );
+
+                    if (credentialIndex !== -1) {
+                        // Update existing credentials
+                        storedCredentials[credentialIndex] = {
+                            email: userData.email,
+                            password: userData.password,
+                            role: userData.role
+                        };
+                    } else {
+                        // Add new credentials
+                        storedCredentials.push({
+                            email: userData.email,
+                            password: userData.password,
+                            role: userData.role
+                        });
+                    }
+                    localStorage.setItem('userCredentials', JSON.stringify(storedCredentials));
+
+                    closeEditModal();
+                    loadTeamMembers();
                 });
             }
 
-            // Handle edit form submission
-            const editClientForm = document.getElementById('editClientForm');
-            if (editClientForm) {
-                editClientForm.addEventListener('submit', function(e) {
+            // Handle new user form submission
+            const newUserForm = document.getElementById('userForm');
+            if (newUserForm) {
+                newUserForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     
-                    const index = parseInt(document.getElementById('editClientIndex').value);
-                    const clientData = {
-                        name: document.getElementById('editClientName').value,
-                        contactName: document.getElementById('editContactName').value,
-                        contactEmail: document.getElementById('editContactEmail').value,
-                        status: document.getElementById('editStatus').value,
-                        lastActivity: new Date().toISOString().split('T')[0]
+                    const userData = {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value,
+                        role: document.getElementById('role').value,
+                        status: 'active'
                     };
 
-                    const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                    clients[index] = clientData;
-                    localStorage.setItem('clients', JSON.stringify(clients));
+                    const users = JSON.parse(localStorage.getItem('adminUsers') || '[]');
+                    
+                    // Check if email already exists
+                    if (users.some(user => user.email === userData.email)) {
+                        alert('A user with this email already exists.');
+                        return;
+                    }
 
-                    closeEditModal();
-                    loadClients();
+                    // Add to adminUsers
+                    users.push(userData);
+                    localStorage.setItem('adminUsers', JSON.stringify(users));
+
+                    // Add to stored credentials for login
+                    const storedCredentials = JSON.parse(localStorage.getItem('userCredentials') || '[]');
+                    storedCredentials.push({
+                        email: userData.email,
+                        password: userData.password,
+                        role: userData.role
+                    });
+                    localStorage.setItem('userCredentials', JSON.stringify(storedCredentials));
+
+                    closeModal();
+                    loadTeamMembers();
                 });
             }
         });
@@ -921,84 +1009,86 @@
             window.location.href = '../login.html';
         }
 
-        function loadClients() {
-            const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-            const tbody = document.getElementById('clientsTableBody');
-            const userSession = JSON.parse(localStorage.getItem('userSession'));
-            const isCEO = userSession && userSession.role === 'CEO';
+        function loadTeamMembers() {
+            const users = JSON.parse(localStorage.getItem('adminUsers') || '[]');
+            const tbody = document.getElementById('teamTableBody');
             
-            tbody.innerHTML = clients.map((client, index) => `
+            // Sort users: CEO first, then CFO, then Staff
+            users.sort((a, b) => {
+                if (a.role === 'CEO') return -1;
+                if (b.role === 'CEO') return 1;
+                if (a.role === 'CFO') return -1;
+                if (b.role === 'CFO') return 1;
+                return 0;
+            });
+            
+            tbody.innerHTML = users.map((user, index) => `
                 <tr>
-                    <td>${client.name}</td>
-                    <td>${client.contactName}<br>${client.contactEmail}</td>
-                    <td>${client.name} Project</td>
-                    <td><span class="status-badge status-${client.status}">${client.status}</span></td>
-                    <td>${client.lastActivity}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td><span class="role-badge role-${user.role.toLowerCase()}">${user.role}</span></td>
+                    <td><span class="status-badge status-${user.status}">${user.status}</span></td>
                     <td>
-                        ${isCEO ? `
-                            <button onclick="openEditModal(${index})" class="btn btn-primary">
-                                <i class="fas fa-edit"></i>
-                                Edit
-                            </button>
-                        ` : `
-                            <button class="btn btn-secondary">
-                                <i class="fas fa-eye"></i>
-                                View
-                            </button>
-                        `}
+                        <button onclick="openEditModal(${index})" class="btn btn-primary">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </button>
                     </td>
                 </tr>
             `).join('');
         }
 
         function showModal() {
-            const userSession = JSON.parse(localStorage.getItem('userSession'));
-            if (userSession && userSession.role === 'CEO') {
-                const modal = document.getElementById('clientModal');
-                modal.classList.add('active');
-            }
+            const modal = document.getElementById('userModal');
+            modal.classList.add('active');
         }
 
         function closeModal() {
-            const modal = document.getElementById('clientModal');
-            const form = document.getElementById('clientForm');
+            const modal = document.getElementById('userModal');
+            const form = document.getElementById('userForm');
             modal.classList.remove('active');
             form.reset();
         }
 
         function handleModalClick(event) {
-            const modal = document.getElementById('clientModal');
+            const modal = document.getElementById('userModal');
             if (event.target === modal) {
                 closeModal();
             }
         }
 
         function openEditModal(index) {
-            const userSession = JSON.parse(localStorage.getItem('userSession'));
-            if (userSession && userSession.role === 'CEO') {
-                const clients = JSON.parse(localStorage.getItem('clients') || '[]');
-                const client = clients[index];
-                
-                document.getElementById('editClientIndex').value = index;
-                document.getElementById('editClientName').value = client.name;
-                document.getElementById('editContactName').value = client.contactName;
-                document.getElementById('editContactEmail').value = client.contactEmail;
-                document.getElementById('editStatus').value = client.status;
-                
-                const modal = document.getElementById('editClientModal');
-                modal.classList.add('active');
+            const users = JSON.parse(localStorage.getItem('adminUsers') || '[]');
+            const user = users[index];
+            
+            document.getElementById('editUserIndex').value = index;
+            document.getElementById('editName').value = user.name;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editPassword').value = '';
+            
+            // Set role field based on user type
+            const roleSelect = document.getElementById('editRole');
+            if (user.role === 'Staff') {
+                roleSelect.innerHTML = '<option value="Staff">Staff</option>';
+                roleSelect.disabled = false;
+            } else {
+                roleSelect.innerHTML = `<option value="${user.role}">${user.role}</option>`;
+                roleSelect.disabled = true;
             }
+            
+            const modal = document.getElementById('editUserModal');
+            modal.classList.add('active');
         }
 
         function closeEditModal() {
-            const modal = document.getElementById('editClientModal');
-            const form = document.getElementById('editClientForm');
+            const modal = document.getElementById('editUserModal');
+            const form = document.getElementById('editUserForm');
             modal.classList.remove('active');
             form.reset();
         }
 
         function handleEditModalClick(event) {
-            const modal = document.getElementById('editClientModal');
+            const modal = document.getElementById('editUserModal');
             if (event.target === modal) {
                 closeEditModal();
             }

@@ -291,6 +291,25 @@
             const errorMessage = document.getElementById('errorMessage');
             const loginAttemptsDisplay = document.getElementById('loginAttempts');
 
+            // Initialize default credentials if none exist
+            if (!localStorage.getItem('userCredentials')) {
+                const defaultCredentials = [
+                    {
+                        role: 'CEO',
+                        email: 'ceo@webflaredesignco.com',
+                        password: 'ceo123',
+                        name: 'CEO'
+                    },
+                    {
+                        role: 'CFO',
+                        email: 'cfo@webflaredesignco.com',
+                        password: 'cfo123',
+                        name: 'CFO'
+                    }
+                ];
+                localStorage.setItem('userCredentials', JSON.stringify(defaultCredentials));
+            }
+
             // Check for existing lockout
             const storedLockoutEnd = localStorage.getItem('lockoutEndTime');
             if (storedLockoutEnd) {
@@ -353,6 +372,7 @@
                     const sessionData = {
                         role: user.role,
                         email: user.email,
+                        name: user.name,
                         loginTime: Date.now()
                     };
                     localStorage.setItem('userSession', JSON.stringify(sessionData));
