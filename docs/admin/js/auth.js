@@ -3,7 +3,7 @@
 // AWS Configuration (to be filled in with your Cognito details)
 const cognitoConfig = {
     UserPoolId: 'us-east-2_vffRRRU29', // e.g., 'us-east-1_xxxxxxxxx'
-    ClientId: '4dgijq8k4e1gi60hr840nvv5ua',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
+    ClientId: '4dgijq8k4e1gi60hr840nvv5uad',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
     Region: 'us-east-2'         // e.g., 'us-east-1'
 };
 
