@@ -74,4 +74,24 @@ function showLoginPage() {
 // - populateForm(formId, data)
 // - clearForm(formId)
 
+/**
+ * Displays an error message in the UI.
+ * @param {string} message The error message to display.
+ */
+function showError(message) {
+    const errorContainer = document.createElement('div');
+    errorContainer.className = 'alert alert-danger';
+    errorContainer.textContent = message;
+    
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.insertBefore(errorContainer, mainContent.firstChild);
+        
+        // Remove error message after 5 seconds
+        setTimeout(() => {
+            errorContainer.remove();
+        }, 5000);
+    }
+}
+
 console.log('ui.js loaded');

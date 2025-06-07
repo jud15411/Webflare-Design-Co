@@ -1,0 +1,331 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Webflare Admin Panel API Gateway and Lambda Functions
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues: [prod, dev]
+    Description: Environment name
+  
+  Region:
+    Type: String
+    Default: us-east-2
+    Description: AWS Region
+
+Resources:
+  # API Gateway
+  ApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub "WebflareAdmin-${Environment}"
+      Description: API Gateway for Webflare Admin Panel
+
+  # Root API Resource
+  ApiResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: api
+
+  # Contracts Resource
+  ContractsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiResource
+      PathPart: contracts
+
+  # Clients Resource
+  ClientsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiResource
+      PathPart: clients
+
+  # Projects Resource
+  ProjectsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiResource
+      PathPart: projects
+
+  # Invoices Resource
+  InvoicesResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiResource
+      PathPart: invoices
+
+  # Team Resource
+  TeamResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiResource
+      PathPart: team
+
+  # API Gateway Deployment
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: TeamResource
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: !Ref Environment
+
+  # Lambda Functions
+  ContractsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-contracts-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: contracts.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  ClientsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-clients-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: clients.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  ProjectsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-projects-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: projects.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  InvoicesFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-invoices-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: invoices.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  TeamFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-team-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: team.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  # IAM Role for Lambda
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "webflare-admin-lambda-execution-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: LambdaBasicExecution
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: '*'
+
+Outputs:
+  ApiGatewayId:
+    Description: API Gateway ID
+    Value: !Ref ApiGateway
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiGatewayId"
+
+  # Lambda Functions
+  ContractsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-contracts-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: contracts.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  ClientsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-clients-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: clients.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  ProjectsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-projects-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: projects.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  InvoicesFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-invoices-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: invoices.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+      
+  TeamFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "webflare-admin-team-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Code:
+        S3Bucket: !Sub "webflare-admin-${Environment}-lambda"
+        S3Key: team.zip
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  # IAM Role for Lambda
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "webflare-admin-lambda-execution-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: LambdaBasicExecution
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: '*'
+
+  # API Gateway Methods
+  ContractsGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref ContractsResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - FunctionArn: !GetAtt ContractsFunction.Arn
+
+  ClientsGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref ClientsResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - FunctionArn: !GetAtt ClientsFunction.Arn
+
+  ProjectsGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref ProjectsResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - FunctionArn: !GetAtt ProjectsFunction.Arn
+
+  InvoicesGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref InvoicesResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - FunctionArn: !GetAtt InvoicesFunction.Arn
+
+  TeamGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref TeamResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${FunctionArn}/invocations
+          - FunctionArn: !GetAtt TeamFunction.Arn
+
+Outputs:
+  ApiGatewayId:
+    Description: API Gateway ID
+    Value: !Ref ApiGateway
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiGatewayId"

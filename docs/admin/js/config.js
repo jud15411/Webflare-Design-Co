@@ -1,13 +1,13 @@
 const API_CONFIG = {
-    endpoint: 'https://your-api-id.execute-api.us-east-2.amazonaws.com/prod',
+    endpoint: 'https://ocpajcurpj.execute-api.us-east-2.amazonaws.com/prod/api', // API Gateway endpoint
     
     // API endpoints
     endpoints: {
-        contracts: '/contracts',
-        clients: '/clients',
-        invoices: '/invoices',
-        projects: '/projects',
-        teamMembers: '/team'
+        contracts: '/api/contracts',
+        clients: '/api/clients',
+        invoices: '/api/invoices',
+        projects: '/api/projects',
+        teamMembers: '/api/team'
     },
     
     // API headers
@@ -24,7 +24,14 @@ const API_CONFIG = {
             unauthorized: 'Unauthorized access. Please check your credentials.',
             serverError: 'Server error. Please try again later.'
         }
+    },
+    
+    // AWS Configuration
+    aws: {
+        region: 'us-east-2', // Your AWS region
+        stage: 'prod' // Your API Gateway stage
     }
 };
 
-export default API_CONFIG;
+window.API_CONFIG = API_CONFIG;
+console.log('Config loaded');

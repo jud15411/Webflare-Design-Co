@@ -1,7 +1,7 @@
 // main.js - Core application logic and event handling
 
 let currentAuthChallenge = null; // To store session info for NEW_PASSWORD_REQUIRED
-let apiClient = new APIClient();
+let apiClient = window.APIClient;
 
 // Initialize page-specific functionality
 document.addEventListener('DOMContentLoaded', () => {
@@ -148,7 +148,7 @@ async function initializeReports() {
     }
 }
 
-async function handleLoginSubmit(event) {
+document.getElementById('login-form').addEventListener('submit', async function(event) {
     event.preventDefault();
     hideLoginError(); // Clear previous errors
 
@@ -169,49 +169,22 @@ async function handleLoginSubmit(event) {
 
         console.log('Attempting login with:', { email: email.split('@')[0], role });
         
-        const result = await signIn(email, password, role);
-        console.log('Login result:', result);
+        const token = await signIn(email, password, role);
+        console.log('Login successful:', token);
         
-        if (result.success) {
-            console.log('Login successful, storing tokens...');
-            // Store tokens and redirect
-            const data = result.data;
-            localStorage.setItem('idToken', data.AuthenticationResult.IdToken);
-            localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
-            localStorage.setItem('refreshToken', data.AuthenticationResult.RefreshToken);
-            localStorage.setItem('userRole', role);
-            
-            // Get and store user info
-            const userInfoParams = {
-                AccessToken: data.AuthenticationResult.AccessToken
-            };
-            
-            try {
-                const userInfo = await cognito.getUser(userInfoParams).promise();
-                localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            } catch (error) {
-                console.error('Error getting user info:', error);
-            }
-
-            console.log('Redirecting to dashboard...');
-            window.location.href = 'dashboard.html';
-        } else {
-            throw new Error(result.error || 'Login failed. Please check your credentials.');
-        }
+        // Store the token in localStorage
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('role', role);
+        
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
     } catch (error) {
         console.error('Login error:', error);
-        showLoginError('Invalid email or password. Please try again.');
-        
-        // Re-enable the form inputs
-        form.reset();
-        loginButton.disabled = false;
-        loginButton.textContent = 'Login';
-    } finally {
-        // Ensure button is always enabled
+        showLoginError(error.message || 'Invalid credentials or role. Please try again.');
         loginButton.disabled = false;
         loginButton.textContent = 'Login';
     }
-}
+});
 
 function handleSignOut() {
     signOut(); // From auth.js

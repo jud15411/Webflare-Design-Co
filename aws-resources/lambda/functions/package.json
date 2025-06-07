@@ -1,0 +1,13 @@
+{
+  "name": "webflare-admin-api",
+  "version": "1.0.0",
+  "description": "Lambda functions for Webflare Admin API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1428.0",
+    "uuid": "^9.0.1"
+  }
+}

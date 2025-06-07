@@ -1,15 +1,15 @@
 // auth.js - Amazon Cognito Authentication Logic
 
 // AWS Configuration (to be filled in with your Cognito details)
-const cognitoConfig = {
-    UserPoolId: 'us-east-2_vffRRRU29', // e.g., 'us-east-1_xxxxxxxxx'
-    ClientId: '299n0blb7vajagmsn0d8j0bhln',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
-    Region: 'us-east-2'         // e.g., 'us-east-1'
+const COGNITO_CONFIG = {
+    userPoolId: 'us-east-2_GT5VLktTP',
+    clientId: 'fnkm4tjfmoj2ve71uoptm5bre',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
+    region: 'us-east-2'         // e.g., 'us-east-1'
 };
 
 // Initialize AWS SDK
-AWS.config.update({ region: cognitoConfig.Region });
-const cognito = new AWS.CognitoIdentityServiceProvider({ region: cognitoConfig.Region });
+AWS.config.update({ region: COGNITO_CONFIG.region });
+const cognito = new AWS.CognitoIdentityServiceProvider({ region: COGNITO_CONFIG.region });
 
 /**
  * Initiates the login process.
@@ -28,9 +28,10 @@ async function signIn(email, password, role) {
             throw new Error('Invalid role selected. Please choose either CEO or CFO.');
         }
 
-        const params = {
+        const authParams = {
             AuthFlow: 'USER_PASSWORD_AUTH',
-            ClientId: cognitoConfig.ClientId,
+            ClientId: COGNITO_CONFIG.clientId,
+            UserPoolId: COGNITO_CONFIG.userPoolId,
             AuthParameters: {
                 USERNAME: email,
                 PASSWORD: password
@@ -38,7 +39,7 @@ async function signIn(email, password, role) {
         };
 
         console.log('Sending authentication request to Cognito...');
-        const data = await cognito.initiateAuth(params).promise();
+        const data = await cognito.initiateAuth(authParams).promise();
         console.log('Cognito response received:', data);
 
         if (data.AuthenticationResult) {

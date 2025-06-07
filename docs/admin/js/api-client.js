@@ -1,15 +1,28 @@
-import API_CONFIG from './config';
+const DEFAULT_API_CONFIG = {
+    endpoint: '', // Will be set from config.js
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    endpoints: {
+        contracts: '/api/contracts',
+        projects: '/api/projects',
+        clients: '/api/clients',
+        invoices: '/api/invoices',
+        team: '/api/team'
+    }
+};
 
-const API_CLIENT = {
+// Make APIClient available globally
+window.APIClient = {
     // Authentication
     async signIn(email, password, role) {
         try {
             console.log('Attempting login with:', { email: email.split('@')[0], role }); // Only log email prefix for security
             
-            const response = await fetch(`${API_CONFIG.endpoint}/auth/signin`, {
+            const response = await fetch(`${DEFAULT_API_CONFIG.endpoint}/auth/signin`, {
                 method: 'POST',
                 headers: {
-                    ...API_CONFIG.headers,
+                    ...DEFAULT_API_CONFIG.headers,
                     'Authorization': `Basic ${btoa(`${email}:${password}`)}`
                 },
                 body: JSON.stringify({ role })
@@ -31,17 +44,13 @@ const API_CLIENT = {
             return data;
         } catch (error) {
             console.error('Login error:', error);
-            if (API_CONFIG.errorHandling.showErrors) {
-                const errorMessage = error.message || API_CONFIG.errorHandling.errorMessages.serverError;
-                throw new Error(errorMessage);
-            }
             throw error;
         }
     },
     
     // Helper to get the full API URL
     getApiUrl(endpoint) {
-        return `${API_CONFIG.endpoint}${endpoint}`;
+        return `${DEFAULT_API_CONFIG.endpoint}${endpoint}`;
     },
 
     // Contracts
@@ -50,10 +59,10 @@ const API_CLIENT = {
         const queryParams = new URLSearchParams(params).toString();
         
         const response = await fetch(
-            `${API_CONFIG.endpoint}${API_CONFIG.endpoints.contracts}?${queryParams}`,
+            `${DEFAULT_API_CONFIG.endpoint}${DEFAULT_API_CONFIG.endpoints.contracts}?${queryParams}`,
             {
                 headers: {
-                    ...API_CONFIG.headers,
+                    ...DEFAULT_API_CONFIG.headers,
                     'Authorization': token
                 }
             }
@@ -70,11 +79,11 @@ const API_CLIENT = {
         const token = localStorage.getItem('token');
         
         const response = await fetch(
-            API_CONFIG.endpoint + API_CONFIG.endpoints.contracts,
+            DEFAULT_API_CONFIG.endpoint + DEFAULT_API_CONFIG.endpoints.contracts,
             {
                 method: 'POST',
                 headers: {
-                    ...API_CONFIG.headers,
+                    ...DEFAULT_API_CONFIG.headers,
                     'Authorization': token
                 },
                 body: JSON.stringify(contract)
@@ -92,11 +101,11 @@ const API_CLIENT = {
         const token = localStorage.getItem('token');
         
         const response = await fetch(
-            `${API_CONFIG.endpoint}${API_CONFIG.endpoints.contracts}/${contractId}`,
+            `${DEFAULT_API_CONFIG.endpoint}${DEFAULT_API_CONFIG.endpoints.contracts}/${contractId}`,
             {
                 method: 'PUT',
                 headers: {
-                    ...API_CONFIG.headers,
+                    ...DEFAULT_API_CONFIG.headers,
                     'Authorization': token
                 },
                 body: JSON.stringify(updates)
@@ -114,11 +123,11 @@ const API_CLIENT = {
         const token = localStorage.getItem('token');
         
         const response = await fetch(
-            `${API_CONFIG.endpoint}${API_CONFIG.endpoints.contracts}/${contractId}`,
+            `${DEFAULT_API_CONFIG.endpoint}${DEFAULT_API_CONFIG.endpoints.contracts}/${contractId}`,
             {
                 method: 'DELETE',
                 headers: {
-                    ...API_CONFIG.headers,
+                    ...DEFAULT_API_CONFIG.headers,
                     'Authorization': token
                 }
             }
@@ -132,4 +141,9 @@ const API_CLIENT = {
     }
 };
 
-export default API_CLIENT;
+// Initialize API_CONFIG from config.js if available
+if (window.API_CONFIG) {
+    Object.assign(DEFAULT_API_CONFIG, window.API_CONFIG);
+}
+
+console.log('APIClient initialized');

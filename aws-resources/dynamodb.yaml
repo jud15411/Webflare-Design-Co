@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Webflare Admin Panel DynamoDB Tables
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues: [prod, dev]
+    Description: Environment name
+
+Resources:
+  ContractsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "webflare-contracts-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  ClientsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "webflare-clients-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  ProjectsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "webflare-projects-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  InvoicesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "webflare-invoices-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  TeamTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "webflare-team-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+Outputs:
+  ContractsTableName:
+    Description: Contracts Table Name
+    Value: !Ref ContractsTable
+    Export:
+      Name: !Sub "${AWS::StackName}-ContractsTableName"
+
+  ClientsTableName:
+    Description: Clients Table Name
+    Value: !Ref ClientsTable
+    Export:
+      Name: !Sub "${AWS::StackName}-ClientsTableName"
+
+  ProjectsTableName:
+    Description: Projects Table Name
+    Value: !Ref ProjectsTable
+    Export:
+      Name: !Sub "${AWS::StackName}-ProjectsTableName"
+
+  InvoicesTableName:
+    Description: Invoices Table Name
+    Value: !Ref InvoicesTable
+    Export:
+      Name: !Sub "${AWS::StackName}-InvoicesTableName"
+
+  TeamTableName:
+    Description: Team Table Name
+    Value: !Ref TeamTable
+    Export:
+      Name: !Sub "${AWS::StackName}-TeamTableName"
