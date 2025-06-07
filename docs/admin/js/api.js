@@ -9,8 +9,8 @@ const API_GATEWAY_ENDPOINT = 'YOUR_API_GATEWAY_ENDPOINT'; // e.g., 'https://xxxx
  * @param {object} [body] Request body for POST/PUT requests.
  * @returns {Promise<object>} Promise resolving with API response.
  */
-async functionapiRequest(method, path, body = null) {
-    const idToken = getIdToken(); // From auth.js
+async function apiRequest(method, path, body = null) {
+    const idToken = localStorage.getItem('idToken');
     if (!idToken) {
         console.error('User not authenticated. Cannot make API request.');
         // Potentially redirect to login or show error
@@ -19,30 +19,30 @@ async functionapiRequest(method, path, body = null) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${idToken}` // Or just idToken depending on authorizer setup
+        'Authorization': `Bearer ${idToken}`
     };
 
-    const config = {
+    const options = {
         method: method,
-        headers: headers,
+        headers: headers
     };
 
     if (body) {
-        config.body = JSON.stringify(body);
+        options.body = JSON.stringify(body);
     }
 
     try {
-        const response = await fetch(`${API_GATEWAY_ENDPOINT}${path}`, config);
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ message: response.statusText }));
-            console.error('API request failed:', response.status, errorData);
-            return { success: false, status: response.status, error: errorData.message || 'API request error' };
-        }
+        const response = await fetch(`${API_GATEWAY_ENDPOINT}${path}`, options);
         const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'API request failed');
+        }
+        
         return { success: true, data };
     } catch (error) {
-        console.error('Error making API request:', error);
-        return { success: false, error: error.message || 'Network error or invalid JSON response.' };
+        console.error('API request error:', error);
+        return { success: false, error: error.message };
     }
 }
 

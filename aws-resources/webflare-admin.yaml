@@ -1,0 +1,188 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Webflare Admin Panel DynamoDB Tables'
+
+Resources:
+  # Contracts Table
+  ContractsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: WebflareContracts
+      AttributeDefinitions:
+        - AttributeName: ContractId
+          AttributeType: S
+        - AttributeName: ClientId
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ContractId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: ClientIdIndex
+          KeySchema:
+            - AttributeName: ClientId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: Status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+  # Invoices Table
+  InvoicesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: WebflareInvoices
+      AttributeDefinitions:
+        - AttributeName: InvoiceId
+          AttributeType: S
+        - AttributeName: ClientId
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+        - AttributeName: DueDate
+          AttributeType: S
+      KeySchema:
+        - AttributeName: InvoiceId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: ClientIdIndex
+          KeySchema:
+            - AttributeName: ClientId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: Status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: DueDateIndex
+          KeySchema:
+            - AttributeName: DueDate
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+  # Clients Table
+  ClientsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: WebflareClients
+      AttributeDefinitions:
+        - AttributeName: ClientId
+          AttributeType: S
+        - AttributeName: Name
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ClientId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: NameIndex
+          KeySchema:
+            - AttributeName: Name
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: Status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+  # Projects Table
+  ProjectsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: WebflareProjects
+      AttributeDefinitions:
+        - AttributeName: ProjectId
+          AttributeType: S
+        - AttributeName: ContractId
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ProjectId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: ContractIdIndex
+          KeySchema:
+            - AttributeName: ContractId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: Status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+  # Team Members Table
+  TeamMembersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: WebflareTeamMembers
+      AttributeDefinitions:
+        - AttributeName: TeamMemberId
+          AttributeType: S
+        - AttributeName: Role
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: TeamMemberId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: RoleIndex
+          KeySchema:
+            - AttributeName: Role
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: Status
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+Outputs:
+  ContractsTableName:
+    Description: Name of the contracts table
+    Value: !Ref ContractsTable
+  InvoicesTableName:
+    Description: Name of the invoices table
+    Value: !Ref InvoicesTable
+  ClientsTableName:
+    Description: Name of the clients table
+    Value: !Ref ClientsTable
+  ProjectsTableName:
+    Description: Name of the projects table
+    Value: !Ref ProjectsTable
+  TeamMembersTableName:
+    Description: Name of the team members table
+    Value: !Ref TeamMembersTable

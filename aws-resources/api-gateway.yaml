@@ -1,0 +1,260 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Webflare Admin Panel API Gateway and Lambda Functions'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    Description: Environment name (dev/prod)
+
+Resources:
+  # API Gateway
+  WebflareApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: WebflareAdminApi
+      Description: API Gateway for Webflare Admin Panel
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  # API Gateway Deployment
+  WebflareApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - ContractsResource
+      - ClientsResource
+      - InvoicesResource
+      - ProjectsResource
+      - TeamMembersResource
+    Properties:
+      RestApiId: !Ref WebflareApi
+      StageName: !Ref Environment
+
+  # API Gateway Stage
+  WebflareApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      StageName: !Ref Environment
+      RestApiId: !Ref WebflareApi
+      DeploymentId: !Ref WebflareApiDeployment
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          DataTraceEnabled: true
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: WebflareAdminLambdaRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: WebflareAdminLambdaPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: 'arn:aws:logs:*:*:*'
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: 'arn:aws:dynamodb:us-east-2:*:table/Webflare*'
+
+  # Contracts Lambda Function
+  ContractsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: WebflareContractsFunction
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: webflare-admin-deployments
+        S3Key: contracts-function.zip
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+
+  # Clients Lambda Function
+  ClientsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: WebflareClientsFunction
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: webflare-admin-deployments
+        S3Key: clients-function.zip
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+
+  # Invoices Lambda Function
+  InvoicesFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: WebflareInvoicesFunction
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: webflare-admin-deployments
+        S3Key: invoices-function.zip
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+
+  # Projects Lambda Function
+  ProjectsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: WebflareProjectsFunction
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: webflare-admin-deployments
+        S3Key: projects-function.zip
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+
+  # Team Members Lambda Function
+  TeamMembersFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: WebflareTeamMembersFunction
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: webflare-admin-deployments
+        S3Key: team-members-function.zip
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+
+  # API Gateway Resources and Methods
+  ContractsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt WebflareApi.RootResourceId
+      PathPart: contracts
+      RestApiId: !Ref WebflareApi
+
+  ContractsGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId: !Ref ContractsResource
+      RestApiId: !Ref WebflareApi
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ContractsFunction.Arn}/invocations
+          - ContractsFunction: !GetAtt ContractsFunction.Arn
+
+  ContractsPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId: !Ref ContractsResource
+      RestApiId: !Ref WebflareApi
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ContractsFunction.Arn}/invocations
+          - ContractsFunction: !GetAtt ContractsFunction.Arn
+
+  ContractsByIdResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref ContractsResource
+      PathPart: '{contractId}'
+      RestApiId: !Ref WebflareApi
+
+  ContractsByIdGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId: !Ref ContractsByIdResource
+      RestApiId: !Ref WebflareApi
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ContractsFunction.Arn}/invocations
+          - ContractsFunction: !GetAtt ContractsFunction.Arn
+
+  ContractsByIdPutMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: PUT
+      ResourceId: !Ref ContractsByIdResource
+      RestApiId: !Ref WebflareApi
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ContractsFunction.Arn}/invocations
+          - ContractsFunction: !GetAtt ContractsFunction.Arn
+
+  ContractsByIdDeleteMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: DELETE
+      ResourceId: !Ref ContractsByIdResource
+      RestApiId: !Ref WebflareApi
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ContractsFunction.Arn}/invocations
+          - ContractsFunction: !GetAtt ContractsFunction.Arn
+
+  # Lambda Permissions
+  ContractsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt ContractsFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebflareApi}/*/*/*
+        - WebflareApi: !Ref WebflareApi
+
+  # Outputs
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub https://${WebflareApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/

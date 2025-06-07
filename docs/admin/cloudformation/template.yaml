@@ -1,0 +1,261 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Webflare Admin Panel AWS Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, prod]
+    Description: Environment name
+
+  LambdaCodeBucket:
+    Type: String
+    Description: S3 bucket for Lambda deployment package
+    Default: webflare-admin-lambda-us-east-2
+
+  LambdaCodeKey:
+    Type: String
+    Description: S3 key for Lambda deployment package
+    Default: lambda-deployment.zip
+
+Resources:
+  AdminUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub "WebflareAdmin-${Environment}"
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+      MfaConfiguration: OFF
+      UsernameAttributes:
+        - email
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: role
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+          StringAttributeConstraints:
+            MinLength: '1'
+            MaxLength: '10'
+
+  AdminUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub "WebflareAdmin-${Environment}"
+      UserPoolId: !Ref AdminUserPool
+      GenerateSecret: false
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+      CallbackURLs:
+        - !Sub "https://webflare-admin-${Environment}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
+      DefaultRedirectURI: !Sub "https://webflare-admin-${Environment}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
+
+  ContractsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "WebflareContracts-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: contractId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: contractId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  ProjectsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "WebflareProjects-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: projectId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: projectId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  ClientsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "WebflareClients-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: clientId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: clientId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  InvoicesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "WebflareInvoices-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: invoiceId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: invoiceId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  TeamTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "WebflareTeam-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: employeeId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: employeeId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "WebflareAdminLambdaExecution-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaDynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource:
+                  - !Ref ContractsTable
+                  - !Ref ProjectsTable
+                  - !Ref ClientsTable
+                  - !Ref InvoicesTable
+                  - !Ref TeamTable
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+
+  AdminLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "WebflareAdmin-${Environment}"
+      Runtime: nodejs18.x
+      Handler: index.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: !Ref LambdaCodeBucket
+        S3Key: !Ref LambdaCodeKey
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          CONTRACTS_TABLE: !Ref ContractsTable
+          PROJECTS_TABLE: !Ref ProjectsTable
+          CLIENTS_TABLE: !Ref ClientsTable
+          INVOICES_TABLE: !Ref InvoicesTable
+          TEAM_TABLE: !Ref TeamTable
+
+  AdminApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub "WebflareAdmin-${Environment}"
+      Description: Webflare Admin Panel API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  AdminApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - AdminApi
+    Properties:
+      RestApiId: !Ref AdminApi
+      StageName: !Ref Environment
+
+  AdminApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId: !Ref AdminApi
+      StageName: !Ref Environment
+      DeploymentId: !Ref AdminApiDeployment
+      MethodSettings:
+        - HttpMethod: "*"
+          ResourcePath: "/*"
+          MetricsEnabled: true
+          LoggingLevel: INFO
+
+  CognitoAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: CognitoAuthorizer
+      RestApiId: !Ref AdminApi
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      ProviderARNs:
+        - !GetAtt AdminUserPool.Arn
+      IdentityValidationExpression: Bearer .+
+
+  ContractsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref AdminApi
+      ParentId: !GetAtt AdminApi.RootResourceId
+      PathPart: contracts
+
+  ContractsMethods:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref AdminApi
+      ResourceId: !Ref ContractsResource
+      HttpMethod: ANY
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref CognitoAuthorizer
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations
+          - LambdaArn: !GetAtt AdminLambdaFunction.Arn
+
+Outputs:
+  UserPoolId:
+    Description: Cognito User Pool ID
+    Value: !Ref AdminUserPool
+    Export:
+      Name: !Sub "WebflareAdmin-${Environment}-UserPoolId"
+
+  UserPoolClientId:
+    Description: Cognito User Pool Client ID
+    Value: !Ref AdminUserPoolClient
+    Export:
+      Name: !Sub "WebflareAdmin-${Environment}-UserPoolClientId"
+
+  ApiEndpoint:
+    Description: API Gateway Endpoint
+    Value: !Sub "https://${AdminApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/"
+    Export:
+      Name: !Sub "WebflareAdmin-${Environment}-ApiEndpoint"

@@ -1,0 +1,12 @@
+{
+  "name": "webflare-admin-lambda",
+  "version": "1.0.0",
+  "description": "Lambda function for Webflare Admin Panel",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1469.0"
+  }
+}

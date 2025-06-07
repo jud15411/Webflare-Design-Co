@@ -3,48 +3,66 @@
 // AWS Configuration (to be filled in with your Cognito details)
 const cognitoConfig = {
     UserPoolId: 'us-east-2_vffRRRU29', // e.g., 'us-east-1_xxxxxxxxx'
-    ClientId: '4dgijq8k4e1gi60hr840nvv5uad',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
+    ClientId: '299n0blb7vajagmsn0d8j0bhln',   // e.g., 'xxxxxxxxxxxxxxxxxxxxxx'
     Region: 'us-east-2'         // e.g., 'us-east-1'
 };
 
+// Initialize AWS SDK
 AWS.config.update({ region: cognitoConfig.Region });
-
-// Initialize CognitoIdentityServiceProvider
 const cognito = new AWS.CognitoIdentityServiceProvider({ region: cognitoConfig.Region });
 
 /**
  * Initiates the login process.
  * @param {string} email User's email.
  * @param {string} password User's password.
+ * @param {string} role User's role.
  * @returns {Promise<object>} Promise resolving with authentication result or error.
  */
-async function signIn(email, password) {
-    const params = {
-        AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: cognitoConfig.ClientId,
-        AuthParameters: {
-            USERNAME: email,
-            PASSWORD: password,
-        },
-    };
-
+async function signIn(email, password, role) {
     try {
+        console.log('Starting Cognito authentication...');
+        
+        // Validate role
+        const validRoles = ['CEO', 'CFO'];
+        if (!validRoles.includes(role)) {
+            throw new Error('Invalid role selected. Please choose either CEO or CFO.');
+        }
+
+        const params = {
+            AuthFlow: 'USER_PASSWORD_AUTH',
+            ClientId: cognitoConfig.ClientId,
+            AuthParameters: {
+                USERNAME: email,
+                PASSWORD: password
+            }
+        };
+
+        console.log('Sending authentication request to Cognito...');
         const data = await cognito.initiateAuth(params).promise();
-        console.log('Sign in successful:', data);
-        // Store tokens (e.g., in localStorage or sessionStorage)
+        console.log('Cognito response received:', data);
+
         if (data.AuthenticationResult) {
+            console.log('Authentication successful, storing tokens...');
             localStorage.setItem('idToken', data.AuthenticationResult.IdToken);
             localStorage.setItem('accessToken', data.AuthenticationResult.AccessToken);
             localStorage.setItem('refreshToken', data.AuthenticationResult.RefreshToken);
+            localStorage.setItem('userRole', role);
+            
             return { success: true, data };
         } else if (data.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
-            // Handle new password required challenge
-            return { success: false, challengeName: 'NEW_PASSWORD_REQUIRED', session: data.Session, email };
+            console.log('New password required challenge received');
+            return { 
+                success: false, 
+                challengeName: 'NEW_PASSWORD_REQUIRED', 
+                session: data.Session,
+                email 
+            };
+        } else {
+            throw new Error('Unknown authentication state from Cognito');
         }
-        return { success: false, error: 'Unknown authentication state.' }; // Should not happen
     } catch (error) {
-        console.error('Sign in error:', error);
-        return { success: false, error: error.message || 'Sign in failed.' };
+        console.error('Cognito authentication error:', error);
+        throw error;
     }
 }
 
@@ -84,17 +102,32 @@ async function respondToNewPasswordChallenge(email, newPassword, session) {
 
 /**
  * Signs the current user out.
+ * @returns {Promise<void>} Promise that resolves when sign out is complete.
  */
-function signOut() {
-    // Cognito doesn't have a direct 'signOut' that invalidates tokens immediately for USER_PASSWORD_AUTH flow tokens.
-    // Global sign out can be used, or simply clear local tokens.
-    // For a more robust solution, consider token revocation if using advanced security features.
-    localStorage.removeItem('idToken');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    console.log('User signed out (tokens cleared).');
-    // Redirect to login page or update UI
-    // window.location.href = 'index.html'; // Or wherever your login page is
+async function signOut() {
+    try {
+        // Clear all tokens and user info from localStorage
+        localStorage.removeItem('idToken');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('userRole');
+        
+        // Sign out from Cognito
+        const params = {
+            ClientId: cognitoConfig.ClientId,
+            AccessToken: localStorage.getItem('accessToken')
+        };
+        
+        try {
+            await cognito.globalSignOut(params).promise();
+            console.log('Global sign out successful');
+        } catch (error) {
+            console.error('Error during global sign out:', error);
+        }
+    } catch (error) {
+        console.error('Error during sign out:', error);
+    }
 }
 
 /**
@@ -102,7 +135,41 @@ function signOut() {
  * @returns {boolean} True if authenticated (ID token exists), false otherwise.
  */
 function isAuthenticated() {
-    return !!localStorage.getItem('idToken');
+    return localStorage.getItem('idToken') !== null;
+}
+
+/**
+ * Gets the current user's role.
+ * @returns {string|null} The user's role (CEO or CFO) or null if not authenticated.
+ */
+function getUserRole() {
+    return isAuthenticated() ? localStorage.getItem('userRole') : null;
+}
+
+/**
+ * Checks if the current user has the specified role.
+ * @param {string} requiredRole The role to check for (e.g., 'CEO' or 'CFO')
+ * @returns {boolean} True if user has the role, false otherwise.
+ */
+function hasRole(requiredRole) {
+    const userRole = getUserRole();
+    return userRole === requiredRole;
+}
+
+/**
+ * Checks if the current user is a CEO.
+ * @returns {boolean} True if user is CEO, false otherwise.
+ */
+function isCEO() {
+    return hasRole('CEO');
+}
+
+/**
+ * Checks if the current user is a CFO.
+ * @returns {boolean} True if user is CFO, false otherwise.
+ */
+function isCFO() {
+    return hasRole('CFO');
 }
 
 /**

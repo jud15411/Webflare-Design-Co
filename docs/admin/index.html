@@ -12,7 +12,7 @@
     <div class="login-container">
         <div class="login-box">
             <div class="login-header">
-                <img src="../assets/img/webflare_logo.png" alt="Webflare Logo" class="logo"> <!-- Assuming logo path -->
+                <img src="../Logos/Webflare_Design_Co.webp" alt="Webflare Logo" class="logo"> <!-- Assuming logo path -->
                 <h2>Admin Panel Login</h2>
             </div>
             <form id="loginForm">
@@ -24,13 +24,20 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select your role</option>
+                        <option value="CEO">CEO</option>
+                        <option value="CFO">CFO</option>
+                    </select>
+                </div>
                 <div class="form-group" id="newPasswordGroup" style="display:none;">
                     <label for="newPassword">New Password</label>
                     <input type="password" id="newPassword" name="newPassword">
                     <p class="info-text">A new password is required for your first login.</p>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-                <p id="errorMessage" class="error-message" style="display:none;"></p>
             </form>
             <div class="login-footer">
                 <a href="#" id="forgotPasswordLink">Forgot Password?</a>
