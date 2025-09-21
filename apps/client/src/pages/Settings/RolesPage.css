@@ -1,0 +1,119 @@
+.roles-page-layout {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.role-form-card,
+.role-list-card {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.role-form-card h2,
+.role-list-card h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
+/* Form Styles */
+.role-form .form-group {
+  margin-bottom: 18px;
+}
+.role-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.role-form input,
+.role-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.role-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.role-form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.role-form-buttons button {
+  flex-grow: 1;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-button {
+  color: #fff;
+  background-color: var(--accent-primary);
+}
+
+.cancel-button {
+  color: var(--text-primary);
+  background-color: var(--background-hover);
+}
+
+/* List Styles */
+.role-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.role-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.role-list-item:last-child {
+  border-bottom: none;
+}
+
+.role-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.role-info p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.role-actions button {
+  margin-left: 10px;
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.role-actions .delete-button {
+  border-color: var(--status-failed-bg);
+  color: var(--status-failed-text);
+}

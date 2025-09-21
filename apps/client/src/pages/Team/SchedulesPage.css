@@ -1,0 +1,20 @@
+/* src/pages/Team/SchedulesPage.css */
+
+.schedules-page-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+}
+
+/* This overrides the global .pro-table style to allow wrapping */
+.schedules-page-layout .pro-table {
+  width: 100%;
+  table-layout: fixed; /* Ensures the table respects container width */
+  min-width: unset; /* Remove minimum width constraint */
+}
+
+/* This is the key fix: allow cell content to wrap */
+.schedules-page-layout .pro-table td,
+.schedules-page-layout .pro-table th {
+  white-space: normal;
+}

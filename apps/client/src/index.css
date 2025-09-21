@@ -1,0 +1,10 @@
+/* apps/client/src/index.css */
+
+/* Import your theme variables so they are globally available */
+@import url('./App.css');
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  /* Do NOT set a background color here */
+}

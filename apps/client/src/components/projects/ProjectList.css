@@ -1,0 +1,78 @@
+/*
+ * Styles for the ProjectList component.
+ * It inherits base styles for .page-container, .page-header, and .pro-table
+ * from App.css to maintain consistency.
+*/
+
+.add-project-button {
+  background-color: var(--accent-primary);
+  color: var(--background-primary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-project-button:hover {
+  background-color: var(--accent-primary-darker);
+}
+
+/* Status Badges for the table */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  min-width: 80px;
+}
+
+.status-completed {
+  color: var(--status-approved-text);
+  background-color: var(--status-approved-bg);
+}
+
+.status-in-progress {
+  color: var(--status-pending-text);
+  background-color: var(--status-pending-bg);
+}
+
+.status-not-started {
+  color: var(--text-secondary);
+  background-color: var(--background-hover);
+}
+
+.status-on-hold {
+  color: var(--status-failed-text);
+  background-color: var(--status-failed-bg);
+}
+
+/* Styles for action buttons inside the table */
+.action-button {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 13px;
+}
+
+.action-button:hover {
+  background-color: var(--background-hover);
+  color: var(--text-primary);
+}
+
+/* Message for when there are no projects */
+.no-projects-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-style: italic;
+}

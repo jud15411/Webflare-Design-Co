@@ -1,0 +1,144 @@
+.team-page-container {
+  padding: 40px;
+  font-family: var(--font-family);
+}
+
+.team-page-container h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: var(--text-primary);
+}
+
+.team-management-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+}
+
+/* Card Styles */
+.add-user-card,
+.team-list-card {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.add-user-card h2,
+.team-list-card h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
+/* Form Styles */
+.add-user-card .form-group {
+  margin-bottom: 18px;
+}
+.add-user-card label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.add-user-card input,
+.add-user-card select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.add-user-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Table Styles */
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.team-table th,
+.team-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+.team-table th {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.team-table td {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.remove-button {
+  background: none;
+  border: 1px solid var(--status-failed-bg);
+  color: var(--status-failed-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Role Badges */
+.role-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.role-developer {
+  background-color: #3e8ed0;
+  color: #fff;
+}
+.role-cto {
+  background-color: #f14668;
+  color: #fff;
+}
+.role-sales {
+  background-color: #48c78e;
+  color: #fff;
+}
+
+.error-message {
+  color: var(--status-failed-text);
+  background-color: var(--status-failed-bg);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.inactive-user {
+  /* Use the new dark-theme friendly background color */
+  background-color: var(--background-inactive);
+}
+
+.inactive-user td {
+  /* Mute the text color and keep the line-through */
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+/* You can style the new button as well */
+.toggle-status-button {
+  margin-right: 8px;
+  /* Add other styles similar to remove-button if you like */
+}

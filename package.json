@@ -1,0 +1,16 @@
+{
+  "name": "admin-panel",
+  "version": "1.0.0",
+  "description": "Central admin panel for web development and cybersecurity services.",
+  "main": "index.js",
+  "private": true,
+  "proxy": "http://localhost:5001",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

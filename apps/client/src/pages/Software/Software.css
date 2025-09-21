@@ -1,0 +1,128 @@
+.software-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  color: #333;
+}
+
+.software-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.software-header h1 {
+  font-size: 2.5em;
+  color: #007bff;
+}
+
+.software-header p {
+  color: #555;
+}
+
+.software-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .software-content {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.software-create-form,
+.software-asset-list {
+  background-color: #f9f9f9;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.software-create-form h2,
+.software-asset-list h2 {
+  font-size: 1.8em;
+  margin-top: 0;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.software-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.software-form input,
+.software-form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.software-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.software-btn-submit {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.software-btn-submit:hover {
+  background-color: #218838;
+}
+
+.software-error {
+  color: #dc3545;
+  font-size: 0.9em;
+}
+
+.software-assets-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.software-asset-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.software-asset-card h3 {
+  margin-top: 0;
+  color: #0056b3;
+}
+
+.software-asset-card p {
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.5;
+}
+
+.software-btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.software-btn-delete:hover {
+  background-color: #c82333;
+}

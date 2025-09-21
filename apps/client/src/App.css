@@ -1,0 +1,179 @@
+/* App.css - Fixed Version with proper sidebar layout */
+
+/* === Dark Theme Variable Definitions === */
+:root {
+  --background-primary: #20232a;
+  --background-secondary: #282c34;
+  --background-hover: #4a505c;
+  --text-primary: #e6e6e6;
+  --text-secondary: #a0a0a0;
+  --background-inactive: #2a2e37;
+  --accent-primary: #61dafb;
+  --accent-primary-darker: #00b3e0;
+  --border-color: #4a505c;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --status-approved-bg: #1e4d2b;
+  --status-approved-text: #86efac;
+  --status-pending-bg: #4d3d1f;
+  --status-pending-text: #fde047;
+  --status-failed-bg: #5c2c2f;
+  --status-failed-text: #fca5a5;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --sidebar-width: 280px; /* Define sidebar width as a variable */
+}
+
+/* FIXED: Base layout styles */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  position: relative; /* Add this for proper positioning context */
+}
+
+/* FIXED: Main content area to account for sidebar */
+.main-content {
+  flex: 1; /* THIS WAS MISSING! */
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--background-primary);
+  min-height: 100vh;
+  width: calc(
+    100vw - var(--sidebar-width)
+  ); /* Ensure proper width calculation */
+}
+
+/* Sidebar styles remain the same but ensure it's positioned correctly */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: fixed; /* Make sidebar fixed */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100; /* Ensure sidebar stays on top */
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+.sidebar nav a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1.1em;
+  padding: 10px;
+  border-radius: var(--border-radius-sm);
+}
+
+.sidebar nav a:hover {
+  background-color: var(--background-hover);
+}
+
+.sidebar button {
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  background-color: var(--accent-primary);
+  color: var(--background-secondary);
+  font-weight: bold;
+}
+
+/* Page Container & Header Styles */
+.page-container {
+  padding: 20px 30px;
+  max-width: 100%; /* Prevent overflow */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+/* Professional Table Styles */
+.table-container {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 2px 10px var(--shadow-color);
+  padding: 20px;
+  overflow-x: auto; /* Allow horizontal scrolling for wide tables */
+  max-width: 100%; /* Prevent container from exceeding parent */
+}
+
+.pro-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Minimum width for readability */
+}
+
+.pro-table th,
+.pro-table td {
+  padding: 15px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.pro-table thead {
+  border-bottom: 2px solid var(--border-color);
+}
+
+.pro-table th {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.pro-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pro-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column; /* Stack vertically on mobile */
+  }
+
+  .sidebar {
+    position: relative; /* Remove fixed positioning on mobile */
+    width: 100%;
+    height: auto;
+    order: 2; /* Put sidebar after main content on mobile */
+  }
+
+  .main-content {
+    margin-left: 0; /* Remove margin on mobile */
+    width: 100%;
+    order: 1; /* Put main content first on mobile */
+  }
+}

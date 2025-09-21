@@ -1,0 +1,93 @@
+.profile-page-container {
+  padding: 40px;
+  background-color: var(--background-primary, #f0f2f5);
+  font-family: var(--font-family);
+  min-height: 100vh;
+}
+
+.profile-form-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: var(--background-secondary, #fff);
+  padding: 30px 40px;
+  border-radius: var(--border-radius-md, 8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.profile-form-wrapper h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary, #111);
+}
+
+.profile-form-wrapper p {
+  font-size: 15px;
+  margin-bottom: 30px;
+  color: var(--text-secondary, #555);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-primary, #333);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: var(--border-radius-md, 6px);
+  font-size: 15px;
+  background-color: var(--background-primary, #f9f9f9);
+  color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary, #00a8e8);
+  box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.save-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent-primary, #00a8e8);
+  border: none;
+  border-radius: var(--border-radius-md, 6px);
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.save-button:hover {
+  background-color: var(--accent-primary-darker, #007ea7);
+}
+
+.save-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.form-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+}
