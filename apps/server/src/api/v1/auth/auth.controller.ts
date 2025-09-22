@@ -61,8 +61,11 @@ export const loginUser = async (req: Request, res: Response) => {
     const token = jwt.sign(
       {
         id: user._id,
-        // The role name is now inside the populated role object
-        role: (user.role as any)?.name,
+        // Include the full role object
+        role: {
+          _id: (user.role as any)._id,
+          name: (user.role as any).name,
+        },
         name: user.name,
         email: user.email,
       },

@@ -1,13 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
-import { TaskModal } from '../../components/TaskModal'; // We will create this
+import { TaskModal } from '../../components/TaskModal';
 import './TasksPage.css';
 
 // --- Type Definitions ---
 interface User {
   _id: string;
   name: string;
+}
+
+// Add Project and Client interfaces
+interface Client {
+  _id: string;
+  clientName: string;
+}
+
+interface Project {
+  _id: string;
+  name: string;
+  client: Client;
 }
 
 interface Task {
@@ -18,6 +30,7 @@ interface Task {
   category: 'Cybersecurity' | 'Web Development';
   dueDate: string;
   assignedTo: User;
+  project: Project; // Update task to include project
 }
 
 type TaskCategory = 'Cybersecurity' | 'Web Development';
@@ -27,6 +40,7 @@ export const TasksPage: React.FC = () => {
   const { token } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]); // State for projects
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [activeFilter, setActiveFilter] =
     useState<TaskCategory>('Web Development');
@@ -54,14 +68,23 @@ export const TasksPage: React.FC = () => {
   }, [token]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchAuxData = async () => {
       if (!token) return;
       try {
-        const response = await fetch('/api/v1/users', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) throw new Error('Failed to fetch users.');
-        setUsers(await response.json());
+        const [usersRes, projectsRes] = await Promise.all([
+          fetch('/api/v1/users', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch('/api/v1/projects', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        if (!usersRes.ok) throw new Error('Failed to fetch users.');
+        if (!projectsRes.ok) throw new Error('Failed to fetch projects.');
+
+        setUsers(await usersRes.json());
+        setProjects(await projectsRes.json());
       } catch (err: any) {
         console.error(err.message);
       }
@@ -70,7 +93,7 @@ export const TasksPage: React.FC = () => {
     const fetchAllData = async () => {
       setIsLoading(true);
       setError(null);
-      await Promise.all([fetchTasks(), fetchUsers()]);
+      await Promise.all([fetchTasks(), fetchAuxData()]);
       setIsLoading(false);
     };
 
@@ -94,7 +117,10 @@ export const TasksPage: React.FC = () => {
   };
 
   const handleSaveTask = async (
-    taskData: Omit<Task, '_id' | 'assignedTo'> & { assignedTo: string }
+    taskData: Omit<Task, '_id' | 'assignedTo' | 'project'> & {
+      assignedTo: string;
+      project: string;
+    }
   ) => {
     const endpoint = editingTask
       ? `/api/v1/tasks/${editingTask._id}`
@@ -115,7 +141,7 @@ export const TasksPage: React.FC = () => {
         throw new Error(err.message || 'Failed to save task.');
       }
       setIsTaskModalOpen(false);
-      await fetchTasks(); // Re-fetch all tasks to get the latest data
+      await fetchTasks();
     } catch (err: any) {
       setError(err.message);
     }
@@ -175,6 +201,7 @@ export const TasksPage: React.FC = () => {
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Project (Client)</th> {/* Updated Header */}
                 <th>Assigned To</th>
                 <th>Due Date</th>
                 <th>Status</th>
@@ -188,6 +215,10 @@ export const TasksPage: React.FC = () => {
                     <td>
                       <div className="task-title">{task.title}</div>
                       <div className="task-description">{task.description}</div>
+                    </td>
+                    {/* Display Project and Client Name */}
+                    <td>
+                      {task.project?.name} ({task.project?.client?.clientName})
                     </td>
                     <td>{task.assignedTo?.name || 'Unassigned'}</td>
                     <td>{new Date(task.dueDate).toLocaleDateString()}</td>
@@ -215,7 +246,7 @@ export const TasksPage: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5}>No tasks found for this category.</td>
+                  <td colSpan={6}>No tasks found for this category.</td>
                 </tr>
               )}
             </tbody>
@@ -229,6 +260,7 @@ export const TasksPage: React.FC = () => {
         onSave={handleSaveTask}
         task={editingTask}
         users={users}
+        projects={projects} // Pass projects to modal
       />
 
       <ConfirmationModal

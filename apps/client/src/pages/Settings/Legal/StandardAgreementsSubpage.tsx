@@ -4,12 +4,10 @@ import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
 interface Agreement {
-  id: number;
+  _id: string;
   title: string;
   content: string;
 }
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 interface StandardAgreementsSubpageProps {
   onBack: () => void;
@@ -28,7 +26,8 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/agreements`, {
+      // Fix: Updated API endpoint to match the new backend route
+      const { data } = await axios.get(`/api/v1/settings/legal/agreements`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAgreements(data);
@@ -55,7 +54,8 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
   const handleAddAgreement = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/v1/agreements`, form, {
+      // Fix: Updated API endpoint to match the new backend route
+      await axios.post(`/api/v1/settings/legal/agreements`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ title: '', content: '' });
@@ -66,10 +66,11 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this agreement?')) {
       try {
-        await axios.delete(`${API_URL}/api/v1/agreements/${id}`, {
+        // Fix: Updated API endpoint to match the new backend route
+        await axios.delete(`/api/v1/settings/legal/agreements/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchAgreements(); // Refresh list
@@ -122,13 +123,13 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
           <div className="agreements-list">
             {agreements.length > 0 ? (
               agreements.map((agreement) => (
-                <div key={agreement.id} className="agreement-card">
+                <div key={agreement._id} className="agreement-card">
                   <h4>{agreement.title}</h4>
                   <p className="agreement-content-preview">
                     {agreement.content.substring(0, 150)}...
                   </p>
                   <button
-                    onClick={() => handleDelete(agreement.id)}
+                    onClick={() => handleDelete(agreement._id)}
                     className="delete-button">
                     Delete
                   </button>

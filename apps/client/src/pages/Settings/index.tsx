@@ -15,7 +15,7 @@ const SettingsPage = () => {
   }
 
   // Check the user's role and render the appropriate settings page
-  if (user.role === 'ceo') {
+  if (user.role.name === 'ceo') {
     return <CEOSettingsPage />;
   } else {
     return <StaffSettingsPage user={user} />;

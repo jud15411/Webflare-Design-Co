@@ -1,0 +1,72 @@
+.feedback-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.feedback-modal-content {
+  background-color: var(--background-secondary, #1a202c);
+  padding: 2rem;
+  border-radius: var(--border-radius, 8px);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid var(--border-color, #3d4a63);
+}
+.feedback-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color-light, #2d3748);
+}
+.feedback-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.feedback-modal-header .close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary, #a0aec0);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.feedback-modal-body textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--background-primary, #121721);
+  border: 1px solid var(--border-color, #3d4a63);
+  color: var(--text-primary, #e2e8f0);
+  border-radius: var(--border-radius, 8px);
+  resize: vertical;
+}
+.feedback-error {
+  color: #e53e3e;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.feedback-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.feedback-modal-footer button {
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius, 8px);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.feedback-modal-footer .cancel-btn {
+  background-color: var(--background-secondary, #1a202c);
+  border: 1px solid var(--border-color, #3d4a63);
+  color: var(--text-secondary, #a0aec0);
+}
+.feedback-modal-footer .submit-btn {
+  background-color: var(--accent-primary, #38b2ac);
+  color: #fff;
+}

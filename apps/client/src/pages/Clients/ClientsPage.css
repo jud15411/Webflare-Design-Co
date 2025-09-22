@@ -1,0 +1,70 @@
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.client-card {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.client-card h3 {
+  margin-top: 0;
+  color: var(--accent-primary);
+}
+
+.services-list ul {
+  padding-left: 20px;
+  margin: 5px 0 0;
+}
+
+.card-actions {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 10px;
+}
+
+.add-client-btn {
+  background-color: var(--accent-primary);
+  color: var(--background-secondary);
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.card-actions button {
+  border: 1px solid var(--border-color);
+  background-color: var(--background-hover);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.card-actions button:hover {
+  background-color: var(--border-color);
+}
+
+/* Style the "View Details" button as the primary action */
+.card-actions button:last-of-type {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--background-secondary);
+  font-weight: bold;
+}
+
+.card-actions button:last-of-type:hover {
+  background-color: var(--accent-primary-darker);
+  border-color: var(--accent-primary-darker);
+}

@@ -1,0 +1,32 @@
+.contracts-list {
+  margin-top: 20px;
+}
+
+.add-contract-btn {
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Style for the "View/Edit" button in the table */
+.action-btn {
+  background-color: transparent;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.action-btn:hover {
+  background-color: var(--accent-primary);
+  color: var(
+    --background-secondary
+  ); /* Using a dark color for text on the light background */
+}

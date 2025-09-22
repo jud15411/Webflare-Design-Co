@@ -138,3 +138,35 @@ export const getStatus = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: 'Error fetching status.' });
   }
 };
+
+// @desc    Get all time logs for reports
+// @route   GET /api/v1/timelogs/reports
+export const getTimeLogsReport = async (req: AuthRequest, res: Response) => {
+  try {
+    const { startDate, endDate, userId } = req.query;
+
+    // Build the query object
+    const query: any = {};
+
+    if (startDate && endDate) {
+      query.clockInTime = {
+        $gte: new Date(startDate as string),
+        $lte: new Date(endDate as string),
+      };
+    }
+
+    if (userId) {
+      query.user = userId;
+    }
+
+    const timeLogs = await TimeLog.find(query)
+      .populate('user', 'name') // Populate the user's name
+      .sort({ clockInTime: 'desc' })
+      .lean();
+
+    res.status(200).json(timeLogs);
+  } catch (error) {
+    console.error('Error fetching time log report:', error);
+    res.status(500).json({ message: 'Server error fetching time log report.' });
+  }
+};

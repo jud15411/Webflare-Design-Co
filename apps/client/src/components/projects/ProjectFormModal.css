@@ -35,3 +35,7 @@
   min-height: 100px;
   resize: vertical;
 }
+
+.form-group .multi-select {
+  min-height: 120px; /* Give the select box some height */
+}

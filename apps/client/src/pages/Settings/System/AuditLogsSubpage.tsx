@@ -4,14 +4,12 @@ import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
 interface AuditLog {
-  id: number;
+  _id: string;
   timestamp: string;
   user: string;
   action: string;
   details: string;
 }
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 interface AuditLogsSubpageProps {
   onBack: () => void;
@@ -27,7 +25,8 @@ const AuditLogsSubpage: React.FC<AuditLogsSubpageProps> = ({ onBack }) => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/audit`, {
+      // Fix: Update API endpoint to match the backend
+      const { data } = await axios.get(`/api/v1/settings/system/audit`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLogs(data);
@@ -76,7 +75,7 @@ const AuditLogsSubpage: React.FC<AuditLogsSubpageProps> = ({ onBack }) => {
             </thead>
             <tbody>
               {logs.map((log) => (
-                <tr key={log.id}>
+                <tr key={log._id}>
                   <td>{new Date(log.timestamp).toLocaleString()}</td>
                   <td>{log.user}</td>
                   <td>{log.action}</td>

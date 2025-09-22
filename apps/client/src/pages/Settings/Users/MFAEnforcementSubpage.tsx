@@ -10,8 +10,6 @@ interface MfaSettings {
   requiredForRoles: UserRole[];
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
-
 interface MFAEnforcementSubpageProps {
   onBack: () => void;
 }
@@ -20,7 +18,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
   onBack,
 }) => {
   const { token } = useAuth();
-  const [settings, setSettings] = useState<MfaSettings | null>(null);
+  const [settings, setSettings] = useState<MfaSettings | null>(null); // Start as null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -28,8 +26,9 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
 
   useEffect(() => {
     const fetchSettings = async () => {
+      if (!token) return;
       try {
-        const { data } = await axios.get(`${API_URL}/api/v1/mfa`, {
+        const { data } = await axios.get(`/api/v1/settings/users/mfa`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSettings(data);
@@ -40,9 +39,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
         setLoading(false);
       }
     };
-    if (token) {
-      fetchSettings();
-    }
+    fetchSettings();
   }, [token]);
 
   const handleToggleMfa = () => {
@@ -63,7 +60,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
   const handleSave = async () => {
     if (!settings) return;
     try {
-      await axios.put(`${API_URL}/api/v1/mfa`, settings, {
+      await axios.put(`/api/v1/settings/users/mfa`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('MFA settings updated successfully!');
@@ -72,14 +69,6 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
       console.error(err);
     }
   };
-
-  if (loading) {
-    return <div>Loading MFA settings...</div>;
-  }
-
-  if (error || !settings) {
-    return <div>{error || 'No settings data available.'}</div>;
-  }
 
   return (
     <div className="settings-subpage">
@@ -90,39 +79,45 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
         <h2>MFA Enforcement</h2>
       </header>
       <main className="settings-main">
-        <div className="settings-section">
-          <h3>Global Policy</h3>
-          <div className="toggle-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.enabled}
-                onChange={handleToggleMfa}
-              />
-              Enable MFA for all accounts
-            </label>
-          </div>
-        </div>
-        <div className="settings-section">
-          <h3>Role-Based Requirements</h3>
-          <p>Require MFA for specific user roles.</p>
-          <div className="permissions-list">
-            {allRoles.map((role) => (
-              <label key={role} className="permission-item">
-                <input
-                  type="checkbox"
-                  checked={settings.requiredForRoles.includes(role)}
-                  onChange={() => handleRoleChange(role)}
-                />
-                Require MFA for {role.toUpperCase()}
-              </label>
-            ))}
-          </div>
-        </div>
+        {loading && <p>Loading MFA settings...</p>}
         {error && <p className="error-message">{error}</p>}
-        <button onClick={handleSave} className="save-button">
-          Save Changes
-        </button>
+        {/* Only render the form when settings data is available */}
+        {settings && !loading && (
+          <>
+            <div className="settings-section">
+              <h3>Global Policy</h3>
+              <div className="toggle-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={settings.enabled}
+                    onChange={handleToggleMfa}
+                  />
+                  Enable MFA for all accounts
+                </label>
+              </div>
+            </div>
+            <div className="settings-section">
+              <h3>Role-Based Requirements</h3>
+              <p>Require MFA for specific user roles.</p>
+              <div className="permissions-list">
+                {allRoles.map((role) => (
+                  <label key={role} className="permission-item">
+                    <input
+                      type="checkbox"
+                      checked={settings.requiredForRoles.includes(role)}
+                      onChange={() => handleRoleChange(role)}
+                    />
+                    Require MFA for {role.toUpperCase()}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <button onClick={handleSave} className="save-button">
+              Save Changes
+            </button>
+          </>
+        )}
       </main>
     </div>
   );

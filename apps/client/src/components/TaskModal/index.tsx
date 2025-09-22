@@ -7,6 +7,12 @@ interface User {
   name: string;
 }
 
+// Add Project interface
+interface Project {
+  _id: string;
+  name: string;
+}
+
 interface Task {
   _id: string;
   title: string;
@@ -15,16 +21,21 @@ interface Task {
   category: 'Cybersecurity' | 'Web Development';
   dueDate: string;
   assignedTo: User;
+  project: Project; // Update task to include project
 }
 
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (
-    task: Omit<Task, '_id' | 'assignedTo'> & { assignedTo: string }
+    task: Omit<Task, '_id' | 'assignedTo' | 'project'> & {
+      assignedTo: string;
+      project: string;
+    }
   ) => void;
-  task: Task | null; // Null when adding, Task object when editing
+  task: Task | null;
   users: User[];
+  projects: Project[]; // Add projects to props
 }
 
 const getFormattedDate = (date: Date): string => {
@@ -41,11 +52,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   onSave,
   task,
   users,
+  projects, // Destructure projects from props
 }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     assignedTo: '',
+    project: '', // Add project to form state
     dueDate: getFormattedDate(new Date()),
     status: 'To Do' as Task['status'],
     category: 'Web Development' as Task['category'],
@@ -57,6 +70,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
         title: task.title,
         description: task.description,
         assignedTo: task.assignedTo?._id || '',
+        project: task.project?._id || '',
         dueDate: getFormattedDate(new Date(task.dueDate)),
         status: task.status,
         category: task.category,
@@ -67,12 +81,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
         title: '',
         description: '',
         assignedTo: users.length > 0 ? users[0]._id : '',
+        project: projects.length > 0 ? projects[0]._id : '',
         dueDate: getFormattedDate(new Date()),
         status: 'To Do',
         category: 'Web Development',
       });
     }
-  }, [task, users, isOpen]); // Rerun effect when modal opens
+  }, [task, users, projects, isOpen]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -94,6 +109,22 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{task ? 'Edit Task' : 'Add New Task'}</h2>
         <form onSubmit={handleSubmit}>
+          {/* Project Selector */}
+          <div className="form-group">
+            <label htmlFor="project">Project</label>
+            <select
+              name="project"
+              value={formData.project}
+              onChange={handleChange}
+              required>
+              <option value="">Select a Project</option>
+              {projects.map((project) => (
+                <option key={project._id} value={project._id}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="form-group">
             <label htmlFor="title">Title</label>
             <input

@@ -87,14 +87,55 @@
   font-size: 14px;
   color: var(--text-primary);
 }
+
+/* --- Base Styles for Action Buttons --- */
+.toggle-status-button,
 .remove-button {
   background: none;
-  border: 1px solid var(--status-failed-bg);
-  color: var(--status-failed-text);
+  border: 1px solid;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-status-button {
+  margin-right: 8px;
+}
+
+/* --- Secondary Action: Deactivate Button --- */
+.toggle-status-button {
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.toggle-status-button:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* --- Destructive Action: Remove Button --- */
+.remove-button {
+  border-color: var(--status-failed-text);
+  color: var(--status-failed-text);
+}
+
+.remove-button:hover {
+  background-color: var(--status-failed-bg);
+  color: #fff; /* White text on red background */
+}
+
+/* --- Positive Action: Activate Button (for inactive users) --- */
+.inactive-user .toggle-status-button {
+  border-color: var(--status-approved-text);
+  color: var(--status-approved-text);
+}
+
+.inactive-user .toggle-status-button:hover {
+  background-color: var(--status-approved-bg);
+  color: var(--status-approved-text);
 }
 
 /* Role Badges */
@@ -135,10 +176,4 @@
   /* Mute the text color and keep the line-through */
   color: var(--text-secondary);
   text-decoration: line-through;
-}
-
-/* You can style the new button as well */
-.toggle-status-button {
-  margin-right: 8px;
-  /* Add other styles similar to remove-button if you like */
 }

@@ -1,7 +1,6 @@
-// server/src/projects/projects.controller.ts
-
 import { type Request, type Response } from 'express';
-import { Project, ProjectCategory } from './project.model.js';
+import { Project, ProjectCategory, ProjectStatus } from './project.model.js';
+import { Message } from '../messages/message.model.js';
 
 /**
  * @desc    Get all projects, optionally filtered by category
@@ -20,7 +19,9 @@ export const getProjects = async (req: Request, res: Response) => {
       filter.category = category as ProjectCategory;
     }
 
-    const projects = await Project.find(filter).populate('team', 'name email');
+    const projects = await Project.find(filter)
+      .populate('team', 'name email')
+      .populate('client', 'clientName');
     res.status(200).json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -35,15 +36,21 @@ export const getProjects = async (req: Request, res: Response) => {
  */
 export const createProject = async (req: Request, res: Response) => {
   try {
-    const { name, description, category, status, startDate } = req.body;
+    // Add 'team' to the destructured properties
+    const { name, description, category, status, startDate, client, team } =
+      req.body;
     const newProject = new Project({
       name,
       description,
       category,
       status,
       startDate,
+      client,
+      team, // Add team to the new project object
     });
     const savedProject = await newProject.save();
+    // Populate both client and team for the response
+    await savedProject.populate(['client', 'team']);
     res.status(201).json(savedProject);
   } catch (error) {
     console.error('Error creating project:', error);
@@ -60,12 +67,18 @@ export const updateProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const updatedProject = await Project.findByIdAndUpdate(id, req.body, {
-      new: true, // Return the updated document
+      new: true,
       runValidators: true,
-    });
+    }).populate(['client', 'team']); // Populate both client and team
+
     if (!updatedProject) {
       return res.status(404).json({ message: 'Project not found.' });
     }
+
+    if (updatedProject.status === ProjectStatus.COMPLETED) {
+      await Message.deleteMany({ project: updatedProject._id });
+    }
+
     res.status(200).json(updatedProject);
   } catch (error) {
     console.error('Error updating project:', error);

@@ -6,6 +6,9 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
+import { createServer } from 'http';
+import { initWebSocketServer } from './websockets.js';
+
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -33,16 +36,30 @@ import roleRoutes from './api/v1/roles/roles.routes.js';
 import scheduleRoutes from './api/v1/schedules/schedules.routes.js';
 import timeLogRoutes from './api/v1/timelogs/timeLog.routes.js';
 import requestRoutes from './api/v1/requests/clockInRequest.routes.js';
+import clientRoutes from './api/v1/client/client.routes.js';
+import contractRoutes from './api/v1/contracts/contract.routes.js';
+import templateRoutes from './api/v1/templates/template.routes.js';
+import financialRoutes from './api/v1/financials/financials.routes.js';
+import subscriptionRoutes from './api/v1/subscriptions/subscriptions.routes.js';
+import dashboardRoutes from './api/v1/dashboard/dashboard.routes.js';
+import clientPortalAuthRoutes from './api/v1/client-portal-auth/auth.routes.js';
+import portalDashboardRoutes from './api/v1/client-portal/dashboard/dashboard.routes.js';
+import messageRoutes from './api/v1/messages/message.routes.js';
+import portalProjectRoutes from './api/v1/client-portal/projects/projects.routes.js';
+import feedbackRoutes from './api/v1/feedback/feedback.routes.js';
 
 connectDB();
 
 const app = express();
+const server = createServer(app);
 const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors()); // Allow requests from your frontend
 app.use(helmet()); // Basic security headers
 app.use(express.json()); // To parse JSON request bodies
+
+initWebSocketServer(server);
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/articles', articleRoutes);
@@ -67,6 +84,17 @@ app.use('/api/v1/roles', roleRoutes);
 app.use('/api/v1/schedules', scheduleRoutes);
 app.use('/api/v1/timelogs', timeLogRoutes);
 app.use('/api/v1/requests', requestRoutes);
+app.use('/api/v1/clients', clientRoutes);
+app.use('/api/v1/contracts', contractRoutes);
+app.use('/api/v1/templates', templateRoutes);
+app.use('/api/v1/financials', financialRoutes);
+app.use('/api/v1/subscriptions', subscriptionRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/client-portal-auth', clientPortalAuthRoutes);
+app.use('/api/v1/portal/dashboard', portalDashboardRoutes);
+app.use('/api/v1/messages', messageRoutes);
+app.use('/api/v1/portal/projects', portalProjectRoutes);
+app.use('/api/v1/feedback', feedbackRoutes);
 
 // A simple health check route to verify the server is running
 app.get('/api/v1/health', (req: Request, res: Response) => {
@@ -74,6 +102,6 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server is listening on port ${PORT}`);
 });

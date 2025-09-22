@@ -1,0 +1,80 @@
+import { Schema, model, Document, Types } from 'mongoose';
+
+// Interface for nested contact documents
+interface IContact extends Types.Subdocument {
+  name: string;
+  role: string;
+  email: string;
+  phone?: string;
+}
+
+// Interface for nested billing documents
+interface IBillingDetails extends Types.Subdocument {
+  paymentMethod?: string;
+  subscriptionPlan?: string;
+  outstandingBalance?: number;
+}
+
+// Main Client Interface
+export interface IClient extends Document {
+  clientName: string;
+  primaryContact: IContact;
+  additionalContacts: IContact[];
+  status: 'Active' | 'Inactive' | 'Prospect' | 'Lead' | 'Suspended';
+  address?: string;
+  website?: string;
+  industry?: string;
+  servicesPurchased: string[];
+  assignedProjects: Types.ObjectId[];
+  assignedTeamMembers: Types.ObjectId[];
+  contractStartDate?: Date;
+  contractEndDate?: Date;
+  billingDetails: IBillingDetails;
+  securitySlaLevel?: 'Basic' | 'Advanced' | 'Enterprise';
+  incidentHistory: string[];
+  preferredCommunicationMethod?: string;
+}
+
+const contactSchema = new Schema<IContact>({
+  name: { type: String, required: true },
+  role: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: String,
+});
+
+const billingDetailsSchema = new Schema<IBillingDetails>({
+  paymentMethod: String,
+  subscriptionPlan: String,
+  outstandingBalance: { type: Number, default: 0 },
+});
+
+const clientSchema = new Schema<IClient>(
+  {
+    clientName: { type: String, required: true, trim: true },
+    primaryContact: { type: contactSchema, required: true },
+    additionalContacts: [contactSchema],
+    status: {
+      type: String,
+      enum: ['Active', 'Inactive', 'Prospect', 'Lead', 'Suspended'],
+      default: 'Active',
+    },
+    address: String,
+    website: String,
+    industry: String,
+    servicesPurchased: [String],
+    assignedProjects: [{ type: Schema.Types.ObjectId, ref: 'Project' }],
+    assignedTeamMembers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    contractStartDate: Date,
+    contractEndDate: Date,
+    billingDetails: { type: billingDetailsSchema, default: {} },
+    securitySlaLevel: {
+      type: String,
+      enum: ['Basic', 'Advanced', 'Enterprise'],
+    },
+    incidentHistory: [String],
+    preferredCommunicationMethod: String,
+  },
+  { timestamps: true }
+);
+
+export const Client = model<IClient>('Client', clientSchema);

@@ -1,0 +1,33 @@
+.project-details-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.details-panel,
+.chat-panel {
+  background-color: var(--background-secondary);
+  padding: 25px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.details-panel h2,
+.chat-panel h2 {
+  margin-top: 0;
+  font-size: 1.25em;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background-color: var(--background-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 10px 15px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: bold;
+}

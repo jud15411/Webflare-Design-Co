@@ -30,8 +30,6 @@ interface ReportsData {
   securityIncidents: SecurityReport[];
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
-
 const ReportsPage = () => {
   const [reports, setReports] = useState<ReportsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,7 +41,7 @@ const ReportsPage = () => {
       try {
         setError('');
         setLoading(true);
-        const { data } = await axios.get(`${API_URL}/api/v1/reports`, {
+        const { data } = await axios.get(`/api/v1/reports`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

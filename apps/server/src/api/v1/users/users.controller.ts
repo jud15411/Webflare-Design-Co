@@ -92,38 +92,66 @@ export const removeUser = async (req: Request, res: Response) => {
   }
 };
 
+// @desc    Update user profile information
+// @route   PATCH /api/v1/users/profile
 export const updateUserProfile = async (req: AuthRequest, res: Response) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .json({ message: 'Not authorized to perform this action.' });
-  }
   try {
-    const userId = req.user.id;
-    const { name, email, bio, location } = userProfileSchema.parse(req.body);
-
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user!._id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.name = name;
-    user.email = email;
-    user.bio = bio || '';
-    user.location = location || '';
+    // Update fields
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.bio = req.body.bio || user.bio;
+    user.location = req.body.location || user.location;
 
-    await user.save();
-    await user.populate('role');
+    const updatedUser = await user.save();
 
-    res.status(200).json(user.toJSON());
+    // Send back a clean user object without sensitive data
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      bio: updatedUser.bio,
+      location: updatedUser.location,
+      role: req.user!.role, // Preserve role from the authenticated user
+    });
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    res.status(500).json({ message: 'Server error while updating profile.' });
+  }
+};
+
+// @desc    Update user password
+// @route   PATCH /api/v1/users/update-password
+export const updateUserPassword = async (req: AuthRequest, res: Response) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
       return res
         .status(400)
-        .json({ message: 'Invalid data provided.', errors: error.issues });
+        .json({ message: 'Please provide both current and new passwords.' });
     }
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Server error while updating profile.' });
+
+    const user = await User.findById(req.user!._id).select('+password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Check if the current password is correct
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Incorrect current password.' });
+    }
+
+    // Set and save the new password (hashing is handled by the model's pre-save hook)
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error while updating password.' });
   }
 };
 

@@ -10,8 +10,6 @@ interface DataRetentionPolicy {
   auditLogs: number;
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
-
 interface DataRetentionSubpageProps {
   onBack: () => void;
 }
@@ -26,9 +24,13 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
 
   const fetchPolicy = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/api/v1/data-retention`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // Fix: Update API endpoint to match the backend
+      const { data } = await axios.get(
+        `/api/v1/settings/system/data-retention`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setPolicy(data);
     } catch (err) {
       setError('Failed to fetch data retention policy.');
@@ -54,7 +56,8 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`${API_URL}/api/v1/data-retention`, policy, {
+      // Fix: Update API endpoint to match the backend
+      await axios.put(`/api/v1/settings/system/data-retention`, policy, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Data retention policy updated successfully!');

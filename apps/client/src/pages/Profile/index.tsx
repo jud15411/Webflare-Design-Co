@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext'; // Make sure this path is correct
+import { useAuth } from '../../contexts/AuthContext';
 import './ProfilePage.css';
 
 export const ProfilePage: React.FC = () => {
-  const { user, setUser } = useAuth(); // Assuming setUser updates the user in your context
+  const { user, setUser, token } = useAuth();
 
-  const [formData, setFormData] = useState({
+  // State for profile information
+  const [profileData, setProfileData] = useState({
     name: '',
     email: '',
     bio: '',
     location: '',
   });
+  const [profileMessage, setProfileMessage] = useState('');
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
 
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // State for password change
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
-  // When the component loads, pre-fill the form with the current user's data
   useEffect(() => {
     if (user) {
-      setFormData({
+      setProfileData({
         name: user.name || '',
         email: user.email || '',
         bio: user.bio || '',
@@ -27,70 +35,101 @@ export const ProfilePage: React.FC = () => {
     }
   }, [user]);
 
-  const handleChange = (
+  const handleProfileChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setProfileData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setMessage('');
+    setIsProfileLoading(true);
+    setProfileMessage('');
 
     try {
-      // Get the token from local storage or your auth context
-      const token = localStorage.getItem('userToken'); // Or however you store it
-
       const response = await fetch('/api/v1/users/profile', {
-        // Correct API endpoint
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Include the auth token
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(profileData),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update profile.');
       }
-
       const updatedUser = await response.json();
-
-      // Update the user state in the global auth context
-      if (setUser) {
-        setUser(updatedUser);
-      }
-
-      setMessage('✅ Profile updated successfully!');
+      if (setUser) setUser(updatedUser);
+      setProfileMessage('✅ Profile updated successfully!');
     } catch (error: any) {
-      setMessage(`❌ Error: ${error.message}`);
+      setProfileMessage(`❌ Error: ${error.message}`);
     } finally {
-      setIsLoading(false);
+      setIsProfileLoading(false);
     }
   };
 
-  if (!user) {
-    return <div>Loading profile...</div>;
-  }
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMessage('❌ New passwords do not match.');
+      return;
+    }
+    setIsPasswordLoading(true);
+    setPasswordMessage('');
+
+    try {
+      const response = await fetch('/api/v1/users/update-password', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update password.');
+      }
+      setPasswordMessage('✅ Password updated successfully!');
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      }); // Clear fields
+    } catch (error: any) {
+      setPasswordMessage(`❌ Error: ${error.message}`);
+    } finally {
+      setIsPasswordLoading(false);
+    }
+  };
+
+  if (!user) return <div>Loading profile...</div>;
 
   return (
     <div className="profile-page-container">
       <div className="profile-form-wrapper">
         <h2>Profile Settings</h2>
         <p>Update your personal and account information.</p>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleProfileSubmit}>
+          {/* Profile fields... */}
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
               type="text"
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              value={profileData.name}
+              onChange={handleProfileChange}
               required
             />
           </div>
@@ -100,8 +139,8 @@ export const ProfilePage: React.FC = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={profileData.email}
+              onChange={handleProfileChange}
               required
             />
           </div>
@@ -111,8 +150,8 @@ export const ProfilePage: React.FC = () => {
               type="text"
               id="location"
               name="location"
-              value={formData.location}
-              onChange={handleChange}
+              value={profileData.location}
+              onChange={handleProfileChange}
               placeholder="e.g., Canton, NY"
             />
           </div>
@@ -122,15 +161,65 @@ export const ProfilePage: React.FC = () => {
               id="bio"
               name="bio"
               rows={4}
-              value={formData.bio}
-              onChange={handleChange}
+              value={profileData.bio}
+              onChange={handleProfileChange}
               placeholder="Tell us a little about yourself..."></textarea>
           </div>
-          <button type="submit" className="save-button" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save Changes'}
+          <button
+            type="submit"
+            className="save-button"
+            disabled={isProfileLoading}>
+            {isProfileLoading ? 'Saving...' : 'Save Changes'}
           </button>
         </form>
-        {message && <p className="form-message">{message}</p>}
+        {profileMessage && <p className="form-message">{profileMessage}</p>}
+      </div>
+
+      {/* --- New Password Change Form --- */}
+      <div className="profile-form-wrapper password-section">
+        <h2>Change Password</h2>
+        <form onSubmit={handlePasswordSubmit}>
+          <div className="form-group">
+            <label htmlFor="currentPassword">Current Password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              value={passwordData.currentPassword}
+              onChange={handlePasswordChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="newPassword">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={passwordData.newPassword}
+              onChange={handlePasswordChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={passwordData.confirmPassword}
+              onChange={handlePasswordChange}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="save-button"
+            disabled={isPasswordLoading}>
+            {isPasswordLoading ? 'Updating...' : 'Update Password'}
+          </button>
+        </form>
+        {passwordMessage && <p className="form-message">{passwordMessage}</p>}
       </div>
     </div>
   );

@@ -1,0 +1,18 @@
+# Dockerfile.portal
+
+FROM node:20-alpine
+WORKDIR /usr/src/app
+
+# Copy package files and install dependencies for the portal app
+COPY apps/portal/package*.json ./
+RUN npm install
+
+# Copy the rest of the portal application code
+COPY apps/portal .
+
+# [cite_start]Expose the Vite development server port [cite: 4]
+EXPOSE 5173
+
+# [cite_start]The command to start the Vite dev server [cite: 5]
+# [cite_start]The '--host' flag is crucial to make it accessible from other containers. [cite: 5]
+CMD ["npm", "run", "dev", "--", "--host"]

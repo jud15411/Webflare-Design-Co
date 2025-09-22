@@ -28,7 +28,7 @@ const StaffSettingsPage: React.FC<StaffSettingsProps> = ({ user }) => {
                   <strong>Email:</strong> {user.email}
                 </p>
                 <p>
-                  <strong>Role:</strong> {user.role.toUpperCase()}
+                  <strong>Role:</strong> {user.role.name}
                 </p>
               </div>
             </div>

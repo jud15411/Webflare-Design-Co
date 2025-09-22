@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type FormEvent } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import '../../App.css'; // Import global styles
+import '../../App.css';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import './SchedulesPage.css';
 
@@ -27,7 +27,6 @@ export const SchedulesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
 
-  // State for the "Add Schedule" form
   const [newSchedule, setNewSchedule] = useState({
     user: '',
     startTime: '',
@@ -35,23 +34,25 @@ export const SchedulesPage: React.FC = () => {
     notes: '',
   });
 
-  // State for the publish confirmation modal
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
   const [selectedScheduleIds, setSelectedScheduleIds] = useState<string[]>([]);
 
-  // Helper function to format date
+  // More compact date/time formatters
   const formatDate = (dateString: string): string => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
+    return new Date(dateString).toLocaleDateString(undefined, {
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+      year: 'numeric',
+    });
   };
 
-  // Fetch schedules and users on initial load and on refresh
+  const formatTime = (dateString: string): string => {
+    return new Date(dateString).toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
   useEffect(() => {
     const fetchAllData = async () => {
       if (!token) return;
@@ -79,7 +80,6 @@ export const SchedulesPage: React.FC = () => {
 
         setSchedules(schedulesData);
         setUsers(usersData);
-        // Set the default user for the form to the first user in the list
         if (usersData.length > 0 && !newSchedule.user) {
           setNewSchedule((prev) => ({ ...prev, user: usersData[0]._id }));
         }
@@ -105,13 +105,19 @@ export const SchedulesPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     try {
+      const scheduleToSend = {
+        ...newSchedule,
+        startTime: new Date(newSchedule.startTime).toISOString(),
+        endTime: new Date(newSchedule.endTime).toISOString(),
+      };
+
       const response = await fetch('/api/v1/schedules', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newSchedule),
+        body: JSON.stringify(scheduleToSend),
       });
       if (!response.ok) {
         const errData = await response.json();
@@ -138,10 +144,7 @@ export const SchedulesPage: React.FC = () => {
   };
 
   const handleConfirmPublish = async () => {
-    if (selectedScheduleIds.length === 0) {
-      alert('Please select at least one schedule to publish.');
-      return;
-    }
+    if (selectedScheduleIds.length === 0) return;
     setError(null);
     try {
       const response = await fetch('/api/v1/schedules/publish', {
@@ -170,10 +173,12 @@ export const SchedulesPage: React.FC = () => {
         <h1>Team Schedules</h1>
       </div>
       {error && <p className="error-message">{error}</p>}
-      <div className="team-management-layout">
-        <div className="add-user-card">
-          <h2>Create New Schedule</h2>
-          <form onSubmit={handleCreateSchedule}>
+
+      {/* --- Form is now a standalone card --- */}
+      <div className="schedule-form-card">
+        <h2>Create New Schedule</h2>
+        <form onSubmit={handleCreateSchedule}>
+          <div className="form-grid">
             <div className="form-group">
               <label htmlFor="user">Assign To</label>
               <select
@@ -208,7 +213,7 @@ export const SchedulesPage: React.FC = () => {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group form-group-full">
               <label htmlFor="notes">Notes (Optional)</label>
               <textarea
                 name="notes"
@@ -217,69 +222,77 @@ export const SchedulesPage: React.FC = () => {
                 rows={3}
               />
             </div>
-            <button type="submit" className="add-user-button">
-              Create Schedule
-            </button>
-          </form>
-        </div>
-        <div className="team-list-card">
-          <div className="page-header" style={{ marginBottom: '15px' }}>
-            <h2 style={{ marginBottom: '0' }}>Upcoming Schedules</h2>
-            <button
-              className="add-user-button"
-              onClick={() => setIsPublishModalOpen(true)}
-              disabled={selectedScheduleIds.length === 0}
-              style={{ padding: '8px 16px' }}>
-              Publish Selected
-            </button>
           </div>
-          {loading ? (
-            <p>Loading schedules...</p>
-          ) : schedules.length > 0 ? (
-            <div className="table-container">
-              <table className="pro-table">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>User</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Notes</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {schedules.map((schedule) => (
-                    <tr key={schedule._id}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={selectedScheduleIds.includes(schedule._id)}
-                          onChange={() => handleSelectSchedule(schedule._id)}
-                          disabled={schedule.status === 'Published'}
-                        />
-                      </td>
-                      <td>{schedule.user.name}</td>
-                      <td>{formatDate(schedule.startTime)}</td>
-                      <td>{formatDate(schedule.endTime)}</td>
-                      <td>{schedule.notes || '-'}</td>
-                      <td>
-                        <span
-                          className={`status-badge status-${schedule.status
-                            .toLowerCase()
-                            .replace(' ', '-')}`}>
-                          {schedule.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p className="no-projects-message">No schedules found.</p>
-          )}
+          <button type="submit" className="create-schedule-btn">
+            Create Schedule
+          </button>
+        </form>
+      </div>
+
+      {/* --- Schedules List section --- */}
+      <div className="schedules-list-container">
+        <div className="schedules-list-header">
+          <h2>Upcoming Schedules</h2>
+          <button
+            className="publish-schedules-btn"
+            onClick={() => setIsPublishModalOpen(true)}
+            disabled={selectedScheduleIds.length === 0}>
+            Publish Selected ({selectedScheduleIds.length})
+          </button>
         </div>
+
+        {loading ? (
+          <p>Loading schedules...</p>
+        ) : schedules.length > 0 ? (
+          <div className="schedules-grid">
+            {schedules.map((schedule) => (
+              <div
+                key={schedule._id}
+                className={`schedule-card ${schedule.status.toLowerCase()}`}>
+                <div className="card-selection">
+                  <input
+                    type="checkbox"
+                    checked={selectedScheduleIds.includes(schedule._id)}
+                    onChange={() => handleSelectSchedule(schedule._id)}
+                    disabled={schedule.status === 'Published'}
+                  />
+                </div>
+                <div className="card-content">
+                  <div className="card-header">
+                    <span className="user-name">{schedule.user.name}</span>
+                    <span
+                      className={`status-badge status-${schedule.status.toLowerCase()}`}>
+                      {schedule.status}
+                    </span>
+                  </div>
+                  <div className="card-body">
+                    <div className="time-info">
+                      <div className="time-block">
+                        <label>Starts</label>
+                        <span>{formatDate(schedule.startTime)}</span>
+                        <span>{formatTime(schedule.startTime)}</span>
+                      </div>
+                      <div className="time-arrow">→</div>
+                      <div className="time-block">
+                        <label>Ends</label>
+                        <span>{formatDate(schedule.endTime)}</span>
+                        <span>{formatTime(schedule.endTime)}</span>
+                      </div>
+                    </div>
+                    {schedule.notes && (
+                      <div className="notes-info">
+                        <label>Notes</label>
+                        <p>{schedule.notes}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="no-projects-message">No schedules found.</p>
+        )}
       </div>
 
       <ConfirmationModal

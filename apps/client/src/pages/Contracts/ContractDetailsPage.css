@@ -1,0 +1,134 @@
+.contract-details-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.contract-actions-panel,
+.contract-data-panel {
+  background-color: var(--background-secondary);
+  padding: 25px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.contract-actions-panel h3 {
+  margin-top: 0;
+  color: var(--accent-primary);
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* --- Base Button Enhancements --- */
+.action-buttons button {
+  width: 100%;
+  padding: 10px 15px; /* Slightly more horizontal padding */
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1px solid transparent; /* Start with a transparent border */
+  transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+/* --- Primary & Secondary Button Styles --- */
+
+/* For solid, primary action buttons like Save and Preview */
+.save-btn,
+.preview-btn {
+  background-color: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+/* A slightly different color for Preview to distinguish it from Save */
+.preview-btn {
+  background-color: #5a67d8; /* A nice indigo color */
+  border-color: #5a67d8;
+}
+
+/* For secondary, outline buttons like Edit and Cancel */
+.edit-btn,
+.cancel-btn {
+  background-color: transparent;
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.back-btn {
+  background-color: var(--background-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+/* --- Interactive Hover & Active States --- */
+
+/* Darken solid buttons on hover */
+.save-btn:hover,
+.preview-btn:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* Add a slight lift */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Fill outline buttons on hover */
+.edit-btn:hover,
+.cancel-btn:hover {
+  background-color: var(--accent-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn:hover {
+  background-color: var(--border-color);
+}
+
+/* Add a "pressed" effect for all buttons */
+.action-buttons button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Style for disabled buttons */
+.action-buttons button:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.contract-data-panel h3 {
+  margin-top: 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.form-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-fields-grid .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid transparent; /* Make border transparent by default */
+  background-color: var(--background-secondary);
+  color: var(--text-secondary);
+  border-radius: 4px;
+}
+
+.form-fields-grid .form-group input.editable {
+  border: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}

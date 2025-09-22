@@ -1,7 +1,5 @@
-// server/src/projects/project.model.ts
-
 import { Schema, model, Document } from 'mongoose';
-import { type User } from '../auth/user.model.js'; // Assuming you want to link users
+import { type User } from '../auth/user.model.js';
 
 export enum ProjectCategory {
   CYBERSECURITY = 'Cybersecurity',
@@ -23,6 +21,8 @@ export interface IProject extends Document {
   startDate: Date;
   endDate?: Date;
   team: Schema.Types.ObjectId[] | (typeof User)[];
+  client: Schema.Types.ObjectId;
+  clientFeedback?: string; // <-- Add this line
 }
 
 const projectSchema = new Schema<IProject>(
@@ -42,6 +42,12 @@ const projectSchema = new Schema<IProject>(
     startDate: { type: Date, default: Date.now },
     endDate: { type: Date },
     team: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    client: {
+      type: Schema.Types.ObjectId,
+      ref: 'Client',
+      required: true,
+    },
+    clientFeedback: { type: String }, // <-- Add this line
   },
   { timestamps: true }
 );

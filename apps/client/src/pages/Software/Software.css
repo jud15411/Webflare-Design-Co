@@ -1,128 +1,195 @@
-.software-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  color: #333;
+/* Software.css - Revamped to match admin panel theme */
+
+.kb-page-container {
+  padding: 30px;
 }
 
-.software-header {
-  text-align: center;
+.kb-header {
   margin-bottom: 30px;
 }
 
-.software-header h1 {
-  font-size: 2.5em;
-  color: #007bff;
+.kb-header h1 {
+  font-size: 1.8em;
+  margin-bottom: 5px;
 }
 
-.software-header p {
-  color: #555;
+.kb-header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
-.software-content {
+.kb-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 30px;
 }
 
-@media (min-width: 768px) {
-  .software-content {
-    grid-template-columns: 1fr 2fr;
+/* On larger screens, use a two-column layout */
+@media (min-width: 992px) {
+  .kb-layout {
+    grid-template-columns: 380px 1fr;
   }
 }
 
-.software-create-form,
-.software-asset-list {
-  background-color: #f9f9f9;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* --- Create Software Form --- */
+.kb-create-form-card {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
 }
 
-.software-create-form h2,
-.software-asset-list h2 {
-  font-size: 1.8em;
+.kb-create-form-card h2 {
+  font-size: 1.25rem;
   margin-top: 0;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.software-form {
+.kb-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.software-form input,
-.software-form textarea {
+.kb-form input,
+.kb-form select,
+.kb-form textarea {
+  width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.software-form textarea {
+.kb-form input:focus,
+.kb-form select:focus,
+.kb-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.2);
+}
+
+.kb-form textarea {
   min-height: 100px;
   resize: vertical;
 }
 
-.software-btn-submit {
-  background-color: #28a745;
-  color: white;
-  border: none;
+.kb-btn-submit {
+  width: 100%;
   padding: 12px;
-  border-radius: 5px;
-  font-size: 1.1em;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
-.software-btn-submit:hover {
-  background-color: #218838;
+.kb-btn-submit:hover {
+  background-color: var(--accent-primary-darker);
 }
 
-.software-error {
-  color: #dc3545;
+.kb-error {
+  color: var(--status-failed-text);
   font-size: 0.9em;
+  margin-top: 10px;
 }
 
-.software-assets-grid {
+/* --- Software Asset List --- */
+.kb-list-card {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+.kb-list-card h2 {
+  font-size: 1.25rem;
+  margin-top: 0;
+}
+
+.kb-assets-grid {
   display: grid;
   gap: 20px;
 }
 
-.software-asset-card {
-  background-color: #fff;
-  border: 1px solid #eee;
-  padding: 20px;
+.kb-asset-card {
+  background-color: var(--background-primary);
+  border: 1px solid var(--border-color);
+  padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kb-asset-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
-.software-asset-card h3 {
+.kb-asset-card h3 {
   margin-top: 0;
-  color: #0056b3;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+  color: var(--text-primary);
 }
 
-.software-asset-card p {
-  font-size: 0.9em;
-  color: #555;
-  line-height: 1.5;
+.kb-asset-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
 }
 
-.software-btn-delete {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
+.kb-asset-notes {
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap; /* Preserves formatting */
+}
+
+.kb-asset-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 15px;
+}
+
+.kb-btn-edit,
+.kb-btn-delete {
+  background: none;
+  border: 1px solid;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
 }
 
-.software-btn-delete:hover {
-  background-color: #c82333;
+.kb-btn-edit {
+  color: var(--status-pending-text);
+  border-color: var(--status-pending-text);
+}
+.kb-btn-edit:hover {
+  background-color: var(--status-pending-bg);
+}
+
+.kb-btn-delete {
+  color: var(--status-failed-text);
+  border-color: var(--status-failed-text);
+}
+.kb-btn-delete:hover {
+  background-color: var(--status-failed-bg);
+}
+
+.kb-no-assets,
+.kb-loading {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px;
+  font-style: italic;
 }

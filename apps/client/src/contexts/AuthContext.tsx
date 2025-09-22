@@ -9,24 +9,33 @@ import React, {
 } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
-// --- Type Definitions ---\
+// --- Type Definitions ---
+
+// ✅ CORRECTED: This now correctly reflects your lowercase database roles.
+interface Role {
+  _id: string;
+  name: 'ceo' | 'developer' | 'cto' | 'sales';
+}
+
+// ✅ CORRECTED: Update the User interface to use the Role type
 export interface User {
   id: string;
-  role: 'ceo' | 'developer' | 'cto' | 'sales';
+  role: Role; // 'role' is an object
   name: string;
   email: string;
-  bio?: string; // Optional field for the user's bio
-  location?: string; // Optional field for the user's location
+  bio?: string;
+  location?: string;
 }
 
 interface LoginData {
   token: string;
-  user?: User; // Optional user data from backend
+  user?: User;
 }
 
+// ✅ CORRECTED: The JWT payload should also contain the populated role
 interface DecodedToken {
   id: string;
-  role: 'ceo' | 'developer' | 'cto' | 'sales';
+  role: Role; // The token itself should contain the role object
   name: string;
   email: string;
   iat: number;
@@ -40,11 +49,10 @@ interface AuthContextType {
   isLoading: boolean;
   login: (loginData: LoginData) => void;
   logout: () => void;
-  // --- ADD THIS LINE ---
-  setUser: Dispatch<SetStateAction<User | null>>; // Expose the state setter
+  setUser: Dispatch<SetStateAction<User | null>>;
 }
 
-// --- Context Creation ---\
+// --- Context Creation ---
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
@@ -55,13 +63,13 @@ export const useAuth = () => {
   return context;
 };
 
-// --- Helper Functions ---\
+// --- Helper Functions ---
 const isTokenExpired = (token: string): boolean => {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return decoded.exp * 1000 <= Date.now();
   } catch {
-    return true; // If token is invalid, treat it as expired
+    return true;
   }
 };
 
@@ -79,7 +87,7 @@ const getUserFromToken = (token: string): User | null => {
   }
 };
 
-// --- Auth Provider Component ---\
+// --- Auth Provider Component ---
 interface AuthProviderProps {
   children: React.ReactNode;
 }
@@ -91,7 +99,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize auth state from token on initial load
   useEffect(() => {
     const initializeAuth = () => {
       setIsLoading(true);
@@ -114,19 +121,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // Auto logout when token expires
   useEffect(() => {
     if (!token) return;
-
     const checkTokenExpiration = () => {
       if (isTokenExpired(token)) {
         logout();
       }
     };
-
     checkTokenExpiration();
     const interval = setInterval(checkTokenExpiration, 60000);
-
     return () => clearInterval(interval);
   }, [token]);
 
@@ -159,8 +162,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading,
     login,
     logout,
-    // --- ADD THIS LINE ---
-    setUser, // Add setUser to the context value
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

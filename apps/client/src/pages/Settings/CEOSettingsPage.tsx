@@ -4,14 +4,13 @@ import ServicesManagementSubpage from './Company/ServicesManagementSubpage';
 import PricingBillingSubpage from './Billing/PricingBillingSubpage';
 import InvoicesPaymentsSubpage from './Billing/InvoicesPaymentsSubpage';
 import ClientPortalSubpage from './Client-Portal/ClientPortalSubpage';
-import UserRoleManagementSubpage from './Users/UserRoleManagementSubpage';
 import RoleBasedPermissionsSubpage from './Users/RoleBasedPermissionsSubpage';
 import MFAEnforcementSubpage from './Users/MFAEnforcementSubpage';
 import StandardAgreementsSubpage from './Legal/StandardAgreementsSubpage';
 import AuditLogsSubpage from './System/AuditLogsSubpage';
 import APIKeysIntegrationsSubpage from './System/APIKeysIntegrationsSubpage';
 import BackupRestoreSubpage from './System/BackupRestoreSubpage';
-import DataRetentionSubpage from './System/DataRetentionSubpage'; // Import the new component
+import DataRetentionSubpage from './System/DataRetentionSubpage';
 import './Settings.css';
 
 // Type to define which subpage is active
@@ -22,7 +21,6 @@ type ActivePage =
   | 'pricingBilling'
   | 'invoicesPayments'
   | 'clientPortal'
-  | 'userRole'
   | 'permissions'
   | 'mfa'
   | 'agreements'
@@ -34,7 +32,51 @@ type ActivePage =
 const CEOSettingsPage = () => {
   const [activePage, setActivePage] = useState<ActivePage>('main');
 
-  const renderMainSettings = () => (
+  // If a subpage is active, render it. Otherwise, render the main settings grid.
+  if (activePage !== 'main') {
+    // This switch makes the component rendering logic much cleaner and more direct
+    switch (activePage) {
+      case 'companyInfo':
+        return <CompanyInfoSubpage onBack={() => setActivePage('main')} />;
+      case 'services':
+        return (
+          <ServicesManagementSubpage onBack={() => setActivePage('main')} />
+        );
+      case 'pricingBilling':
+        return <PricingBillingSubpage onBack={() => setActivePage('main')} />;
+      case 'invoicesPayments':
+        return <InvoicesPaymentsSubpage onBack={() => setActivePage('main')} />;
+      case 'clientPortal':
+        return <ClientPortalSubpage onBack={() => setActivePage('main')} />;
+      case 'permissions':
+        return (
+          <RoleBasedPermissionsSubpage onBack={() => setActivePage('main')} />
+        );
+      case 'mfa':
+        return <MFAEnforcementSubpage onBack={() => setActivePage('main')} />;
+      case 'agreements':
+        return (
+          <StandardAgreementsSubpage onBack={() => setActivePage('main')} />
+        );
+      case 'auditLogs':
+        return <AuditLogsSubpage onBack={() => setActivePage('main')} />;
+      case 'apiKeys':
+        return (
+          <APIKeysIntegrationsSubpage onBack={() => setActivePage('main')} />
+        );
+      case 'backupRestore':
+        return <BackupRestoreSubpage onBack={() => setActivePage('main')} />;
+      case 'dataRetention':
+        return <DataRetentionSubpage onBack={() => setActivePage('main')} />;
+      default:
+        // Fallback to main page if state is invalid
+        setActivePage('main');
+        return null;
+    }
+  }
+
+  // Render the main settings page if no subpage is selected
+  return (
     <div className="settings-container">
       <header className="settings-header">
         <h1>CEO Settings Dashboard</h1>
@@ -89,14 +131,6 @@ const CEOSettingsPage = () => {
         <section className="settings-section">
           <h2>User & Access Management</h2>
           <div className="settings-card-grid">
-            <div
-              className="settings-card"
-              onClick={() => setActivePage('userRole')}>
-              <h3>User & Role Management</h3>
-              <p>
-                Create, edit, and deactivate staff accounts and their roles.
-              </p>
-            </div>
             <div
               className="settings-card"
               onClick={() => setActivePage('permissions')}>
@@ -156,51 +190,6 @@ const CEOSettingsPage = () => {
         </section>
       </main>
     </div>
-  );
-
-  return (
-    <>
-      {activePage === 'main' && renderMainSettings()}
-      {activePage === 'companyInfo' && (
-        <CompanyInfoSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'services' && (
-        <ServicesManagementSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'pricingBilling' && (
-        <PricingBillingSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'invoicesPayments' && (
-        <InvoicesPaymentsSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'clientPortal' && (
-        <ClientPortalSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'userRole' && (
-        <UserRoleManagementSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'permissions' && (
-        <RoleBasedPermissionsSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'mfa' && (
-        <MFAEnforcementSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'agreements' && (
-        <StandardAgreementsSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'auditLogs' && (
-        <AuditLogsSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'apiKeys' && (
-        <APIKeysIntegrationsSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'backupRestore' && (
-        <BackupRestoreSubpage onBack={() => setActivePage('main')} />
-      )}
-      {activePage === 'dataRetention' && (
-        <DataRetentionSubpage onBack={() => setActivePage('main')} />
-      )}
-    </>
   );
 };
 

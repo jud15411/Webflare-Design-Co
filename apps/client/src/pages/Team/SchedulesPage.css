@@ -1,20 +1,180 @@
-/* src/pages/Team/SchedulesPage.css */
+/* src/pages/Team/SchedulesPage.css - Card Layout Version */
 
-.schedules-page-layout {
+/* --- Form Card Styling --- */
+.schedule-form-card {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 30px;
+  border: 1px solid var(--border-color);
+}
+
+.schedule-form-card h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.form-grid {
   display: grid;
-  grid-template-columns: 350px 1fr;
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-/* This overrides the global .pro-table style to allow wrapping */
-.schedules-page-layout .pro-table {
+.form-group-full {
+  grid-column: 1 / -1; /* Makes the notes field span full width */
+}
+
+/* --- Schedules List Styling --- */
+.schedules-list-container {
+  background-color: var(--background-secondary);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.schedules-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.schedules-list-header h2 {
+  margin: 0;
+}
+
+/* Grid for the cards */
+.schedules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+/* --- Individual Schedule Card Styling --- */
+.schedule-card {
+  background-color: var(--background-primary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.schedule-card.published {
+  opacity: 0.7;
+  background-color: var(--background-inactive);
+}
+
+.card-selection {
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border-color);
+}
+
+.card-selection input[type='checkbox'] {
+  transform: scale(1.3);
+  accent-color: var(--accent-primary);
+}
+
+.card-content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.time-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-block label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.time-block span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.time-arrow {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.notes-info label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.notes-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  white-space: pre-wrap; /* Respects line breaks */
+  word-break: break-word; /* Prevents overflow */
+}
+
+/* --- Shared Button/Message Styles --- */
+.create-schedule-btn,
+.publish-schedules-btn {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-schedule-btn {
+  margin-top: 10px;
   width: 100%;
-  table-layout: fixed; /* Ensures the table respects container width */
-  min-width: unset; /* Remove minimum width constraint */
 }
 
-/* This is the key fix: allow cell content to wrap */
-.schedules-page-layout .pro-table td,
-.schedules-page-layout .pro-table th {
-  white-space: normal;
+.publish-schedules-btn:hover {
+  background-color: var(--accent-primary-darker);
+}
+
+.publish-schedules-btn:disabled {
+  background: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.no-projects-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-style: italic;
 }

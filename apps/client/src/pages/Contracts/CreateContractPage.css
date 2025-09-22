@@ -1,0 +1,21 @@
+.contract-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  background-color: var(--background-secondary);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 20px;
+}

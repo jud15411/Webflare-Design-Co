@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
+import { navLinks, type NavItem } from '../../../components/Sidebar/navlinks';
 
-type UserRole = 'ceo' | 'developer' | 'cto' | 'sales';
-
-// Define the available features for which permissions can be set
-const features = [
-  'dashboard',
-  'knowledge-base',
-  'software-management',
-  'reports',
-  'settings',
-];
-
-interface Permissions {
-  [role: string]: string[];
+interface Role {
+  _id: string;
+  name: string;
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+const getFeatures = (items: NavItem[]): string[] => {
+  let features: string[] = [];
+  items.forEach((item) => {
+    features.push(item.key);
+    if (item.children) {
+      features = features.concat(getFeatures(item.children));
+    }
+  });
+  return features;
+};
+
+const allFeatures = getFeatures(navLinks.ceo); // Use CEO navlinks as the source of all features
+
+interface Permissions {
+  [roleName: string]: string[];
+}
 
 interface RoleBasedPermissionsSubpageProps {
   onBack: () => void;
@@ -29,19 +35,26 @@ const RoleBasedPermissionsSubpage: React.FC<
 > = ({ onBack }) => {
   const { token } = useAuth();
   const [permissions, setPermissions] = useState<Permissions | null>(null);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const fetchPermissions = async () => {
+  const fetchPermissionsAndRoles = async () => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/permissions`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setPermissions(data);
+      const [permissionsRes, rolesRes] = await Promise.all([
+        axios.get(`/api/v1/settings/users/permissions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get(`/api/v1/roles`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+      setPermissions(permissionsRes.data);
+      setRoles(rolesRes.data);
     } catch (err) {
-      setError('Failed to fetch permissions.');
+      setError('Failed to fetch permissions or roles.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -50,15 +63,15 @@ const RoleBasedPermissionsSubpage: React.FC<
 
   useEffect(() => {
     if (token) {
-      fetchPermissions();
+      fetchPermissionsAndRoles();
     }
   }, [token]);
 
-  const handlePermissionChange = (role: string, feature: string) => {
+  const handlePermissionChange = (roleName: string, feature: string) => {
     setPermissions((prevPermissions) => {
       if (!prevPermissions) return null;
 
-      const currentPermissions = prevPermissions[role];
+      const currentPermissions = prevPermissions[roleName];
       const hasPermission = currentPermissions?.includes(feature);
 
       const updatedPermissions = hasPermission
@@ -67,7 +80,7 @@ const RoleBasedPermissionsSubpage: React.FC<
 
       return {
         ...prevPermissions,
-        [role]: updatedPermissions,
+        [roleName]: updatedPermissions,
       };
     });
   };
@@ -75,9 +88,13 @@ const RoleBasedPermissionsSubpage: React.FC<
   const handleSave = async () => {
     if (!permissions) return;
     try {
-      await axios.put(`${API_URL}/api/v1/permissions`, permissions, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        `/api/v1/settings/users/permissions`,
+        { permissions },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       alert('Permissions updated successfully!');
     } catch (err) {
       setError('Failed to save permissions.');
@@ -89,12 +106,9 @@ const RoleBasedPermissionsSubpage: React.FC<
     return <div>Loading permissions...</div>;
   }
 
-  if (error || !permissions) {
+  if (error || !permissions || !roles) {
     return <div>{error || 'No permissions data available.'}</div>;
   }
-
-  // Corrected line to get the list of roles
-  const allRoles: UserRole[] = ['ceo', 'developer', 'cto', 'sales'];
 
   return (
     <div className="settings-subpage">
@@ -107,18 +121,22 @@ const RoleBasedPermissionsSubpage: React.FC<
       <main className="settings-main">
         <div className="settings-section">
           <h3>Set Access Controls</h3>
-          <p>Grant or revoke access to features for each role.</p>
+          <p>Grant or revoke access to pages for each role.</p>
           <div className="permissions-grid">
-            {allRoles.map((role) => (
-              <div key={role} className="permission-card">
-                <h4>{role.toUpperCase()}</h4>
+            {roles.map((role) => (
+              <div key={role._id} className="permission-card">
+                <h4>{role.name.toUpperCase()}</h4>
                 <div className="permission-list">
-                  {features.map((feature) => (
+                  {allFeatures.map((feature) => (
                     <label key={feature}>
                       <input
                         type="checkbox"
-                        checked={permissions[role]?.includes(feature) || false}
-                        onChange={() => handlePermissionChange(role, feature)}
+                        checked={
+                          permissions[role.name]?.includes(feature) || false
+                        }
+                        onChange={() =>
+                          handlePermissionChange(role.name, feature)
+                        }
                       />
                       {feature
                         .replace(/-/g, ' ')

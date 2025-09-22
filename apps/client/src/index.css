@@ -1,10 +1,17 @@
-/* apps/client/src/index.css */
+/* in apps/client/src/index.css */
 
-/* Import your theme variables so they are globally available */
 @import url('./App.css');
 
-body {
+/* ADD these styles to lock the viewport */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden; /* This is key: prevents the main window from scrolling */
   margin: 0;
+}
+
+body {
   font-family: var(--font-family);
   /* Do NOT set a background color here */
 }

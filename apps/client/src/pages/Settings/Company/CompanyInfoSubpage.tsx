@@ -9,8 +9,6 @@ interface CompanyInfo {
   contactEmail: string;
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
-
 interface CompanyInfoSubpageProps {
   onBack: () => void;
 }
@@ -24,12 +22,9 @@ const CompanyInfoSubpage: React.FC<CompanyInfoSubpageProps> = ({ onBack }) => {
   useEffect(() => {
     const fetchCompanyInfo = async () => {
       try {
-        const { data } = await axios.get(
-          `${API_URL}/api/v1/settings/company-info`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const { data } = await axios.get(`/api/v1/settings/company-info`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setCompanyInfo(data);
       } catch (err) {
         setError('Failed to fetch company information.');
@@ -50,7 +45,7 @@ const CompanyInfoSubpage: React.FC<CompanyInfoSubpageProps> = ({ onBack }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`${API_URL}/api/v1/settings/company-info`, companyInfo, {
+      await axios.put(`/api/v1/settings/company-info`, companyInfo, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Company information updated successfully!');

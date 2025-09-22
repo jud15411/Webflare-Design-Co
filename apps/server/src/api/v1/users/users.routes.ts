@@ -6,6 +6,7 @@ import {
   updateUserProfile,
   removeUser, // Import removeUser
   toggleUserStatus,
+  updateUserPassword,
 } from './users.controller.js';
 import { protect } from '../../middleware/auth.middleware.js';
 import { authorizeRoles } from '../../middleware/role.middleware.js';
@@ -27,5 +28,6 @@ router.route('/').get(getAllUsers).post(addUser);
 router.route('/:id').put(updateUserRole).delete(removeUser);
 
 router.route('/:id/status').patch(toggleUserStatus);
+router.patch('/update-password', updateUserPassword);
 
 export default router;

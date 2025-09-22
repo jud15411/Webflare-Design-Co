@@ -1,27 +1,20 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-// The TypeScript interface for a Task document
 export interface ITask extends Document {
   title: string;
   description: string;
   status: 'To Do' | 'In Progress' | 'Done';
   category: 'Cybersecurity' | 'Web Development';
   dueDate: Date;
-  assignedTo: Types.ObjectId; // Reference to the User model
+  assignedTo: Types.ObjectId;
+  project: Types.ObjectId;
+  clientFeedback?: string; // <-- Add this line
 }
 
-// The Mongoose schema
 const taskSchema = new Schema<ITask>(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
+    title: { type: String, required: true, trim: true },
+    description: { type: String, trim: true },
     status: {
       type: String,
       enum: ['To Do', 'In Progress', 'Done'],
@@ -32,15 +25,18 @@ const taskSchema = new Schema<ITask>(
       enum: ['Cybersecurity', 'Web Development'],
       required: true,
     },
-    dueDate: {
-      type: Date,
-      required: true,
-    },
+    dueDate: { type: Date, required: true },
     assignedTo: {
       type: Schema.Types.ObjectId,
-      ref: 'User', // This creates the link to the User collection
+      ref: 'User',
       required: true,
     },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true,
+    },
+    clientFeedback: { type: String }, // <-- Add this line
   },
   { timestamps: true }
 );

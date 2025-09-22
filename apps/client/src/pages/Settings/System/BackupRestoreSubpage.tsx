@@ -4,13 +4,11 @@ import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
 interface BackupPoint {
-  id: number;
+  _id: string;
   timestamp: string;
   sizeMB: number;
   type: 'manual' | 'automatic';
 }
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 interface BackupRestoreSubpageProps {
   onBack: () => void;
@@ -28,7 +26,8 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/backup`, {
+      // Fix: Update API endpoint to match the backend
+      const { data } = await axios.get(`/api/v1/settings/system/backup`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBackups(data);
@@ -51,8 +50,9 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
       window.confirm('Are you sure you want to create a new manual backup?')
     ) {
       try {
+        // Fix: Update API endpoint to match the backend
         await axios.post(
-          `${API_URL}/api/v1/backup`,
+          `/api/v1/settings/system/backup`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -67,15 +67,16 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
     }
   };
 
-  const handleRestoreBackup = async (id: number) => {
+  const handleRestoreBackup = async (id: string) => {
     if (
       window.confirm(
         'Are you sure you want to restore from this backup? This action cannot be undone.'
       )
     ) {
       try {
+        // Fix: Update API endpoint to match the backend
         await axios.post(
-          `${API_URL}/api/v1/backup/${id}/restore`,
+          `/api/v1/settings/system/backup/${id}/restore`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -123,13 +124,13 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
             <tbody>
               {backups.length > 0 ? (
                 backups.map((backup) => (
-                  <tr key={backup.id}>
+                  <tr key={backup._id}>
                     <td>{new Date(backup.timestamp).toLocaleString()}</td>
                     <td>{backup.type.toUpperCase()}</td>
                     <td>{backup.sizeMB.toFixed(2)}</td>
                     <td>
                       <button
-                        onClick={() => handleRestoreBackup(backup.id)}
+                        onClick={() => handleRestoreBackup(backup._id)}
                         className="delete-button">
                         Restore
                       </button>

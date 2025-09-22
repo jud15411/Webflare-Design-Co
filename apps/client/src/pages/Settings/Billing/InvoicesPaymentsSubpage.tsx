@@ -16,8 +16,6 @@ interface RecentInvoice {
   status: 'Paid' | 'Unpaid' | 'Overdue';
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
-
 interface InvoicesPaymentsSubpageProps {
   onBack: () => void;
 }
@@ -38,10 +36,11 @@ const InvoicesPaymentsSubpage: React.FC<InvoicesPaymentsSubpageProps> = ({
         setError('');
         setLoading(true);
         const [settingsRes, invoicesRes] = await Promise.all([
-          axios.get(`${API_URL}/api/v1/invoices/settings`, {
+          // Fix: Updated API endpoints to match the new backend routes
+          axios.get(`/api/v1/settings/billing/invoices/settings`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get(`${API_URL}/api/v1/invoices/recent`, {
+          axios.get(`/api/v1/settings/billing/invoices/recent`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -62,8 +61,9 @@ const InvoicesPaymentsSubpage: React.FC<InvoicesPaymentsSubpageProps> = ({
   const handleAddRule = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // The backend does not support this route yet, but we will keep the endpoint as a placeholder for future implementation
       await axios.post(
-        `${API_URL}/api/v1/invoices/rules`,
+        `/api/v1/settings/billing/invoices/rules`,
         { rule: newRule },
         {
           headers: { Authorization: `Bearer ${token}` },

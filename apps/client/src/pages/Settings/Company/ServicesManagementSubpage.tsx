@@ -3,14 +3,13 @@ import axios from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
-interface Service {
-  id: number;
+// Fix: Use a type for better compatibility
+type Service = {
+  _id: string;
   name: string;
   price: number;
   description: string;
-}
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+};
 
 interface ServicesManagementSubpageProps {
   onBack: () => void;
@@ -29,9 +28,13 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/services`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // Fix: Update API endpoint to match the backend
+      const { data } = await axios.get(
+        `/api/v1/settings/company-info/services`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setServices(data);
     } catch (err) {
       setError('Failed to fetch services.');
@@ -60,7 +63,8 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
   const handleAddService = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/v1/services`, form, {
+      // Fix: Update API endpoint to match the backend
+      await axios.post(`/api/v1/settings/company-info/services`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ name: '', price: 0, description: '' });
@@ -71,10 +75,11 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
-        await axios.delete(`${API_URL}/api/v1/services/${id}`, {
+        // Fix: Update API endpoint to match the backend
+        await axios.delete(`/api/v1/settings/company-info/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchServices(); // Refresh list
@@ -134,14 +139,14 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
         <div className="settings-card-grid">
           {services.length > 0 ? (
             services.map((service) => (
-              <div key={service.id} className="settings-card">
+              <div key={service._id} className="settings-card">
                 <h4>{service.name}</h4>
                 <p>
                   <strong>Price:</strong> ${service.price.toLocaleString()}
                 </p>
                 <p>{service.description}</p>
                 <button
-                  onClick={() => handleDelete(service.id)}
+                  onClick={() => handleDelete(service._id)}
                   className="delete-button">
                   Delete
                 </button>

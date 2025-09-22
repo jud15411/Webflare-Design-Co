@@ -1,69 +1,82 @@
+// src/pages/Login/index.tsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext'; // Import useAuth
 import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
+import logo from '../../assets/logo.svg'; // Import your logo
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Get login function from context
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     try {
-      const { data } = await axios.post(`/api/v1/auth/login`, {
+      // ✅ FIX: Point to the correct admin authentication endpoint
+      const { data } = await axios.post('/api/v1/auth/login', {
         email,
         password,
       });
-
-      // Use the auth context login function with the refined interface
-      login({ token: data.token, user: data.user });
-
+      // The login function in AuthContext expects the entire 'data' object
+      login(data);
       navigate('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password. Please try again.');
-      console.error('Login failed:', err);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || 'Login failed. Please try again.'
+      );
     }
   };
 
   return (
     <div className="login-page-container">
-      <div className="login-card">
-        <div className="login-header">
-          <h2>Webflare Design Co.</h2>
-          <p>Admin Panel Login</p>
+      {/* Branding Side */}
+      <div className="login-branding-side">
+        <img src={logo} alt="Webflare Design Co. Logo" className="login-logo" />
+        <h1>Your Vision, Engineered.</h1>
+        <p>
+          Access your central admin panel, control everything from one place.
+        </p>
+      </div>
+
+      {/* Form Side */}
+      <div className="login-form-side">
+        <div className="login-card">
+          <div className="login-header">
+            <h2>Admin Panel Login</h2>
+            <p>Welcome back! Please sign in.</p>
+          </div>
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="input-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit" className="btn-login">
+              Sign In
+            </button>
+          </form>
         </div>
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          {error && <p className="error-message">{error}</p>}
-
-          <button type="submit" className="btn-login">
-            Sign In
-          </button>
-        </form>
       </div>
     </div>
   );

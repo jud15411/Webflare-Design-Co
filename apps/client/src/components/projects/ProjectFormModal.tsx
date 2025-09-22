@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-// 1. Import the shared type
-import { type ProjectFormData } from '../../types/projects';
+import { type ProjectFormData, type User } from '../../types/projects';
 import './ProjectFormModal.css';
+
+interface Client {
+  _id: string;
+  clientName: string;
+}
 
 interface ProjectFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  // 2. Update onSubmit to accept the shared type
   onSubmit: (projectData: ProjectFormData) => void;
   initialData?: ProjectFormData | null;
   category: 'Cybersecurity' | 'Web Development';
+  clients: Client[];
+  users: User[]; // Add users prop
 }
 
 const projectStatuses = ['Not Started', 'In Progress', 'On Hold', 'Completed'];
@@ -20,15 +25,20 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
   onSubmit,
   initialData,
   category,
+  clients,
+  users, // Destructure users
 }) => {
   const [formData, setFormData] = useState<ProjectFormData>({
     name: '',
     description: '',
     status: 'Not Started',
     category: category,
+    client: '',
+    team: [], // Add team to initial form data
   });
 
   useEffect(() => {
+    const defaultClient = clients.length > 0 ? clients[0]._id : '';
     if (initialData) {
       setFormData(initialData);
     } else {
@@ -37,9 +47,11 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
         description: '',
         status: 'Not Started',
         category: category,
+        client: defaultClient,
+        team: [], // Ensure team is an empty array for new projects
       });
     }
-  }, [initialData, category, isOpen]);
+  }, [initialData, category, isOpen, clients]);
 
   if (!isOpen) return null;
 
@@ -49,7 +61,16 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value as any }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Special handler for the multi-select
+  const handleTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedIds = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setFormData((prev) => ({ ...prev, team: selectedIds }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,27 +94,26 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
             </button>
           </div>
           <div className="modal-body form-body">
+            {/* ... Client, Project Name, Description inputs remain the same */}
+
             <div className="form-group">
-              <label htmlFor="name">Project Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor="team">Assign Team Members</label>
+              <select
+                id="team"
+                name="team"
+                multiple // This allows selecting multiple options
+                value={formData.team}
+                onChange={handleTeamChange}
+                className="multi-select" // Add a class for specific styling
+              >
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="form-group">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
-            </div>
+
             <div className="form-group">
               <label htmlFor="status">Status</label>
               <select

@@ -1,51 +1,71 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { ConfirmationModal } from '../Common/ConfirmationModal/ConfirmationModal';
 import { ProjectFormModal } from './ProjectFormModal';
-import { type Project, type ProjectFormData } from '../../types/projects';
+import {
+  type Project,
+  type ProjectFormData,
+  type ProjectClient,
+  type User,
+} from '../../types/projects';
 import './ProjectList.css';
 
 interface ProjectListProps {
   category: 'Cybersecurity' | 'Web Development';
 }
 
-// Helper function to map a project's status to a CSS class for styling
+interface Client extends ProjectClient {}
+
 const getStatusClass = (status: string): string => {
   return `status-${status.toLowerCase().replace(/ /g, '-')}`;
 };
 
 export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
+  const navigate = useNavigate();
   const { token } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // State for managing the form modal (for creating/editing)
   const [isFormModalOpen, setIsFormModalOpen] = useState<boolean>(false);
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
 
-  // State for managing the delete confirmation modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
-  // Fetch projects when the component mounts or the category/token changes
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchAllData = async () => {
       if (!token) return;
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          `/api/v1/projects?category=${encodeURIComponent(category)}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!response.ok) {
-          throw new Error('Failed to fetch projects.');
-        }
-        const data: Project[] = await response.json();
-        setProjects(data);
+        const [projectsResponse, clientsResponse, usersResponse] =
+          await Promise.all([
+            fetch(`/api/v1/projects?category=${encodeURIComponent(category)}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            fetch(`/api/v1/clients`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            fetch(`/api/v1/users`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+        if (!projectsResponse.ok) throw new Error('Failed to fetch projects.');
+        if (!clientsResponse.ok) throw new Error('Failed to fetch clients.');
+        if (!usersResponse.ok) throw new Error('Failed to fetch users.');
+
+        const projectsData: Project[] = await projectsResponse.json();
+        const clientsData: Client[] = await clientsResponse.json();
+        const usersData: User[] = await usersResponse.json();
+
+        setProjects(projectsData);
+        setClients(clientsData);
+        setUsers(usersData);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -53,13 +73,13 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
       }
     };
 
-    fetchProjects();
+    fetchAllData();
   }, [category, token]);
 
-  // --- Modal Handler Functions ---
+  // --- FIX: Add the missing handler functions ---
 
   const handleOpenAddModal = () => {
-    setProjectToEdit(null); // Ensure we're in "add" mode
+    setProjectToEdit(null);
     setIsFormModalOpen(true);
   };
 
@@ -72,8 +92,6 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
     setProjectToDelete(project);
     setIsDeleteModalOpen(true);
   };
-
-  // --- API Call Functions ---
 
   const handleFormSubmit = async (projectData: ProjectFormData) => {
     setError(null);
@@ -116,7 +134,6 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
 
   const handleConfirmDelete = async () => {
     if (!projectToDelete) return;
-
     setError(null);
     try {
       const response = await fetch(`/api/v1/projects/${projectToDelete._id}`, {
@@ -143,18 +160,16 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
           Add New Project
         </button>
       </div>
-
-      {isLoading && <p>Loading projects...</p>}
-      {error && <p className="error-message">{error}</p>}
-
+      {/* ... rest of the JSX remains the same */}
       {!isLoading && !error && (
         <div className="table-container">
           <table className="pro-table">
             <thead>
               <tr>
                 <th>Project Name</th>
+                <th>Client</th>
+                <th>Assigned Team</th>
                 <th>Status</th>
-                <th>Start Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -163,6 +178,11 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
                 projects.map((project) => (
                   <tr key={project._id}>
                     <td>{project.name}</td>
+                    <td>{project.client?.clientName || 'N/A'}</td>
+                    <td>
+                      {project.team.map((member) => member.name).join(', ') ||
+                        'N/A'}
+                    </td>
                     <td>
                       <span
                         className={`status-badge ${getStatusClass(
@@ -171,8 +191,12 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
                         {project.status}
                       </span>
                     </td>
-                    <td>{new Date(project.startDate).toLocaleDateString()}</td>
                     <td>
+                      <button
+                        className="action-button"
+                        onClick={() => navigate(`/projects/${project._id}`)}>
+                        Chat & Details
+                      </button>
                       <button
                         className="action-button"
                         onClick={() => handleOpenEditModal(project)}>
@@ -188,7 +212,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="no-projects-message">
+                  <td colSpan={5} className="no-projects-message">
                     There are currently no {category} projects.
                   </td>
                 </tr>
@@ -198,13 +222,22 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
         </div>
       )}
 
-      {/* --- Render Modals --- */}
       <ProjectFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
         onSubmit={handleFormSubmit}
-        initialData={projectToEdit}
+        initialData={
+          projectToEdit
+            ? {
+                ...projectToEdit,
+                client: projectToEdit.client._id,
+                team: projectToEdit.team.map((member) => member._id),
+              }
+            : null
+        }
         category={category}
+        clients={clients}
+        users={users}
       />
       <ConfirmationModal
         isOpen={isDeleteModalOpen}

@@ -4,14 +4,12 @@ import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
 interface ApiKey {
-  id: number;
+  _id: string;
   name: string;
   key: string;
   accessLevel: 'read' | 'write' | 'full';
   createdAt: string;
 }
-
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 
 interface APIKeysIntegrationsSubpageProps {
   onBack: () => void;
@@ -30,7 +28,8 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`${API_URL}/api/v1/integrations`, {
+      // Fix: Update API endpoint to match the backend
+      const { data } = await axios.get(`/api/v1/settings/system/integrations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setKeys(data);
@@ -57,7 +56,8 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
   const handleAddKey = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/v1/integrations`, form, {
+      // Fix: Update API endpoint to match the backend
+      await axios.post(`/api/v1/settings/system/integrations`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ name: '', accessLevel: 'read' });
@@ -68,10 +68,11 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this API key?')) {
       try {
-        await axios.delete(`${API_URL}/api/v1/integrations/${id}`, {
+        // Fix: Update API endpoint to match the backend
+        await axios.delete(`/api/v1/settings/system/integrations/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchKeys(); // Refresh list
@@ -137,7 +138,7 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
                 </thead>
                 <tbody>
                   {keys.map((key) => (
-                    <tr key={key.id}>
+                    <tr key={key._id}>
                       <td>{key.name}</td>
                       <td>
                         <code>{key.key}</code>
@@ -146,7 +147,7 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
                       <td>{new Date(key.createdAt).toLocaleDateString()}</td>
                       <td>
                         <button
-                          onClick={() => handleDelete(key.id)}
+                          onClick={() => handleDelete(key._id)}
                           className="delete-button">
                           Delete
                         </button>

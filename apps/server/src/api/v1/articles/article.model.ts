@@ -1,13 +1,24 @@
 import { Schema, model, Document } from 'mongoose';
-import { UserRole } from '../auth/user.model.js'; // Assuming you want to link articles to authors and roles
+import { UserRole } from '../auth/user.model.js';
+
+// Define the available sections for articles
+// FIX: Add 'as const' to create a readonly tuple, which z.enum requires.
+export const articleSections = [
+  'Onboarding',
+  'General',
+  'Technical',
+  'Policy',
+] as const;
 
 // 1. Define the interface for an Article
 interface IArticle extends Document {
   title: string;
   content: string;
-  author: Schema.Types.ObjectId; // Reference to the User who created the article
-  authorName: string; // To avoid an extra lookup on every article display
-  role: UserRole; // Storing the author's role at the time of creation
+  author: Schema.Types.ObjectId;
+  authorName: string;
+  role: Schema.Types.ObjectId; // Storing the author's role ObjectId
+  status: 'Draft' | 'Published';
+  section: (typeof articleSections)[number];
 }
 
 // 2. Define the Schema
@@ -24,7 +35,7 @@ const articleSchema = new Schema<IArticle>(
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User', // This creates a relationship to the User model
+      ref: 'User',
       required: true,
     },
     authorName: {
@@ -32,12 +43,22 @@ const articleSchema = new Schema<IArticle>(
       required: true,
     },
     role: {
+      type: Schema.Types.ObjectId,
+      ref: 'Role', // This should reference your Role model
+      required: true,
+    },
+    status: {
       type: String,
-      enum: Object.values(UserRole),
+      enum: ['Draft', 'Published'],
+      default: 'Published',
+    },
+    section: {
+      type: String,
+      enum: [...articleSections], // Spread to satisfy mongoose enum
       required: true,
     },
   },
-  { timestamps: true } // Adds createdAt and updatedAt fields automatically
+  { timestamps: true }
 );
 
 // 3. Export the model
