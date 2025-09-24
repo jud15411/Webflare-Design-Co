@@ -1,10 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 import { type User } from '../auth/user.model.js';
 
-export enum ProjectCategory {
-  CYBERSECURITY = 'Cybersecurity',
-  WEB_DEVELOPMENT = 'Web Development',
-}
+// Remove the enum and rely on the string values directly
+const ProjectCategories = ['Cybersecurity', 'Web Development'];
 
 export enum ProjectStatus {
   NOT_STARTED = 'Not Started',
@@ -16,13 +14,14 @@ export enum ProjectStatus {
 export interface IProject extends Document {
   name: string;
   description: string;
-  category: ProjectCategory;
+  category: 'Cybersecurity' | 'Web Development'; // Use string literal union
   status: ProjectStatus;
   startDate: Date;
   endDate?: Date;
   team: Schema.Types.ObjectId[] | (typeof User)[];
   client: Schema.Types.ObjectId;
-  clientFeedback?: string; // <-- Add this line
+  clientFeedback?: string;
+  website_link?: string;
 }
 
 const projectSchema = new Schema<IProject>(
@@ -31,7 +30,7 @@ const projectSchema = new Schema<IProject>(
     description: { type: String, required: true },
     category: {
       type: String,
-      enum: Object.values(ProjectCategory),
+      enum: ProjectCategories, // Use the array for validation
       required: true,
     },
     status: {
@@ -47,7 +46,8 @@ const projectSchema = new Schema<IProject>(
       ref: 'Client',
       required: true,
     },
-    clientFeedback: { type: String }, // <-- Add this line
+    clientFeedback: { type: String },
+    website_link: { type: String },
   },
   { timestamps: true }
 );

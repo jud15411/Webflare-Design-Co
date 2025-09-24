@@ -1,5 +1,6 @@
 import { type Request, type Response } from 'express';
-import { Project, ProjectCategory, ProjectStatus } from './project.model.js';
+// Remove ProjectCategory from the import
+import { Project, ProjectStatus } from './project.model.js';
 import { Message } from '../messages/message.model.js';
 
 /**
@@ -10,13 +11,12 @@ import { Message } from '../messages/message.model.js';
 export const getProjects = async (req: Request, res: Response) => {
   try {
     const { category } = req.query;
-    const filter: { category?: ProjectCategory } = {};
+    // Update the filter to accept a string
+    const filter: { category?: string } = {};
 
-    if (
-      category &&
-      Object.values(ProjectCategory).includes(category as ProjectCategory)
-    ) {
-      filter.category = category as ProjectCategory;
+    // Update the check to work with strings
+    if (category && ['Cybersecurity', 'Web Development'].includes(category as string)) {
+      filter.category = category as string;
     }
 
     const projects = await Project.find(filter)
@@ -36,8 +36,7 @@ export const getProjects = async (req: Request, res: Response) => {
  */
 export const createProject = async (req: Request, res: Response) => {
   try {
-    // Add 'team' to the destructured properties
-    const { name, description, category, status, startDate, client, team } =
+    const { name, description, category, status, startDate, client, team, website_link } =
       req.body;
     const newProject = new Project({
       name,
@@ -46,10 +45,10 @@ export const createProject = async (req: Request, res: Response) => {
       status,
       startDate,
       client,
-      team, // Add team to the new project object
+      team,
+      website_link,
     });
     const savedProject = await newProject.save();
-    // Populate both client and team for the response
     await savedProject.populate(['client', 'team']);
     res.status(201).json(savedProject);
   } catch (error) {
@@ -69,7 +68,7 @@ export const updateProject = async (req: Request, res: Response) => {
     const updatedProject = await Project.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
-    }).populate(['client', 'team']); // Populate both client and team
+    }).populate(['client', 'team']);
 
     if (!updatedProject) {
       return res.status(404).json({ message: 'Project not found.' });
