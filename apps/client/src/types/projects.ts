@@ -10,16 +10,22 @@ export interface ProjectClient {
   clientName: string;
 }
 
+// Replace the enum with a const array and a type alias
+export const ProjectCategories = ['Cybersecurity', 'Web Development'] as const;
+export type ProjectCategory = typeof ProjectCategories[number];
+
+
 // The full Project object
 export interface Project {
   _id: string;
   name: string;
   description: string;
   status: string;
-  category: string;
+  category: ProjectCategory; // Use the new type alias
   startDate: string;
   client: ProjectClient;
-  team: User[]; // Team is an array of User objects
+  team: User[];
+  website_link?: string;
 }
 
 // The data structure for the project form
@@ -29,6 +35,7 @@ export interface ProjectFormData {
   description: string;
   status: string;
   category: string;
-  client: string; // client is a string (ID)
-  team: string[]; // team is an array of strings (User IDs)
+  client: string;
+  team: string[];
+  website_link?: string;
 }

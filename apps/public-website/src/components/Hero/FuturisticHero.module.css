@@ -1,0 +1,52 @@
+.hero {
+  position: relative;
+  padding-top: var(--space-24);
+  padding-bottom: var(--space-24);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.subtitle {
+  font-size: var(--font-size-md);
+  color: var(--on-surface-variant-color);
+  margin: var(--space-6) auto 0;
+  max-width: 700px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+/* Reveal animation */
+.content {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}

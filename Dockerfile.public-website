@@ -1,0 +1,18 @@
+# Dockerfile.public-website
+
+FROM node:20-alpine
+WORKDIR /usr/src/app
+
+# Copy package files and install dependencies
+COPY apps/public-website/package*.json ./
+RUN npm install
+
+# Copy the rest of the public website application code
+COPY apps/public-website .
+
+# Expose the Vite development server port
+EXPOSE 5173
+
+# The command to start the Vite dev server
+# The '--host' flag is crucial to make it accessible from other containers.
+CMD ["npm", "run", "dev", "--", "--host"]

@@ -1,5 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 import { type User } from '../auth/user.model.js';
+import { getMainDb } from '../../../config/db.js';
 
 // Remove the enum and rely on the string values directly
 const ProjectCategories = ['Cybersecurity', 'Web Development'];
@@ -52,4 +53,4 @@ const projectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
-export const Project = model<IProject>('Project', projectSchema);
+export const Project = getMainDb().model<IProject>('Project', projectSchema);

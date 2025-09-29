@@ -20,7 +20,7 @@ export const getDashboardData = async (
 
     // Fetch the client's projects first
     const clientProjects = await Project.find({ client: clientId });
-    const projectIds = clientProjects.map((p) => p._id);
+    const projectIds = clientProjects.map((p: { _id: any; }) => p._id);
 
     if (portalSettings?.showProjects) {
       responseData.projects = clientProjects;

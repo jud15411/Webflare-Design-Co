@@ -1,0 +1,40 @@
+/* src/components/Testimonials/Testimonials.module.css */
+.testimonials {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+  
+  .title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-8);
+  }
+  
+  .card {
+    background-color: var(--surface-color);
+    padding: var(--space-8);
+    border-radius: var(--space-2);
+  }
+  
+  .quote {
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    margin-bottom: var(--space-4);
+  }
+  
+  .author {
+    font-weight: var(--font-weight-medium);
+    text-align: right;
+  }
+  
+  .author span {
+    font-weight: var(--font-weight-regular);
+    color: var(--on-surface-variant-color);
+  }

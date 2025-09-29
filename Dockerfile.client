@@ -1,4 +1,5 @@
 # Dockerfile.client
+ARG CACHE_BUSTER=1
 
 FROM node:20-alpine
 WORKDIR /usr/src/app
@@ -15,4 +16,4 @@ EXPOSE 5173
 
 # The command to start the Vite dev server
 # The '--host' flag is crucial to make it accessible from other containers.
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["npm", "run", "dev"]

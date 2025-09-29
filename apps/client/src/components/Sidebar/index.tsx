@@ -179,7 +179,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       <div className="sidebar-header">
         <h3 className="welcome-text">Welcome, {user?.name || 'User'}!</h3>
         <p className="business-name">
-          {settings?.businessName || 'Webflare Admin'}
+          {settings?.companyName || 'Firmaplex Admin'}
         </p>
       </div>
 

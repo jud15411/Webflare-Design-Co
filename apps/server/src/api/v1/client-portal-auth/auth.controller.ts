@@ -5,9 +5,10 @@ import crypto from 'crypto';
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
   try {
-    const clientUser = await ClientUser.findOne({ email })
+    const clientUser = await ClientUser.findOne({ email: normalizedEmail })
       .select('+password')
       .populate('client', 'clientName');
 
@@ -21,7 +22,7 @@ export const login = async (req: Request, res: Response) => {
         .json({ message: 'Please set your initial password.' });
     }
 
-    const isMatch = await clientUser.comparePassword(password);
+    const isMatch = await clientUser.comparePassword(typeof password === 'string' ? password : '');
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials.' });
@@ -44,9 +45,10 @@ export const login = async (req: Request, res: Response) => {
 
 export const setInitialPassword = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
   try {
-    const clientUser = await ClientUser.findOne({ email }).populate(
+    const clientUser = await ClientUser.findOne({ email: normalizedEmail }).populate(
       'client',
       'clientName'
     );
@@ -55,7 +57,7 @@ export const setInitialPassword = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid request.' });
     }
 
-    clientUser.password = password;
+    clientUser.password = typeof password === 'string' ? password : '';
     await clientUser.save();
 
     const payload = {

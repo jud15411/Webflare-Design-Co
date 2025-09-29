@@ -19,15 +19,17 @@ const LoginPage: React.FC = () => {
     setError('');
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
       const { data } = await axios.post('/api/v1/client-portal-auth/login', {
-        email,
+        email: normalizedEmail,
         password,
       });
       login(data.token);
       navigate('/dashboard');
     } catch (err: any) {
       if (err.response?.data?.message === 'Please set your initial password.') {
-        navigate(`/set-password?email=${encodeURIComponent(email)}`);
+        const normalizedEmail = email.trim().toLowerCase();
+        navigate(`/set-password?email=${encodeURIComponent(normalizedEmail)}`);
       } else {
         setError(
           err.response?.data?.message || 'Login failed. Please try again.'

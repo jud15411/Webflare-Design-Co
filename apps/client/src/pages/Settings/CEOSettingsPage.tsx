@@ -11,6 +11,7 @@ import AuditLogsSubpage from './System/AuditLogsSubpage';
 import APIKeysIntegrationsSubpage from './System/APIKeysIntegrationsSubpage';
 import BackupRestoreSubpage from './System/BackupRestoreSubpage';
 import DataRetentionSubpage from './System/DataRetentionSubpage';
+import QuizManagementSubpage from './Website/QuizManagementSubpage';
 import './Settings.css';
 
 // Type to define which subpage is active
@@ -27,7 +28,8 @@ type ActivePage =
   | 'auditLogs'
   | 'apiKeys'
   | 'backupRestore'
-  | 'dataRetention';
+  | 'dataRetention'
+  | 'quizManagement';
 
 const CEOSettingsPage = () => {
   const [activePage, setActivePage] = useState<ActivePage>('main');
@@ -68,6 +70,8 @@ const CEOSettingsPage = () => {
         return <BackupRestoreSubpage onBack={() => setActivePage('main')} />;
       case 'dataRetention':
         return <DataRetentionSubpage onBack={() => setActivePage('main')} />;
+      case 'quizManagement':
+        return <QuizManagementSubpage onBack={() => setActivePage('main')} />;
       default:
         // Fallback to main page if state is invalid
         setActivePage('main');
@@ -155,6 +159,19 @@ const CEOSettingsPage = () => {
                 Manage standard contracts and agreements for new clients and
                 services.
               </p>
+            </div>
+          </div>
+        </section>
+        
+        <section className="settings-section">
+          <h2>Website Content</h2>
+          <div className="settings-card-grid">
+            {/* ... other cards */}
+            <div
+              className="settings-card"
+              onClick={() => setActivePage('quizManagement')}>
+              <h3>Cybersecurity Quiz</h3>
+              <p>Manage the interactive cybersecurity quiz on your website.</p>
             </div>
           </div>
         </section>

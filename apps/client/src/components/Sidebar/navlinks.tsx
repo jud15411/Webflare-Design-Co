@@ -91,33 +91,27 @@ export const navLinks: { [key: string]: NavItem[] } = {
       icon: <FaGlobe />,
       children: [
         {
-          key: 'pages',
-          label: 'Manage Pages',
-          pathname: '/pages',
-          icon: <FaGlobe />,
-        },
-        {
           key: 'services',
           label: 'Services',
-          pathname: '/services',
+          pathname: '/website/services',
           icon: <FaGlobe />,
         },
         {
           key: 'portfolio',
           label: 'Portfolio',
-          pathname: '/portfolio',
+          pathname: '/website/portfolio',
           icon: <FaGlobe />,
         },
         {
           key: 'pricing',
           label: 'Pricing Tiers',
-          pathname: '/pricing',
+          pathname: '/website/pricing',
           icon: <FaGlobe />,
         },
         {
           key: 'testimonials',
           label: 'Testimonials',
-          pathname: '/testimonials',
+          pathname: '/website/testimonials',
           icon: <FaGlobe />,
         },
       ],

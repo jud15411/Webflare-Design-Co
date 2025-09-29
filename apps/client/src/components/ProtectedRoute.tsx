@@ -1,15 +1,25 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // Or wherever your AuthContext is
+// src/components/ProtectedRoute.tsx
+
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
 
-  // 1. Show a loading state if the auth context is still initializing
+  // This is the key change. We explicitly wait until loading is completely finished
+  // before we make any decision about where to send the user.
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Or a spinner component
   }
 
-  // 2. Once loading is complete, check if the user is authenticated.
-  //    If so, render the protected content. Otherwise, redirect to the login page.
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  // Once loading is false, we can be confident that the isAuthenticated
+  // value is final.
+  if (!isAuthenticated) {
+    // If not authenticated, redirect to login, preserving the location they were trying to reach.
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // If loading is finished and they are authenticated, render the child routes.
+  return <Outlet />;
 };

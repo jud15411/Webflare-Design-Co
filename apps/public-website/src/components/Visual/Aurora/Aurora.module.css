@@ -1,0 +1,63 @@
+.auroraRoot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Create layered blurred gradients for a modern aurora feel */
+.layer {
+  position: absolute;
+  filter: blur(60px);
+  opacity: 0.25;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+  transition: opacity 400ms ease;
+}
+
+/* Reduce animation for users with motion sensitivity */
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    transition: none;
+  }
+}
+
+.layerA {
+  width: 50vw;
+  height: 50vh;
+  left: -10vw;
+  top: -5vh;
+  background: radial-gradient(60% 60% at 50% 50%, var(--primary-color), transparent 70%);
+  animation: floatA 14s ease-in-out infinite alternate;
+}
+
+.layerB {
+  width: 60vw;
+  height: 60vh;
+  right: -15vw;
+  top: 10vh;
+  background: radial-gradient(60% 60% at 50% 50%, var(--accent-color), transparent 70%);
+  animation: floatB 18s ease-in-out infinite alternate;
+}
+
+.layerC {
+  width: 55vw;
+  height: 55vh;
+  left: 10vw;
+  bottom: -10vh;
+  background: radial-gradient(60% 60% at 50% 50%, var(--secondary-color), transparent 70%);
+  animation: floatC 16s ease-in-out infinite alternate;
+}
+
+@keyframes floatA {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(3vw, 2vh, 0) scale(1.05); }
+}
+@keyframes floatB {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-2vw, 1vh, 0) scale(1.06); }
+}
+@keyframes floatC {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(1vw, -2vh, 0) scale(1.04); }
+}

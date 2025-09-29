@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // --- Type Definitions ---
 interface BusinessSettings {
-  businessName: string;
+  companyName: string;
   logoUrl: string;
   fullLogoUrl?: string | null;
 }
@@ -36,7 +36,7 @@ export const BusinessProvider: React.FC<BusinessProviderProps> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<BusinessSettings>({
-    businessName: 'Webflare Admin',
+    companyName: 'Firmaplex',
     logoUrl: '',
   });
   const [isLoading, setIsLoading] = useState(true); // Add loading state

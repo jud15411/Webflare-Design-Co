@@ -1,5 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { getMainDb } from '../../../config/db.js';
 
 export interface IClientUser extends Document {
   email: string;
@@ -45,4 +46,4 @@ clientUserSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export const ClientUser = model<IClientUser>('ClientUser', clientUserSchema);
+export const ClientUser = getMainDb().model<IClientUser>('ClientUser', clientUserSchema);

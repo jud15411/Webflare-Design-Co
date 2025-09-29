@@ -4,13 +4,19 @@ import react from '@vitejs/plugin-react';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/firmaplex-admin-panel/',
   server: {
-    proxy: {
-      // String shorthand for all requests starting with /api
-      '/api': {
-        target: 'http://localhost:5001', // Your backend server address
-        changeOrigin: true,
-      },
-    },
+    host: true,
+    port: 5173,
+    // Explicitly set the origin for development
+    origin: 'http://localhost:5000',
+    // Ensure Vite handles the base path correctly
+    strictPort: true,
+  },
+  // Build configuration
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
   },
 });

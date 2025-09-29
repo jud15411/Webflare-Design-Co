@@ -3,6 +3,7 @@
 import { Schema, model, Document, Types } from 'mongoose'; // <-- 1. Import 'Types'
 import bcrypt from 'bcryptjs';
 import { type IRole } from '../roles/role.model.js';
+import { getMainDb } from '../../../config/db.js';
 
 // Defines the possible user roles
 export enum UserRole {
@@ -92,4 +93,4 @@ userSchema.methods.comparePassword = async function (enteredPassword: string) {
 };
 
 // Create and export the User model
-export const User = model<IUser>('User', userSchema);
+export const User = getMainDb().model<IUser>('User', userSchema);

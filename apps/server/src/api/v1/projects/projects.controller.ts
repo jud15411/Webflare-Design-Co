@@ -30,6 +30,29 @@ export const getProjects = async (req: Request, res: Response) => {
 };
 
 /**
+ * @desc    Get a single project by ID
+ * @route   GET /api/v1/projects/:id
+ * @access  Private
+ */
+export const getProjectById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findById(id)
+      .populate('team', 'name email')
+      .populate('client', 'clientName');
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found.' });
+    }
+
+    res.status(200).json(project);
+  } catch (error) {
+    console.error('Error fetching project by ID:', error);
+    res.status(500).json({ message: 'Server error while fetching project.' });
+  }
+};
+
+/**
  * @desc    Create a new project
  * @route   POST /api/v1/projects
  * @access  Private

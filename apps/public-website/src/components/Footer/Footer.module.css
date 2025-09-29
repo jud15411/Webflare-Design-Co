@@ -1,0 +1,8 @@
+/* src/components/Footer/Footer.module.css */
+.footer {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+    text-align: center;
+    color: var(--on-surface-variant-color);
+    border-top: 1px solid var(--border-color);
+  }

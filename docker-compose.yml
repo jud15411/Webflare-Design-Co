@@ -8,10 +8,12 @@ services:
     environment:
       - NODE_ENV=development
       - MONGO_URI=${MONGO_URI}
+      - MONGO_URI_PUBLIC=${MONGO_URI_PUBLIC}
       - JWT_SECRET=${JWT_SECRET}
-      - REDIS_URL=${REDIS_URL} # <-- Add this line
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - redis
+
 
   redis:
     image: redis:7-alpine
@@ -19,18 +21,24 @@ services:
     ports:
       - '6379:6379'
 
-  # ... rest of your client, portal, and nginx services
-  client:
+  client: # This is your admin panel
     build:
       context: .
       dockerfile: Dockerfile.client
     depends_on:
       - server
 
-  portal:
+  portal: # This is your client portal
     build:
       context: .
       dockerfile: Dockerfile.portal
+    depends_on:
+      - server
+
+  public-website: # New service for the public website
+    build:
+      context: .
+      dockerfile: Dockerfile.public-website
     depends_on:
       - server
 
@@ -45,3 +53,4 @@ services:
       - client
       - portal
       - server
+      - public-website # Add the new service here

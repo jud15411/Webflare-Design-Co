@@ -1,5 +1,6 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// 1. REMOVE BrowserRouter and add Navigate
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/Login';
 import { DashboardPage } from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -15,7 +16,7 @@ import { TeamPage } from './pages/Team';
 import { TasksPage } from './pages/Tasks';
 import { CybersecurityProjectsPage } from './pages/Projects/CybersecurityProjectsPage';
 import { WebDevelopmentProjectsPage } from './pages/Projects/WebDevelopmentProjectsPage';
-import { useAuth } from './contexts/AuthContext'; // Import useAuth
+import { useAuth } from './contexts/AuthContext';
 import { SchedulesPage } from './pages/Team/SchedulesPage';
 import TimeLogsPage from './pages/TimeLogs';
 import { TimeLogsReportPage } from './pages/Reports/TimeLogsReportPage';
@@ -30,7 +31,12 @@ import ExpensesPage from './pages/Expenses';
 import SubscriptionsPage from './pages/Subscriptions';
 import { ProjectDetailsPage } from './pages/Projects/ProjectDetailsPage';
 import { FeedbackPage } from './pages/Feedback';
+import ServicesPage from './pages/Website/ServicesPage';
+import PortfolioPage from './pages/Website/PortfolioPage';
+import PricingPage from './pages/Website/PricingPage';
+import TestimonialsPage from './pages/Website/TestimonialsPage';
 
+// Note: The NavDropdown component can be moved to its own file if desired.
 interface NavDropdownProps {
   title: string;
   icon: string;
@@ -83,57 +89,61 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
 };
 
 function App() {
-  const { isLoading } = useAuth(); // Get isLoading state
+  const { isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show a loading state
+    return <div>Loading...</div>;
   }
 
+  // 2. The <Router> is removed from here. The one in main.tsx is now in control.
   return (
-    <Router>
-      <Routes>
-        {/* Public route for login, rendered without the main layout */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<LoginPage />} />
+    <Routes>
+      {/* Public route for login */}
+      <Route path="/login" element={<LoginPage />} />
 
-        {/* Protected routes, all rendered inside the MainLayout */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
-            <Route path="/software" element={<SoftwarePage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route
-              path="/projects/cybersecurity"
-              element={<CybersecurityProjectsPage />}
-            />
-            <Route
-              path="/projects/web-development"
-              element={<WebDevelopmentProjectsPage />}
-            />
-            <Route path="/role-management" element={<RolesPage />} />
-            <Route path="/team-schedules" element={<SchedulesPage />} />
-            <Route path="/time-tracking" element={<TimeLogsPage />} />
-            <Route path="/reports/time-logs" element={<TimeLogsReportPage />} />
-            <Route path="/clients" element={<ClientsPage />} />
-            <Route path="/clients/:id" element={<ClientDetailsPage />} />
-            <Route path="/contracts" element={<ContractsPage />} />
-            <Route path="/contracts/create" element={<CreateContractPage />} />
-            <Route path="/contracts/:id" element={<ContractDetailsPage />} />
-            <Route path="/proposals" element={<ProposalsPage />} />
-            <Route path="/invoices" element={<InvoicesPage />} />
-            <Route path="/expenses" element={<ExpensesPage />} />
-            <Route path="/subscriptions" element={<SubscriptionsPage />} />
-            <Route path="/projects/:id" element={<ProjectDetailsPage />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-          </Route>
+      {/* Protected routes are wrapped in the ProtectedRoute component */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<MainLayout />}>
+          {/* Default route for logged-in users */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
+          <Route path="/software" element={<SoftwarePage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/tasks" element={<TasksPage />} />
+          <Route
+            path="/projects/cybersecurity"
+            element={<CybersecurityProjectsPage />}
+          />
+          <Route
+            path="/projects/web-development"
+            element={<WebDevelopmentProjectsPage />}
+          />
+          <Route path="/role-management" element={<RolesPage />} />
+          <Route path="/team-schedules" element={<SchedulesPage />} />
+          <Route path="/time-tracking" element={<TimeLogsPage />} />
+          <Route path="/reports/time-logs" element={<TimeLogsReportPage />} />
+          <Route path="/clients" element={<ClientsPage />} />
+          <Route path="/clients/:id" element={<ClientDetailsPage />} />
+          <Route path="/contracts" element={<ContractsPage />} />
+          <Route path="/contracts/create" element={<CreateContractPage />} />
+          <Route path="/contracts/:id" element={<ContractDetailsPage />} />
+          <Route path="/proposals" element={<ProposalsPage />} />
+          <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/projects/:id" element={<ProjectDetailsPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/website/services" element={<ServicesPage />} />
+          <Route path="/website/portfolio" element={<PortfolioPage />} />
+          <Route path="/website/pricing" element={<PricingPage />} />
+          <Route path="/website/testimonials" element={<TestimonialsPage />} />
         </Route>
-      </Routes>
-    </Router>
+      </Route>
+    </Routes>
   );
 }
 

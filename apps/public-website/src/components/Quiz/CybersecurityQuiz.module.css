@@ -1,0 +1,116 @@
+/* src/components/Quiz/CybersecurityQuiz.module.css (New File) */
+.quizSection {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.quizSection.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quizContainer {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: var(--space-12);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--on-surface-color);
+}
+
+.timer {
+  font-size: var(--font-size-lg);
+  color: var(--accent-color);
+  font-weight: var(--font-weight-bold);
+  background: rgba(0, 245, 212, 0.1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 8px;
+}
+
+.questionText {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  min-height: 100px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.optionButton {
+  padding: var(--space-4);
+  font-size: var(--font-size-base);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--on-surface-variant-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.optionButton:not(:disabled):hover {
+  border-color: var(--accent-color);
+  color: var(--on-surface-color);
+  transform: translateY(-2px);
+}
+
+.optionButton.correct {
+  background-color: rgba(0, 245, 212, 0.2);
+  border-color: var(--accent-color);
+  color: var(--on-surface-color);
+}
+
+.optionButton.incorrect {
+  background-color: rgba(255, 0, 255, 0.2);
+  border-color: var(--secondary-color);
+  color: var(--on-surface-color);
+  animation: shake 0.5s ease-in-out;
+}
+
+.explanation {
+  margin-top: var(--space-6);
+  color: var(--accent-color);
+  font-size: var(--font-size-md);
+  font-style: italic;
+}
+
+.results {
+  padding: var(--space-8);
+}
+
+.score {
+  font-size: var(--font-size-xl);
+  margin: var(--space-4) 0;
+}
+
+.story {
+  color: var(--on-surface-variant-color);
+  margin-bottom: var(--space-8);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

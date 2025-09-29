@@ -19,6 +19,7 @@ interface ProjectDetails {
   category: string;
   startDate: string;
   team: TeamMember[];
+  website_link?: string; // <-- Add this line
 }
 
 const ProjectDetailsPage: React.FC = () => {
@@ -94,6 +95,22 @@ const ProjectDetailsPage: React.FC = () => {
           <h3>Project Overview</h3>
           <p>{project.description}</p>
         </div>
+
+        {/* This new card will only show for web dev projects with a link */}
+        {project.category === 'Web Development' && project.website_link && (
+          <div className="details-card">
+            <h3>Website Link</h3>
+            <p>
+              You can view the live project here:{' '}
+              <a
+                href={project.website_link}
+                target="_blank"
+                rel="noopener noreferrer">
+                {project.website_link}
+              </a>
+            </p>
+          </div>
+        )}
 
         <div className="details-grid">
           <div className="details-card">

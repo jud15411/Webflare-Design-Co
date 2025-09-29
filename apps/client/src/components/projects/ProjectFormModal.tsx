@@ -35,6 +35,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
     category: category,
     client: '',
     team: [], // Add team to initial form data
+    website_link: '', // Add website_link to form data
   });
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
         category: category,
         client: defaultClient,
         team: [], // Ensure team is an empty array for new projects
+        website_link: '', // Default to empty for new projects
       });
     }
   }, [initialData, category, isOpen, clients]);
@@ -95,7 +97,41 @@ export const ProjectFormModal: React.FC<ProjectFormModalProps> = ({
           </div>
           <div className="modal-body form-body">
             {/* ... Client, Project Name, Description inputs remain the same */}
+            <div className="form-group">
+              <label htmlFor="name">Project Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
+            {category === 'Web Development' && (
+              <div className="form-group">
+                <label htmlFor="website_link">Website Link (Optional)</label>
+                <input
+                  type="url"
+                  id="website_link"
+                  name="website_link"
+                  value={formData.website_link || ''}
+                  onChange={handleChange}
+                  placeholder="https://example.com"
+                />
+              </div>
+            )}
             <div className="form-group">
               <label htmlFor="team">Assign Team Members</label>
               <select

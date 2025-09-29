@@ -4,14 +4,18 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // This tells Vite that the app will be served from the /portal/ subdirectory
-  base: '/portal/',
+  base: '/client-portal/',
   server: {
-    host: true, // Allows the server to be accessible from outside the container
+    host: true,
     port: 5173,
-    // This setting can help with file change detection in Docker
-    watch: {
-      usePolling: true,
+    origin: 'http://localhost:5000',
+    strictPort: true,
+    proxy: {
+      // ✅ CORRECTED: Also needs to target the 'server' service
+      '/api': {
+        target: 'http://server:5001',
+        changeOrigin: true,
+      },
     },
   },
 });

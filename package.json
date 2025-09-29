@@ -1,7 +1,7 @@
 {
-  "name": "admin-panel",
+  "name": "business-platform",
   "version": "1.0.0",
-  "description": "Central admin panel for web development and cybersecurity services.",
+  "description": "Business platform for business management.",
   "main": "index.js",
   "private": true,
   "proxy": "http://localhost:5001",

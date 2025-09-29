@@ -7,6 +7,7 @@ import billingRoutes from './billing/billing.routes.js';
 import usersRoutes from './users/users.routes.js';
 import legalRoutes from './legal/legal.routes.js';
 import systemRoutes from './system/system.routes.js';
+import quizRoutes from '../quiz/quiz.routes.js';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/billing', billingRoutes);
 router.use('/users', usersRoutes);
 router.use('/legal', legalRoutes);
 router.use('/system', systemRoutes);
+router.use('/quiz', quizRoutes);
 
 export default router;
