@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './ProfilePage.css';
+import API from '../../utils/axios'; // 1. Import the centralized API instance
 
 export const ProfilePage: React.FC = () => {
-  const { user, setUser, token } = useAuth();
+  const { user, setUser } = useAuth();
 
   // State for profile information
   const [profileData, setProfileData] = useState({
@@ -53,23 +54,21 @@ export const ProfilePage: React.FC = () => {
     setProfileMessage('');
 
     try {
-      const response = await fetch('/api/v1/users/profile', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(profileData),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update profile.');
-      }
-      const updatedUser = await response.json();
+      // 2. Replace fetch with API.patch
+      const { data: updatedUser } = await API.patch(
+        '/users/profile',
+        profileData
+      );
+
       if (setUser) setUser(updatedUser);
       setProfileMessage('✅ Profile updated successfully!');
     } catch (error: any) {
-      setProfileMessage(`❌ Error: ${error.message}`);
+      // 3. Update error handling for Axios
+      setProfileMessage(
+        `❌ Error: ${
+          error.response?.data?.message || 'Failed to update profile.'
+        }`
+      );
     } finally {
       setIsProfileLoading(false);
     }
@@ -85,21 +84,12 @@ export const ProfilePage: React.FC = () => {
     setPasswordMessage('');
 
     try {
-      const response = await fetch('/api/v1/users/update-password', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword,
-        }),
+      // 4. Replace fetch with API.patch
+      await API.patch('/users/update-password', {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to update password.');
-      }
+
       setPasswordMessage('✅ Password updated successfully!');
       setPasswordData({
         currentPassword: '',
@@ -107,7 +97,12 @@ export const ProfilePage: React.FC = () => {
         confirmPassword: '',
       }); // Clear fields
     } catch (error: any) {
-      setPasswordMessage(`❌ Error: ${error.message}`);
+      // 5. Update error handling for Axios
+      setPasswordMessage(
+        `❌ Error: ${
+          error.response?.data?.message || 'Failed to update password.'
+        }`
+      );
     } finally {
       setIsPasswordLoading(false);
     }

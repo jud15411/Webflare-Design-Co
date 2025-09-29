@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './ContractsPage.css';
@@ -25,7 +25,7 @@ export const ContractsPage: React.FC = () => {
       if (!token) return;
       setLoading(true);
       try {
-        const { data } = await axios.get('/api/v1/contracts', {
+        const { data } = await API.get('/api/v1/contracts', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setContracts(data);

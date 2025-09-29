@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { ClientModal } from '../../components/Clients/ClientModal';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,7 @@ export const ClientsPage: React.FC = () => {
     if (!token) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/v1/clients`, {
+      const { data } = await API.get(`/api/v1/clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setClients(data);

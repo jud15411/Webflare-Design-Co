@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './ClientDetailsPage.css';
 
@@ -48,7 +48,7 @@ export const ClientDetailsPage: React.FC = () => {
     if (!token || !id) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/v1/clients/${id}`, {
+      const { data } = await API.get(`/api/v1/clients/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setClient(data);
@@ -68,7 +68,7 @@ export const ClientDetailsPage: React.FC = () => {
     if (!client) return;
     try {
       // No need to get data back, just refetch on success
-      await axios.patch(
+      await API.patch(
         `/api/v1/clients/${client._id}/portal-access`,
         {},
         {

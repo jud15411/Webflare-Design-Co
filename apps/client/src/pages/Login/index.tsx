@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 import logo from '../../assets/logo.svg'; // Import your logo
@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
 
     try {
       // ✅ FIX: Point to the correct admin authentication endpoint
-      const { data } = await axios.post('/api/v1/auth/login', {
+      const { data } = await API.post('/api/v1/auth/login', {
         email,
         password,
       });

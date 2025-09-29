@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './KnowledgeBase.css';
 import EditArticleModal from '../../components/Articles/EditArticleModal';
@@ -38,7 +38,7 @@ const KnowledgeBasePage = () => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/articles`, {
+      const { data } = await API.get(`/api/v1/articles`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setArticles(data);
@@ -60,7 +60,7 @@ const KnowledgeBasePage = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post(
+      await API.post(
         `/api/v1/articles`,
         { title: newTitle, content: newContent, section: newSection },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -88,7 +88,7 @@ const KnowledgeBasePage = () => {
 
     try {
       setError('');
-      await axios.delete(`/api/v1/articles/${articleToDeleteId}`, {
+      await API.delete(`/api/v1/articles/${articleToDeleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchArticles();

@@ -1,7 +1,10 @@
+// src/pages/Feedback/index.tsx
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal'; // 1. Import the modal
+import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import './FeedbackPage.css';
+import API from '../../utils/axios'; // Correctly import the API instance
 
 // Interfaces for feedback data
 interface ProjectFeedback {
@@ -34,7 +37,6 @@ export const FeedbackPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 2. Add state to manage the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [feedbackToAcknowledge, setFeedbackToAcknowledge] =
     useState<FeedbackItem | null>(null);
@@ -43,17 +45,12 @@ export const FeedbackPage: React.FC = () => {
     if (!token) return;
     setIsLoading(true);
     try {
-      const response = await fetch('/api/v1/feedback', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch feedback data.');
-      }
-      const data = await response.json();
+      // Use the API instance for the GET request
+      const { data } = await API.get('/feedback');
       setProjectFeedback(data.projects);
       setTaskFeedback(data.tasks);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Failed to fetch feedback data.');
     } finally {
       setIsLoading(false);
     }
@@ -63,26 +60,20 @@ export const FeedbackPage: React.FC = () => {
     fetchFeedback();
   }, [token]);
 
-  // 3. Create a handler to OPEN the modal
   const handleAcknowledgeClick = (item: FeedbackItem) => {
     setFeedbackToAcknowledge(item);
     setIsModalOpen(true);
   };
 
-  // 4. Rename the main logic to be the CONFIRM handler
   const handleConfirmAcknowledge = async () => {
     if (!feedbackToAcknowledge) return;
 
     const { type, id } = feedbackToAcknowledge;
 
     try {
-      const response = await fetch(`/api/v1/feedback/${type}/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        throw new Error('Server responded with an error.');
-      }
+      // Use the API instance for the DELETE request
+      await API.delete(`/feedback/${type}/${id}`);
+
       // Close modal and refetch feedback to update the list
       setIsModalOpen(false);
       setFeedbackToAcknowledge(null);
@@ -128,7 +119,8 @@ export const FeedbackPage: React.FC = () => {
                       id: item._id,
                       name: item.name,
                     })
-                  }>
+                  }
+                >
                   Acknowledge & Remove
                 </button>
               </div>
@@ -160,7 +152,8 @@ export const FeedbackPage: React.FC = () => {
                       id: item._id,
                       name: item.title,
                     })
-                  }>
+                  }
+                >
                   Acknowledge & Remove
                 </button>
               </div>
@@ -171,7 +164,6 @@ export const FeedbackPage: React.FC = () => {
         )}
       </section>
 
-      {/* 5. Render the ConfirmationModal */}
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

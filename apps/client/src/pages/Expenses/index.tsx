@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import CreateExpenseModal from '../../components/Financials/CreateExpenseModal';
 import '../Settings/Settings.css'; // Reusing some base styles
@@ -24,7 +24,7 @@ const ExpensesPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await axios.get('/api/v1/financials/expenses', {
+      const { data } = await API.get('/api/v1/financials/expenses', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(data);
@@ -43,7 +43,7 @@ const ExpensesPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this expense?')) {
       try {
-        await axios.delete(`/api/v1/financials/expenses/${id}`, {
+        await API.delete(`/api/v1/financials/expenses/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchExpenses(); // Refresh list after deletion

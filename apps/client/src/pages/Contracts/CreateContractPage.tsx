@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './CreateContractPage.css';
@@ -123,7 +123,7 @@ export const CreateContractPage: React.FC = () => {
     const fetchClients = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get('/api/v1/clients', {
+        const { data } = await API.get('/api/v1/clients', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClients(data);
@@ -154,7 +154,7 @@ export const CreateContractPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(
+      await API.post(
         '/api/v1/contracts',
         {
           client: selectedClient,

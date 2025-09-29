@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import CreateInvoiceModal from '../../components/Financials/CreateInvoiceModal';
 import '../Settings/Settings.css';
@@ -26,7 +26,7 @@ const InvoicesPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await axios.get('/api/v1/financials/invoices', {
+      const { data } = await API.get('/api/v1/financials/invoices', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setInvoices(data);
@@ -44,7 +44,7 @@ const InvoicesPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this invoice?')) {
       try {
-        await axios.delete(`/api/v1/financials/invoices/${id}`, {
+        await API.delete(`/api/v1/financials/invoices/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchInvoices();

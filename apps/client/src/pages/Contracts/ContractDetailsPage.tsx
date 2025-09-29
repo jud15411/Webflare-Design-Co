@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './ContractDetailsPage.css';
 import { PreviewModal } from '../../components/Contracts/PreviewModal';
@@ -37,7 +37,7 @@ export const ContractDetailsPage: React.FC = () => {
     if (!token || !id) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/v1/contracts/${id}`, {
+      const { data } = await API.get(`/api/v1/contracts/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setContract(data);
@@ -64,7 +64,7 @@ export const ContractDetailsPage: React.FC = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(
+      await API.put(
         `/api/v1/contracts/${id}`,
         { contractData: formData },
         {
@@ -83,7 +83,7 @@ export const ContractDetailsPage: React.FC = () => {
     setPreviewError('');
     try {
       // Request HTML format for the preview
-      const { data } = await axios.get(`/api/v1/contracts/${id}/generate`, {
+      const { data } = await API.get(`/api/v1/contracts/${id}/generate`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPreviewHtml(data);
@@ -98,7 +98,7 @@ export const ContractDetailsPage: React.FC = () => {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(
+      const response = await API.get(
         `/api/v1/contracts/${id}/generate?format=pdf`,
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext'; // Assuming you have an AuthContext
 import './Dashboard.css';
 
@@ -19,7 +19,7 @@ export const DashboardPage = () => {
     const fetchMetrics = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get('/api/v1/dashboard', {
+        const { data } = await API.get('/api/v1/dashboard', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMetrics(data);
