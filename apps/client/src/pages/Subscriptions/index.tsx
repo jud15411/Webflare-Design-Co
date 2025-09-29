@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import CreateSubscriptionModal from '../../components/Subscriptions/CreateSubscriptionModal';
 import '../Settings/Settings.css';
@@ -24,7 +24,7 @@ const SubscriptionsPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await axios.get('/api/v1/subscriptions', {
+      const { data } = await API.get('/api/v1/subscriptions', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubscriptions(data);
@@ -42,7 +42,7 @@ const SubscriptionsPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this subscription?')) {
       try {
-        await axios.delete(`/api/v1/subscriptions/${id}`, {
+        await API.delete(`/api/v1/subscriptions/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchSubscriptions();

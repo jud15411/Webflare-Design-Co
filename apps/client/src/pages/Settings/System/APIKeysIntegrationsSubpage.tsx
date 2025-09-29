@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -29,7 +29,7 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await axios.get(`/api/v1/settings/system/integrations`, {
+      const { data } = await API.get(`/api/v1/settings/system/integrations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setKeys(data);
@@ -57,7 +57,7 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Update API endpoint to match the backend
-      await axios.post(`/api/v1/settings/system/integrations`, form, {
+      await API.post(`/api/v1/settings/system/integrations`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ name: '', accessLevel: 'read' });
@@ -72,7 +72,7 @@ const APIKeysIntegrationsSubpage: React.FC<APIKeysIntegrationsSubpageProps> = ({
     if (window.confirm('Are you sure you want to delete this API key?')) {
       try {
         // Fix: Update API endpoint to match the backend
-        await axios.delete(`/api/v1/settings/system/integrations/${id}`, {
+        await API.delete(`/api/v1/settings/system/integrations/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchKeys(); // Refresh list

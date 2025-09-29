@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 import { navLinks, type NavItem } from '../../../components/Sidebar/navlinks';
@@ -44,10 +44,10 @@ const RoleBasedPermissionsSubpage: React.FC<
       setError('');
       setLoading(true);
       const [permissionsRes, rolesRes] = await Promise.all([
-        axios.get(`/api/v1/settings/users/permissions`, {
+        API.get(`/api/v1/settings/users/permissions`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get(`/api/v1/roles`, {
+        API.get(`/api/v1/roles`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -88,7 +88,7 @@ const RoleBasedPermissionsSubpage: React.FC<
   const handleSave = async () => {
     if (!permissions) return;
     try {
-      await axios.put(
+      await API.put(
         `/api/v1/settings/users/permissions`,
         { permissions },
         {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -26,7 +26,7 @@ const ClientPortalSubpage: React.FC<ClientPortalSubpageProps> = ({
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await API.get(
           `/api/v1/settings/billing/client-portal`,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -58,7 +58,7 @@ const ClientPortalSubpage: React.FC<ClientPortalSubpageProps> = ({
     if (!settings) return;
 
     try {
-      await axios.put(`/api/v1/settings/billing/client-portal`, settings, {
+      await API.put(`/api/v1/settings/billing/client-portal`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccessMessage('Client portal settings updated successfully!');

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import { ConfirmationModal } from '../Common/ConfirmationModal/ConfirmationModal';
 import { ProjectFormModal } from './ProjectFormModal';
 import {
@@ -17,13 +18,17 @@ interface ProjectListProps {
 
 interface Client extends ProjectClient {}
 
+// Define a type for API error responses
+interface ApiError {
+  message: string;
+}
+
 const getStatusClass = (status: string): string => {
   return `status-${status.toLowerCase().replace(/ /g, '-')}`;
 };
 
 export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
   const navigate = useNavigate();
-  const { token } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -36,47 +41,34 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
+  const fetchAllData = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const [projectsResponse, clientsResponse, usersResponse] =
+        await Promise.all([
+          API.get<Project[]>(`/projects?category=${encodeURIComponent(category)}`),
+          API.get<Client[]>('/clients'),
+          API.get<User[]>('/users'),
+        ]);
+
+      setProjects(projectsResponse.data);
+      setClients(clientsResponse.data);
+      setUsers(usersResponse.data);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        'Failed to load project data. Please try again.';
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [category]);
+
   useEffect(() => {
-    const fetchAllData = async () => {
-      if (!token) return;
-      setIsLoading(true);
-      setError(null);
-      try {
-        const [projectsResponse, clientsResponse, usersResponse] =
-          await Promise.all([
-            fetch(`/api/v1/projects?category=${encodeURIComponent(category)}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            fetch(`/api/v1/clients`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            fetch(`/api/v1/users`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-          ]);
-
-        if (!projectsResponse.ok) throw new Error('Failed to fetch projects.');
-        if (!clientsResponse.ok) throw new Error('Failed to fetch clients.');
-        if (!usersResponse.ok) throw new Error('Failed to fetch users.');
-
-        const projectsData: Project[] = await projectsResponse.json();
-        const clientsData: Client[] = await clientsResponse.json();
-        const usersData: User[] = await usersResponse.json();
-
-        setProjects(projectsData);
-        setClients(clientsData);
-        setUsers(usersData);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchAllData();
-  }, [category, token]);
-
-  // --- FIX: Add the missing handler functions ---
+  }, [fetchAllData]);
 
   const handleOpenAddModal = () => {
     setProjectToEdit(null);
@@ -96,39 +88,35 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
   const handleFormSubmit = async (projectData: ProjectFormData) => {
     setError(null);
     const isEditing = !!projectData._id;
-    const url = isEditing
-      ? `/api/v1/projects/${projectData._id}`
-      : '/api/v1/projects';
-    const method = isEditing ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(projectData),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to ${isEditing ? 'update' : 'create'} project.`
+      let savedProject: Project;
+      if (isEditing) {
+        const response = await API.put<Project>(
+          `/projects/${projectData._id}`,
+          projectData
         );
+        savedProject = response.data;
+      } else {
+        const response = await API.post<Project>('/projects', projectData);
+        savedProject = response.data;
       }
-
-      const savedProject: Project = await response.json();
 
       if (isEditing) {
         setProjects(
           projects.map((p) => (p._id === savedProject._id ? savedProject : p))
         );
       } else {
-        setProjects([...projects, savedProject]);
+        // Re-fetch to get the fully populated new project
+        await fetchAllData();
       }
       setIsFormModalOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        `Failed to ${isEditing ? 'update' : 'create'} the project.`;
+      setError(message);
     }
   };
 
@@ -136,19 +124,14 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
     if (!projectToDelete) return;
     setError(null);
     try {
-      const response = await fetch(`/api/v1/projects/${projectToDelete._id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete project.');
-      }
-
+      await API.delete(`/projects/${projectToDelete._id}`);
       setProjects(projects.filter((p) => p._id !== projectToDelete._id));
       setIsDeleteModalOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to delete the project.';
+      setError(message);
     }
   };
 
@@ -160,7 +143,8 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
           Add New Project
         </button>
       </div>
-      {/* ... rest of the JSX remains the same */}
+      {error && <p className="error-message">{error}</p>}
+      {isLoading && <p>Loading projects...</p>}
       {!isLoading && !error && (
         <div className="table-container">
           <table className="pro-table">
@@ -180,8 +164,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
                     <td>{project.name}</td>
                     <td>{project.client?.clientName || 'N/A'}</td>
                     <td>
-                      {project.team.map((member) => member.name).join(', ') ||
-                        'N/A'}
+                      {project.team.map((member) => member.name).join(', ') || 'N/A'}
                     </td>
                     <td>
                       <span

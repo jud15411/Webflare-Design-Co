@@ -1,6 +1,6 @@
 // src/components/Quiz/CybersecurityQuiz.tsx (Corrected)
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import styles from './CybersecurityQuiz.module.css'; // Using CSS Modules
 import { GlitchText } from '../Visual/GlitchText/GlitchText';
 import { Button } from '../UI/Button/Button';
@@ -45,7 +45,7 @@ export const CybersecurityQuiz: React.FC = () => {
     const fetchQuiz = async () => {
       try {
         // FIX: The URL was missing the `/public` segment.
-        const { data } = await axios.get('/api/v1/public/website/quiz');
+        const { data } = await API.get('/api/v1/public/website/quiz');
         setSettings(data.settings);
         setQuestions(data.questions);
         if (data.settings?.timeLimit) {
@@ -95,7 +95,7 @@ export const CybersecurityQuiz: React.FC = () => {
 
   const handleCertificateDownload = async () => {
     try {
-        const response = await axios.post('/api/v1/quiz/generate-certificate', {
+        const response = await API.post('/api/v1/quiz/generate-certificate', {
             name: userName,
             score: Math.round((score / questions.length) * 100)
         }, {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -25,7 +25,7 @@ const PricingBillingSubpage: React.FC<PricingBillingSubpageProps> = ({
     const fetchSettings = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get(`/api/v1/settings/billing/pricing`, {
+        const { data } = await API.get(`/api/v1/settings/billing/pricing`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSettings(data);
@@ -71,7 +71,7 @@ const PricingBillingSubpage: React.FC<PricingBillingSubpageProps> = ({
     e.preventDefault();
     if (!settings) return;
     try {
-      await axios.put(
+      await API.put(
         `/api/v1/settings/billing/pricing`,
         {
           ...settings,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -27,7 +27,7 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
       setError('');
       setLoading(true);
       // Fix: Updated API endpoint to match the new backend route
-      const { data } = await axios.get(`/api/v1/settings/legal/agreements`, {
+      const { data } = await API.get(`/api/v1/settings/legal/agreements`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAgreements(data);
@@ -55,7 +55,7 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Updated API endpoint to match the new backend route
-      await axios.post(`/api/v1/settings/legal/agreements`, form, {
+      await API.post(`/api/v1/settings/legal/agreements`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ title: '', content: '' });
@@ -70,7 +70,7 @@ const StandardAgreementsSubpage: React.FC<StandardAgreementsSubpageProps> = ({
     if (window.confirm('Are you sure you want to delete this agreement?')) {
       try {
         // Fix: Updated API endpoint to match the new backend route
-        await axios.delete(`/api/v1/settings/legal/agreements/${id}`, {
+        await API.delete(`/api/v1/settings/legal/agreements/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchAgreements(); // Refresh list

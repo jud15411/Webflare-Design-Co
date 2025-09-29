@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './SetPasswordPage.css';
 
@@ -28,7 +28,7 @@ const SetPasswordPage: React.FC = () => {
     setError('');
 
     try {
-      const { data } = await axios.post(
+      const { data } = await API.post(
         '/api/v1/client-portal-auth/set-initial-password',
         {
           email,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -26,7 +26,7 @@ const AuditLogsSubpage: React.FC<AuditLogsSubpageProps> = ({ onBack }) => {
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await axios.get(`/api/v1/settings/system/audit`, {
+      const { data } = await API.get(`/api/v1/settings/system/audit`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLogs(data);

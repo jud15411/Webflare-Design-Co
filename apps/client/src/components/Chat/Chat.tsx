@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Chat.css';
 
@@ -28,7 +28,7 @@ export const Chat: React.FC<ChatProps> = ({ projectId }) => {
     // Function to fetch historical messages
     const fetchMessages = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/messages/${projectId}`, {
+        const { data } = await API.get(`/api/v1/messages/${projectId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMessages(data);

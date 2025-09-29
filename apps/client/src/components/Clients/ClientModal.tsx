@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './ClientModal.css';
 
@@ -104,11 +104,11 @@ export const ClientModal: React.FC<ClientModalProps> = ({
     e.preventDefault();
     try {
       if (client) {
-        await axios.put(`/api/v1/clients/${client._id}`, formData, {
+        await API.put(`/api/v1/clients/${client._id}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.post(`/api/v1/clients`, formData, {
+        await API.post(`/api/v1/clients`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }

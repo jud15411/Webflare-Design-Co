@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -29,7 +29,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await axios.get(
+      const { data } = await API.get(
         `/api/v1/settings/company-info/services`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -64,7 +64,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Update API endpoint to match the backend
-      await axios.post(`/api/v1/settings/company-info/services`, form, {
+      await API.post(`/api/v1/settings/company-info/services`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ name: '', price: 0, description: '' });
@@ -79,7 +79,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
         // Fix: Update API endpoint to match the backend
-        await axios.delete(`/api/v1/settings/company-info/services/${id}`, {
+        await API.delete(`/api/v1/settings/company-info/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchServices(); // Refresh list

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -27,7 +27,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await axios.get(`/api/v1/settings/system/backup`, {
+      const { data } = await API.get(`/api/v1/settings/system/backup`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBackups(data);
@@ -51,7 +51,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
     ) {
       try {
         // Fix: Update API endpoint to match the backend
-        await axios.post(
+        await API.post(
           `/api/v1/settings/system/backup`,
           {},
           {
@@ -75,7 +75,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
     ) {
       try {
         // Fix: Update API endpoint to match the backend
-        await axios.post(
+        await API.post(
           `/api/v1/settings/system/backup/${id}/restore`,
           {},
           {

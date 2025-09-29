@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { PricingModal } from '../../components/Website/PricingModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
@@ -29,7 +29,7 @@ const PricingPage = () => {
     const fetchPricingTiers = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('/api/v1/admin/website/pricing', {
+            const { data } = await API.get('/api/v1/admin/website/pricing', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPricingTiers(data);
@@ -53,7 +53,7 @@ const PricingPage = () => {
         const method = editingTier ? 'put' : 'post';
 
         try {
-            await axios[method](url, {
+            await API[method](url, {
                 ...tierData,
                 features: tierData.features.split('\n'),
             }, {
@@ -71,7 +71,7 @@ const PricingPage = () => {
         if (!tierToDelete) return;
 
         try {
-            await axios.delete(`/api/v1/admin/website/pricing/${tierToDelete._id}`, {
+            await API.delete(`/api/v1/admin/website/pricing/${tierToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchPricingTiers();

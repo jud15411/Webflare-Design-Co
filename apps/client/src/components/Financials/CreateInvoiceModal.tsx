@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Invoices.css';
 
@@ -42,7 +42,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
     const fetchClients = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get('/api/v1/financials/clients', {
+        const { data } = await API.get('/api/v1/financials/clients', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClients(data);
@@ -60,7 +60,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
     const fetchProjects = async () => {
       if (!selectedClient || !token) return;
       try {
-        const { data } = await axios.get(
+        const { data } = await API.get(
           `/api/v1/financials/clients/${selectedClient}/projects`,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -116,7 +116,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(
+      await API.post(
         '/api/v1/financials/invoices',
         {
           ...formData,

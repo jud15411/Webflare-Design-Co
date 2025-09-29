@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+// TimeLogsPage/index.tsx
+
+import React, { useState, useEffect, useCallback } from 'react';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import '../../App.css';
 import './TimeLogsPage.css';
 
+// --- Type Definitions ---
 interface ITimeLog {
   _id: string;
   user: string;
   clockInTime: string;
   clockOutTime?: string;
   duration?: number;
-  isApprovedOverride?: boolean; // ADDED TO MATCH BACKEND MODEL
+  isApprovedOverride?: boolean;
 }
 
 interface ISchedule {
@@ -27,63 +31,63 @@ interface StatusData {
   upcomingSchedule?: ISchedule;
 }
 
+interface ApiError {
+  message: string;
+}
+
+// --- Component ---
 const TimeLogsPage: React.FC = () => {
-  const { token } = useAuth(); // REMOVED 'user' AS IT'S UNUSED
   const [status, setStatus] = useState<StatusData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchStatus = async () => {
-    if (!token) return;
+  const fetchStatus = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await fetch('/api/v1/timelogs/status', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error('Failed to fetch status.');
-      const data: StatusData = await response.json();
-      setStatus(data);
-    } catch (err: any) {
-      setError(err.message);
+      // setLoading is handled in the useEffect that calls this
+      const response = await API.get<StatusData>('/timelogs/status');
+      setStatus(response.data);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        'Failed to fetch your time log status.';
+      setError(message);
       console.error(err);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchStatus();
-  }, [token]);
+    const loadStatus = async () => {
+      setLoading(true);
+      await fetchStatus();
+      setLoading(false);
+    };
+    loadStatus();
+  }, [fetchStatus]);
 
   const handleClockIn = async () => {
+    setError(null);
     try {
-      const response = await fetch('/api/v1/timelogs/clock-in', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message);
-      }
-      await fetchStatus();
+      await API.post('/timelogs/clock-in');
+      await fetchStatus(); // Refresh status after clocking in
     } catch (err: any) {
-      setError(err.message);
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to clock in.';
+      setError(message);
     }
   };
 
   const handleClockOut = async () => {
+    setError(null);
     try {
-      const response = await fetch('/api/v1/timelogs/clock-out', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message);
-      }
-      await fetchStatus();
+      await API.post('/timelogs/clock-out');
+      await fetchStatus(); // Refresh status after clocking out
     } catch (err: any) {
-      setError(err.message);
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to clock out.';
+      setError(message);
     }
   };
 
@@ -99,7 +103,6 @@ const TimeLogsPage: React.FC = () => {
   };
 
   if (loading || !status) {
-    // COMBINED LOADING AND NULL CHECK
     return <div className="time-logs-page-container">Loading...</div>;
   }
 
@@ -131,11 +134,17 @@ const TimeLogsPage: React.FC = () => {
           {status.upcomingSchedule && (
             <div className="upcoming-schedule-card">
               <h3>Upcoming Schedule</h3>
-              <p>**Start:** {formatDate(status.upcomingSchedule.startTime)}</p>
-              <p>**End:** {formatDate(status.upcomingSchedule.endTime)}</p>
+              <p>
+                <strong>Start:</strong>{' '}
+                {formatDate(status.upcomingSchedule.startTime)}
+              </p>
+              <p>
+                <strong>End:</strong>{' '}
+                {formatDate(status.upcomingSchedule.endTime)}
+              </p>
               {status.upcomingSchedule.notes && (
                 <p className="notes">
-                  **Notes:** {status.upcomingSchedule.notes}
+                  <strong>Notes:</strong> {status.upcomingSchedule.notes}
                 </p>
               )}
             </div>

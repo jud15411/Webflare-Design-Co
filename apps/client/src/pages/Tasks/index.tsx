@@ -1,5 +1,8 @@
+// TasksPage/index.tsx
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import { TaskModal } from '../../components/TaskModal';
 import './TasksPage.css';
@@ -10,7 +13,6 @@ interface User {
   name: string;
 }
 
-// Add Project and Client interfaces
 interface Client {
   _id: string;
   clientName: string;
@@ -30,17 +32,21 @@ interface Task {
   category: 'Cybersecurity' | 'Web Development';
   dueDate: string;
   assignedTo: User;
-  project: Project; // Update task to include project
+  project: Project;
 }
 
 type TaskCategory = 'Cybersecurity' | 'Web Development';
 
+// Define a type for API error responses
+interface ApiError {
+  message: string;
+}
+
 // --- Component ---
 export const TasksPage: React.FC = () => {
-  const { token } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]); // State for projects
+  const [projects, setProjects] = useState<Project[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [activeFilter, setActiveFilter] =
     useState<TaskCategory>('Web Development');
@@ -53,40 +59,36 @@ export const TasksPage: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
+  // Refactored to use Axios instance
   const fetchTasks = useCallback(async () => {
-    if (!token) return;
     try {
-      const response = await fetch('/api/v1/tasks', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error('Failed to fetch tasks.');
-      const data: Task[] = await response.json();
-      setTasks(data);
-    } catch (err: any) {
-      setError(err.message);
+      const response = await API.get<Task[]>('/tasks');
+      setTasks(response.data);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        'Failed to fetch tasks. Please try again.';
+      setError(message);
     }
-  }, [token]);
+  }, []); // No dependencies needed
 
   useEffect(() => {
+    // Refactored to use Axios instance
     const fetchAuxData = async () => {
-      if (!token) return;
       try {
         const [usersRes, projectsRes] = await Promise.all([
-          fetch('/api/v1/users', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch('/api/v1/projects', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+          API.get<User[]>('/users'),
+          API.get<Project[]>('/projects'),
         ]);
-
-        if (!usersRes.ok) throw new Error('Failed to fetch users.');
-        if (!projectsRes.ok) throw new Error('Failed to fetch projects.');
-
-        setUsers(await usersRes.json());
-        setProjects(await projectsRes.json());
-      } catch (err: any) {
-        console.error(err.message);
+        setUsers(usersRes.data);
+        setProjects(projectsRes.data);
+      } catch (err) {
+        const axiosError = err as AxiosError<ApiError>;
+        const message =
+          axiosError.response?.data?.message ||
+          'Failed to load required page data.';
+        setError(message);
       }
     };
 
@@ -97,10 +99,8 @@ export const TasksPage: React.FC = () => {
       setIsLoading(false);
     };
 
-    if (token) {
-      fetchAllData();
-    }
-  }, [token, fetchTasks]);
+    fetchAllData();
+  }, [fetchTasks]); // Token dependency removed
 
   useEffect(() => {
     setFilteredTasks(tasks.filter((task) => task.category === activeFilter));
@@ -116,34 +116,26 @@ export const TasksPage: React.FC = () => {
     setIsTaskModalOpen(true);
   };
 
+  // Refactored to use Axios instance
   const handleSaveTask = async (
     taskData: Omit<Task, '_id' | 'assignedTo' | 'project'> & {
       assignedTo: string;
       project: string;
     }
   ) => {
-    const endpoint = editingTask
-      ? `/api/v1/tasks/${editingTask._id}`
-      : '/api/v1/tasks';
-    const method = editingTask ? 'PATCH' : 'POST';
-
     try {
-      const response = await fetch(endpoint, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(taskData),
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || 'Failed to save task.');
+      if (editingTask) {
+        await API.patch(`/tasks/${editingTask._id}`, taskData);
+      } else {
+        await API.post('/tasks', taskData);
       }
       setIsTaskModalOpen(false);
-      await fetchTasks();
-    } catch (err: any) {
-      setError(err.message);
+      await fetchTasks(); // Refresh the tasks list
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to save the task.';
+      setError(message);
     }
   };
 
@@ -152,17 +144,18 @@ export const TasksPage: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
+  // Refactored to use Axios instance
   const handleConfirmDelete = async () => {
     if (!taskToDelete) return;
     try {
-      const response = await fetch(`/api/v1/tasks/${taskToDelete._id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error('Failed to delete task.');
+      await API.delete(`/tasks/${taskToDelete._id}`);
+      // Optimistically update UI
       setTasks(tasks.filter((task) => task._id !== taskToDelete._id));
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to delete the task.';
+      setError(message);
     } finally {
       setIsDeleteModalOpen(false);
       setTaskToDelete(null);
@@ -201,7 +194,7 @@ export const TasksPage: React.FC = () => {
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Project (Client)</th> {/* Updated Header */}
+                <th>Project (Client)</th>
                 <th>Assigned To</th>
                 <th>Due Date</th>
                 <th>Status</th>
@@ -216,7 +209,6 @@ export const TasksPage: React.FC = () => {
                       <div className="task-title">{task.title}</div>
                       <div className="task-description">{task.description}</div>
                     </td>
-                    {/* Display Project and Client Name */}
                     <td>
                       {task.project?.name} ({task.project?.client?.clientName})
                     </td>
@@ -260,7 +252,7 @@ export const TasksPage: React.FC = () => {
         onSave={handleSaveTask}
         task={editingTask}
         users={users}
-        projects={projects} // Pass projects to modal
+        projects={projects}
       />
 
       <ConfirmationModal

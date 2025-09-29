@@ -1,5 +1,8 @@
+// RolesPage.tsx
+
 import React, { useState, useEffect, type FormEvent } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import './RolesPage.css';
 
@@ -10,10 +13,14 @@ interface Role {
   description?: string;
 }
 
+// Define a type for API error responses for better type safety
+interface ApiError {
+  message: string;
+}
+
 const INITIAL_FORM_STATE = { name: '', description: '' };
 
 export const RolesPage: React.FC = () => {
-  const { token } = useAuth();
   const [roles, setRoles] = useState<Role[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,25 +33,25 @@ export const RolesPage: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [roleToDelete, setRoleToDelete] = useState<Role | null>(null);
 
+  // Fetch roles using the API instance
   useEffect(() => {
     const fetchRoles = async () => {
-      if (!token) return;
       setIsLoading(true);
       try {
-        const response = await fetch('/api/v1/roles', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) throw new Error('Failed to fetch roles.');
-        const data = await response.json();
-        setRoles(data);
-      } catch (err: any) {
-        setError(err.message);
+        const response = await API.get<Role[]>('/roles');
+        setRoles(response.data);
+      } catch (err) {
+        const axiosError = err as AxiosError<ApiError>;
+        const message =
+          axiosError.response?.data?.message ||
+          'Failed to fetch roles. Please try again.';
+        setError(message);
       } finally {
         setIsLoading(false);
       }
     };
     fetchRoles();
-  }, [token]);
+  }, []); // The token dependency is no longer needed
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,28 +69,26 @@ export const RolesPage: React.FC = () => {
     setFormData(INITIAL_FORM_STATE);
   };
 
+  // Submit form (Create/Update) using the API instance
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-
     const isEditing = !!roleToEdit;
-    const url = isEditing ? `/api/v1/roles/${roleToEdit._id}` : '/api/v1/roles';
-    const method = isEditing ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Failed to save role.');
+      let savedRole: Role;
+      if (isEditing) {
+        // Use API.put for updates
+        const response = await API.put<Role>(
+          `/roles/${roleToEdit._id}`,
+          formData
+        );
+        savedRole = response.data;
+      } else {
+        // Use API.post for creation
+        const response = await API.post<Role>('/roles', formData);
+        savedRole = response.data;
       }
-      const savedRole = await response.json();
 
       if (isEditing) {
         setRoles(roles.map((r) => (r._id === savedRole._id ? savedRole : r)));
@@ -91,8 +96,11 @@ export const RolesPage: React.FC = () => {
         setRoles([...roles, savedRole]);
       }
       handleCancelEdit(); // Reset form
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to save the role.';
+      setError(message);
     }
   };
 
@@ -101,21 +109,19 @@ export const RolesPage: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
+  // Delete role using the API instance
   const handleConfirmDelete = async () => {
     if (!roleToDelete) return;
     try {
-      const response = await fetch(`/api/v1/roles/${roleToDelete._id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Failed to delete role.');
-      }
+      await API.delete(`/roles/${roleToDelete._id}`);
       setRoles(roles.filter((r) => r._id !== roleToDelete._id));
       setIsDeleteModalOpen(false);
-    } catch (err: any) {
-      setError(err.message);
+      setRoleToDelete(null); // Clear the role to delete
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to delete the role.';
+      setError(message);
     }
   };
 

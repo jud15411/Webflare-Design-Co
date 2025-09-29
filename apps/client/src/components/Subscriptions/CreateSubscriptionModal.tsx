@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Subscriptions.css';
 
@@ -44,10 +44,10 @@ const CreateSubscriptionModal: React.FC<ModalProps> = ({
     const fetchData = async () => {
       try {
         const [clientRes, userRes] = await Promise.all([
-          axios.get('/api/v1/clients', {
+          API.get('/api/v1/clients', {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get('/api/v1/users', {
+          API.get('/api/v1/users', {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -71,7 +71,7 @@ const CreateSubscriptionModal: React.FC<ModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(
+      await API.post(
         '/api/v1/subscriptions',
         {
           ...formData,

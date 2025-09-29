@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -22,7 +22,7 @@ const CompanyInfoSubpage: React.FC<CompanyInfoSubpageProps> = ({ onBack }) => {
   useEffect(() => {
     const fetchCompanyInfo = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/settings/company-info`, {
+        const { data } = await API.get(`/api/v1/settings/company-info`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCompanyInfo(data);
@@ -45,7 +45,7 @@ const CompanyInfoSubpage: React.FC<CompanyInfoSubpageProps> = ({ onBack }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/v1/settings/company-info`, companyInfo, {
+      await API.put(`/api/v1/settings/company-info`, companyInfo, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Company information updated successfully!');

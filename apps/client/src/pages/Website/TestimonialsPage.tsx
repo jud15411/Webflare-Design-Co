@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { TestimonialModal } from '../../components/Website/TestimonialModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
@@ -28,7 +28,7 @@ const TestimonialsPage = () => {
     const fetchTestimonials = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('/api/v1/admin/website/testimonials', {
+            const { data } = await API.get('/api/v1/admin/website/testimonials', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTestimonials(data);
@@ -52,7 +52,7 @@ const TestimonialsPage = () => {
         const method = editingTestimonial ? 'put' : 'post';
 
         try {
-            await axios[method](url, testimonialData, {
+            await API[method](url, testimonialData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchTestimonials();
@@ -67,7 +67,7 @@ const TestimonialsPage = () => {
         if (!testimonialToDelete) return;
 
         try {
-            await axios.delete(`/api/v1/admin/website/testimonials/${testimonialToDelete._id}`, {
+            await API.delete(`/api/v1/admin/website/testimonials/${testimonialToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchTestimonials();

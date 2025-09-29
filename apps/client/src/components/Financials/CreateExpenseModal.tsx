@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Expenses.css';
 
@@ -33,7 +33,7 @@ const CreateExpenseModal: React.FC<CreateExpenseModalProps> = ({
     e.preventDefault();
     setError('');
     try {
-      await axios.post(
+      await API.post(
         '/api/v1/financials/expenses',
         {
           ...formData,

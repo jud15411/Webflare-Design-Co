@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Software.css';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
@@ -40,7 +40,7 @@ const SoftwarePage = () => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/software`, {
+      const { data } = await API.get(`/api/v1/software`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAssets(data);
@@ -68,7 +68,7 @@ const SoftwarePage = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post(
+      await API.post(
         `/api/v1/software`,
         { ...form, assignedTo: hardcodedAssignedToId },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -97,7 +97,7 @@ const SoftwarePage = () => {
   const handleConfirmDelete = async () => {
     if (!assetToDeleteId) return;
     try {
-      await axios.delete(`/api/v1/software/${assetToDeleteId}`, {
+      await API.delete(`/api/v1/software/${assetToDeleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchAssets();

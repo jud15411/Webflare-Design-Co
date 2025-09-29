@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -28,7 +28,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
     const fetchSettings = async () => {
       if (!token) return;
       try {
-        const { data } = await axios.get(`/api/v1/settings/users/mfa`, {
+        const { data } = await API.get(`/api/v1/settings/users/mfa`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSettings(data);
@@ -60,7 +60,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
   const handleSave = async () => {
     if (!settings) return;
     try {
-      await axios.put(`/api/v1/settings/users/mfa`, settings, {
+      await API.put(`/api/v1/settings/users/mfa`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('MFA settings updated successfully!');

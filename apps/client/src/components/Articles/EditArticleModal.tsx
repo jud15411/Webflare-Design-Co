@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Article {
@@ -50,7 +50,7 @@ const EditArticleModal = ({
     setError('');
 
     try {
-      await axios.put(
+      await API.put(
         `/api/v1/articles/${article._id}`,
         { title, content, section, status },
         { headers: { Authorization: `Bearer ${token}` } }

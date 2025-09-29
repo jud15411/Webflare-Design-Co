@@ -1,6 +1,6 @@
 // src/components/Testimonials/Testimonials.tsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import styles from './Testimonials.module.css';
 
 interface Testimonial {
@@ -18,7 +18,7 @@ export const Testimonials: React.FC = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const { data } = await axios.get('/api/v1/public/website/testimonials');
+        const { data } = await API.get('/api/v1/public/website/testimonials');
         setTestimonials(data);
       } catch (error) {
         setError('Failed to fetch testimonials.');

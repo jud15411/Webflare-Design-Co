@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { PortfolioModal } from '../../components/Website/PortfolioModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
@@ -29,7 +29,7 @@ const PortfolioPage = () => {
     const fetchPortfolioItems = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('/api/v1/admin/website/portfolio', {
+            const { data } = await API.get('/api/v1/admin/website/portfolio', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPortfolioItems(data);
@@ -53,7 +53,7 @@ const PortfolioPage = () => {
         const method = editingItem ? 'put' : 'post';
 
         try {
-            await axios[method](url, itemData, {
+            await API[method](url, itemData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchPortfolioItems();
@@ -68,7 +68,7 @@ const PortfolioPage = () => {
         if (!itemToDelete) return;
 
         try {
-            await axios.delete(`/api/v1/admin/website/portfolio/${itemToDelete._id}`, {
+            await API.delete(`/api/v1/admin/website/portfolio/${itemToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchPortfolioItems();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import '../../pages/Software/Software.css'; // Reusing the same CSS
 
@@ -61,7 +61,7 @@ const EditSoftwareModal = ({
     setError('');
 
     try {
-      await axios.put(`/api/v1/software/${asset._id}`, form, {
+      await API.put(`/api/v1/software/${asset._id}`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onAssetUpdated();

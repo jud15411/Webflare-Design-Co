@@ -1,6 +1,6 @@
 // src/components/Pricing/Pricing.tsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import styles from './Pricing.module.css';
 
 interface PricingTier {
@@ -20,7 +20,7 @@ export const Pricing: React.FC = () => {
   useEffect(() => {
     const fetchTiers = async () => {
       try {
-        const { data } = await axios.get('/api/v1/public/website/pricing');
+        const { data } = await API.get('/api/v1/public/website/pricing');
         setTiers(data);
       } catch (error) {
         setError('Failed to fetch pricing tiers.');

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { FeedbackModal } from '../ProjectDetails/FeedbackModal';
 import './Dashboard.css';
 
+// --- Type Definitions ---
 interface Project {
   _id: string;
   name: string;
@@ -37,7 +40,12 @@ interface DashboardData {
   tasks?: Task[];
 }
 
+interface ApiError {
+  message: string;
+}
+
 const DashboardPage: React.FC = () => {
+  // token is still useful here for the dependency array to trigger fetch on login
   const { token, clientUser, logout } = useAuth();
   const { showNotification } = useNotification();
   const navigate = useNavigate();
@@ -57,13 +65,14 @@ const DashboardPage: React.FC = () => {
         return;
       }
       try {
-        const response = await fetch('/api/v1/portal/dashboard', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
-        setData(data);
+        // Refactored to use the API instance
+        const response = await API.get<DashboardData>('/portal/dashboard');
+        setData(response.data);
       } catch (err) {
-        setError('Failed to load dashboard data.');
+        const axiosError = err as AxiosError<ApiError>;
+        const message =
+          axiosError.response?.data?.message || 'Failed to load dashboard data.';
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -75,6 +84,8 @@ const DashboardPage: React.FC = () => {
     logout();
     navigate('/login');
   };
+
+
 
   const handleFeedbackSubmitted = () => {
     showNotification('Thank you, your task feedback has been submitted!');
@@ -104,7 +115,7 @@ const DashboardPage: React.FC = () => {
             <div className="card-grid">
               {data.projects.map((project) => (
                 <Link
-                  to={`/projects/${project._id}`}
+                  to={`/portal/projects/${project._id}`}
                   key={project._id}
                   className="project-card-link">
                   <div className="data-card">

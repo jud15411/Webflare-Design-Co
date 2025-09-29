@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import '../Settings.css';
 
@@ -25,7 +25,7 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
   const fetchPolicy = async () => {
     try {
       // Fix: Update API endpoint to match the backend
-      const { data } = await axios.get(
+      const { data } = await API.get(
         `/api/v1/settings/system/data-retention`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -57,7 +57,7 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Update API endpoint to match the backend
-      await axios.put(`/api/v1/settings/system/data-retention`, policy, {
+      await API.put(`/api/v1/settings/system/data-retention`, policy, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Data retention policy updated successfully!');

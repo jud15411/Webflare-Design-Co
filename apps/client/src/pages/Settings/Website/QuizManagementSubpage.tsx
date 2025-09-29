@@ -1,6 +1,6 @@
 // src/pages/Settings/Website/QuizManagementSubpage.tsx (Updated)
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import { QuizSettingsForm } from './Quiz/QuizSettingsForm';
 import { QuestionForm } from './Quiz/QuestionForm';
@@ -20,8 +20,8 @@ const QuizManagementSubpage: React.FC<QuizManagementSubpageProps> = ({ onBack })
     if (!token) return;
     try {
       const [questionsRes, settingsRes] = await Promise.all([
-        axios.get('/api/v1/settings/quiz/questions', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('/api/v1/settings/quiz/parameters', { headers: { Authorization: `Bearer ${token}` } }),
+        API.get('/api/v1/settings/quiz/questions', { headers: { Authorization: `Bearer ${token}` } }),
+        API.get('/api/v1/settings/quiz/parameters', { headers: { Authorization: `Bearer ${token}` } }),
       ]);
       setQuestions(questionsRes.data);
       setSettings(settingsRes.data);
@@ -33,7 +33,7 @@ const QuizManagementSubpage: React.FC<QuizManagementSubpageProps> = ({ onBack })
   const deleteQuestion = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this question?")) {
       try {
-        await axios.delete(`/api/v1/settings/quiz/questions/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+        await API.delete(`/api/v1/settings/quiz/questions/${id}`, { headers: { Authorization: `Bearer ${token}` } });
         fetchQuizData(); // Refresh the list
       } catch (error) {
         console.error("Failed to delete question", error);

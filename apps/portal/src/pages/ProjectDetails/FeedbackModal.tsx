@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import './FeedbackModal.css';
 
 interface FeedbackModalProps {
@@ -8,6 +9,10 @@ interface FeedbackModalProps {
   itemName: string;
   onClose: () => void;
   onFeedbackSubmitted: () => void;
+}
+
+interface ApiError {
+  message: string;
 }
 
 export const FeedbackModal: React.FC<FeedbackModalProps> = ({
@@ -20,7 +25,6 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
   const [feedback, setFeedback] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { token } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,18 +36,19 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     setIsLoading(true);
 
     try {
-      await fetch('/api/v1/feedback/portal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ type: itemType, id: itemId, feedback }),
+      await API.post('/feedback/portal', {
+        type: itemType,
+        id: itemId,
+        feedback,
       });
       onFeedbackSubmitted();
       onClose();
     } catch (err) {
-      setError('Failed to submit feedback. Please try again.');
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        'Failed to submit feedback. Please try again.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }

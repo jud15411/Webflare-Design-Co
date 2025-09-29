@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useBusiness } from '../../contexts/BusinessContext';
-import axios from 'axios';
+import API from '../../utils/axios';
 import {
   FaChevronDown,
   FaChevronRight,
@@ -35,7 +35,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     const fetchPermissions = async () => {
       if (user?.role && token) {
         try {
-          const { data } = await axios.get(
+          const { data } = await API.get(
             `/api/v1/settings/users/permissions`,
             {
               headers: { Authorization: `Bearer ${token}` },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './Reports.css';
 
@@ -41,7 +41,7 @@ const ReportsPage = () => {
       try {
         setError('');
         setLoading(true);
-        const { data } = await axios.get(`/api/v1/reports`, {
+        const { data } = await API.get(`/api/v1/reports`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

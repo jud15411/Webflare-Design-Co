@@ -1,6 +1,6 @@
 // src/components/Website/Quiz/QuizSettingsForm.tsx (Updated)
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../../utils/axios';
 import { useAuth } from '../../../../contexts/AuthContext';
 import { type QuizSettings } from '../../../../types/quiz';
 
@@ -45,7 +45,7 @@ export const QuizSettingsForm: React.FC<QuizSettingsFormProps> = ({ settings, on
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.put('/api/v1/settings/quiz/parameters', formData, { headers: { Authorization: `Bearer ${token}` } });
+            await API.put('/api/v1/settings/quiz/parameters', formData, { headers: { Authorization: `Bearer ${token}` } });
             onSave();
         } catch (error) {
             console.error("Failed to save quiz settings", error);

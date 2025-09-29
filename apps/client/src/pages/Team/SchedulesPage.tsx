@@ -1,10 +1,13 @@
+// SchedulesPage.tsx
+
 import React, { useState, useEffect, type FormEvent } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import '../../App.css';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import './SchedulesPage.css';
 
-// Define the types from your backend model
+// --- Type Definitions ---
 interface Schedule {
   _id: string;
   user: { _id: string; name: string };
@@ -19,8 +22,11 @@ interface StaffUser {
   name: string;
 }
 
+interface ApiError {
+  message: string;
+}
+
 export const SchedulesPage: React.FC = () => {
-  const { token } = useAuth();
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [users, setUsers] = useState<StaffUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +43,7 @@ export const SchedulesPage: React.FC = () => {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
   const [selectedScheduleIds, setSelectedScheduleIds] = useState<string[]>([]);
 
-  // More compact date/time formatters
+  // --- Helper Functions ---
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString(undefined, {
       month: 'short',
@@ -53,46 +59,37 @@ export const SchedulesPage: React.FC = () => {
     });
   };
 
+  // --- Effects and Data Fetching ---
   useEffect(() => {
     const fetchAllData = async () => {
-      if (!token) return;
       setLoading(true);
       setError(null);
       try {
         const [schedulesRes, usersRes] = await Promise.all([
-          fetch('/api/v1/schedules', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch('/api/v1/users', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+          API.get<Schedule[]>('/schedules'),
+          API.get<StaffUser[]>('/users'),
         ]);
 
-        const schedulesData = await schedulesRes.json();
-        const usersData = await usersRes.json();
+        setSchedules(schedulesRes.data);
+        setUsers(usersRes.data);
 
-        if (!schedulesRes.ok)
-          throw new Error(
-            schedulesData.message || 'Failed to fetch schedules.'
-          );
-        if (!usersRes.ok)
-          throw new Error(usersData.message || 'Failed to fetch users.');
-
-        setSchedules(schedulesData);
-        setUsers(usersData);
-        if (usersData.length > 0 && !newSchedule.user) {
-          setNewSchedule((prev) => ({ ...prev, user: usersData[0]._id }));
+        if (usersRes.data.length > 0 && !newSchedule.user) {
+          setNewSchedule((prev) => ({ ...prev, user: usersRes.data[0]._id }));
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        const axiosError = err as AxiosError<ApiError>;
+        const message =
+          axiosError.response?.data?.message || 'Failed to fetch schedule data.';
+        setError(message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAllData();
-  }, [token, refresh]);
+  }, [refresh]); // Refreshes when `refresh` state changes
 
+  // --- Event Handlers ---
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -111,27 +108,20 @@ export const SchedulesPage: React.FC = () => {
         endTime: new Date(newSchedule.endTime).toISOString(),
       };
 
-      const response = await fetch('/api/v1/schedules', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(scheduleToSend),
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Failed to create schedule.');
-      }
+      await API.post('/schedules', scheduleToSend);
+
       setNewSchedule({
         user: users[0]?._id || '',
         startTime: '',
         endTime: '',
         notes: '',
       });
-      setRefresh((prev) => !prev);
+      setRefresh((prev) => !prev); // Trigger re-fetch
     } catch (err: any) {
-      setError(err.message);
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to create the schedule.';
+      setError(message);
     }
   };
 
@@ -147,26 +137,22 @@ export const SchedulesPage: React.FC = () => {
     if (selectedScheduleIds.length === 0) return;
     setError(null);
     try {
-      const response = await fetch('/api/v1/schedules/publish', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ scheduleIds: selectedScheduleIds }),
+      await API.patch('/schedules/publish', {
+        scheduleIds: selectedScheduleIds,
       });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Failed to publish schedules.');
-      }
+
       setSelectedScheduleIds([]);
       setIsPublishModalOpen(false);
-      setRefresh((prev) => !prev);
+      setRefresh((prev) => !prev); // Trigger re-fetch
     } catch (err: any) {
-      setError(err.message);
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message || 'Failed to publish schedules.';
+      setError(message);
     }
   };
 
+  // --- Render Method ---
   return (
     <div className="page-container">
       <div className="page-header">
@@ -174,7 +160,6 @@ export const SchedulesPage: React.FC = () => {
       </div>
       {error && <p className="error-message">{error}</p>}
 
-      {/* --- Form is now a standalone card --- */}
       <div className="schedule-form-card">
         <h2>Create New Schedule</h2>
         <form onSubmit={handleCreateSchedule}>
@@ -229,7 +214,6 @@ export const SchedulesPage: React.FC = () => {
         </form>
       </div>
 
-      {/* --- Schedules List section --- */}
       <div className="schedules-list-container">
         <div className="schedules-list-header">
           <h2>Upcoming Schedules</h2>
@@ -307,5 +291,3 @@ export const SchedulesPage: React.FC = () => {
     </div>
   );
 };
-
-export default SchedulesPage;

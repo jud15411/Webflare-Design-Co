@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Chat } from '../../components/Chat/Chat';
-import { useAuth } from '../../contexts/AuthContext'; // Import useAuth
+import { useAuth } from '../../contexts/AuthContext';
 import { type Project } from '../../types/projects';
 import './ProjectDetailsPage.css';
+import API from '../../utils/axios'; // 1. Import the centralized API instance
 
 export const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { token } = useAuth(); // Get the auth token
+  const { token } = useAuth();
   const [project, setProject] = useState<Project | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Add loading state
-  const [error, setError] = useState<string | null>(null); // Add error state
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // This function now fetches live data from your API
     const fetchProjectDetails = async () => {
       if (!token) {
         setIsLoading(false);
@@ -24,20 +24,15 @@ export const ProjectDetailsPage: React.FC = () => {
       setError(null);
 
       try {
-        const response = await fetch(`/api/v1/projects/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token for private routes
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch project details.');
-        }
-
-        const data: Project = await response.json();
+        // 2. Replace fetch with API.get
+        // The authorization header is now handled automatically by the Axios interceptor
+        const { data } = await API.get<Project>(`/projects/${id}`);
         setProject(data);
       } catch (err: any) {
-        setError(err.message);
+        // 3. Update error handling for Axios
+        setError(
+          err.response?.data?.message || 'Failed to fetch project details.'
+        );
       } finally {
         setIsLoading(false);
       }
@@ -46,14 +41,22 @@ export const ProjectDetailsPage: React.FC = () => {
     if (id) {
       fetchProjectDetails();
     }
-  }, [id, token]); // Add token as a dependency
+  }, [id, token]);
 
   if (isLoading) {
-    return <div className="page-container"><p>Loading project details...</p></div>;
+    return (
+      <div className="page-container">
+        <p>Loading project details...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="page-container"><p>Error: {error}</p></div>;
+    return (
+      <div className="page-container">
+        <p>Error: {error}</p>
+      </div>
+    );
   }
 
   if (!project) {
@@ -85,20 +88,18 @@ export const ProjectDetailsPage: React.FC = () => {
             <p>
               <strong>Category:</strong> {project.category}
             </p>
-            {/* This conditional rendering will now use live data */}
-            {project.category === 'Web Development' &&
-              project.website_link && (
-                <p>
-                  <strong>Website:</strong>{' '}
-                  <a
-                    href={project.website_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {project.website_link}
-                  </a>
-                </p>
-              )}
+            {project.category === 'Web Development' && project.website_link && (
+              <p>
+                <strong>Website:</strong>{' '}
+                <a
+                  href={project.website_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.website_link}
+                </a>
+              </p>
+            )}
           </div>
         </div>
         <div className="chat-panel">

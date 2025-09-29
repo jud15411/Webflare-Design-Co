@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import API from '../../utils/axios'; // Import the new axios instance
+import { AxiosError } from 'axios'; // Import AxiosError for better error typing
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import { FeedbackModal } from './FeedbackModal';
 import './ProjectDetailsPage.css';
 
-// Interfaces for the data structure
+// --- Type Definitions ---
 interface TeamMember {
   _id: string;
   name: string;
@@ -19,11 +21,16 @@ interface ProjectDetails {
   category: string;
   startDate: string;
   team: TeamMember[];
-  website_link?: string; // <-- Add this line
+  website_link?: string;
+}
+
+interface ApiError {
+  message: string;
 }
 
 const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  // Token is still useful here for the dependency array to trigger fetch on login
   const { token } = useAuth();
   const { showNotification } = useNotification();
   const navigate = useNavigate();
@@ -35,20 +42,18 @@ const ProjectDetailsPage: React.FC = () => {
   useEffect(() => {
     const fetchProject = async () => {
       if (!id || !token) {
-        navigate('/dashboard');
+        navigate('/portal/dashboard'); // Corrected path
         return;
       }
       try {
-        const response = await fetch(`/api/v1/portal/projects/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          throw new Error('Project not found or you do not have access.');
-        }
-        const data = await response.json();
-        setProject(data);
-      } catch (err: any) {
-        setError(err.message);
+        const response = await API.get<ProjectDetails>(`/portal/projects/${id}`);
+        setProject(response.data);
+      } catch (err) {
+        const axiosError = err as AxiosError<ApiError>;
+        const message =
+          axiosError.response?.data?.message ||
+          'Project not found or you do not have access.';
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -59,7 +64,6 @@ const ProjectDetailsPage: React.FC = () => {
 
   const handleFeedbackSubmitted = () => {
     showNotification('Thank you, your feedback has been submitted!');
-    // You could optionally refetch project data here if needed
   };
 
   if (loading) return <div className="details-loading">Loading Project...</div>;
@@ -69,7 +73,7 @@ const ProjectDetailsPage: React.FC = () => {
   return (
     <div className="project-details-page">
       <div className="details-header">
-        <Link to="/dashboard" className="back-link">
+        <Link to="/portal/dashboard" className="back-link">
           &larr; Back to Dashboard
         </Link>
         <div>
@@ -96,7 +100,6 @@ const ProjectDetailsPage: React.FC = () => {
           <p>{project.description}</p>
         </div>
 
-        {/* This new card will only show for web dev projects with a link */}
         {project.category === 'Web Development' && project.website_link && (
           <div className="details-card">
             <h3>Website Link</h3>

@@ -1,6 +1,6 @@
 // src/components/Website/Quiz/QuestionForm.tsx (Corrected)
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../../../utils/axios';
 import { useAuth } from '../../../../contexts/AuthContext';
 import { type QuizQuestion } from '../../../../types/quiz';
 
@@ -85,9 +85,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave }) 
 
         try {
             if (question) {
-                await axios.put(`/api/v1/settings/quiz/questions/${question._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+                await API.put(`/api/v1/settings/quiz/questions/${question._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
             } else {
-                await axios.post('/api/v1/settings/quiz/questions', payload, { headers: { Authorization: `Bearer ${token}` } });
+                await API.post('/api/v1/settings/quiz/questions', payload, { headers: { Authorization: `Bearer ${token}` } });
             }
             onSave();
         } catch (error) {

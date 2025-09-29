@@ -1,6 +1,6 @@
 // src/components/Services/Services.tsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import styles from './Services.module.css';
 
 interface Service {
@@ -17,7 +17,7 @@ export const Services: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const { data } = await axios.get('/api/v1/public/website/services');
+        const { data } = await API.get('/api/v1/public/website/services');
         setServices(data);
       } catch (error) {
         setError('Failed to fetch services.');

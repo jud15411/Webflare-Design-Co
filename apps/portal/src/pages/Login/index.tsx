@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 import logo from '../../assets/logo.svg'; // Import your logo
@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
 
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const { data } = await axios.post('/api/v1/client-portal-auth/login', {
+      const { data } = await API.post('/api/v1/client-portal-auth/login', {
         email: normalizedEmail,
         password,
       });

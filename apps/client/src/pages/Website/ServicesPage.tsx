@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { ServiceModal } from '../../components/Website/ServiceModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
@@ -28,7 +28,7 @@ const ServicesPage = () => {
     const fetchServices = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('/api/v1/admin/website/services', {
+            const { data } = await API.get('/api/v1/admin/website/services', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setServices(data);
@@ -52,7 +52,7 @@ const ServicesPage = () => {
         const method = editingService ? 'put' : 'post';
 
         try {
-            await axios[method](url, serviceData, {
+            await API[method](url, serviceData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchServices();
@@ -67,7 +67,7 @@ const ServicesPage = () => {
         if (!serviceToDelete) return;
 
         try {
-            await axios.delete(`/api/v1/admin/website/services/${serviceToDelete._id}`, {
+            await API.delete(`/api/v1/admin/website/services/${serviceToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchServices();
