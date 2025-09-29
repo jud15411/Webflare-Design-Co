@@ -1,0 +1,26 @@
+# netlify.toml (in the root of your project)
+
+# Build settings (these can also be set in the UI)
+[build]
+  command = "npm run build:frontends"
+  publish = "dist"
+
+# Redirect rules for handling the three SPAs
+
+# Rule for the Admin Panel
+[[redirects]]
+  from = "/firmaplex-admin-panel/*"
+  to = "/firmaplex-admin-panel/index.html"
+  status = 200
+
+# Rule for the Client Portal
+[[redirects]]
+  from = "/client-portal/*"
+  to = "/client-portal/index.html"
+  status = 200
+
+# Rule for the Public Website (this is the fallback for all other requests)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
