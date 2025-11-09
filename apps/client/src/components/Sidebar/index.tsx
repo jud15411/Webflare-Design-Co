@@ -53,14 +53,17 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       if (user?.role?.name && token) { 
         try {
           // ✅ FIX: Extract the clean role name string
-          const roleName = user.role.name;
+          const roleName = user.role.name as keyof typeof navLinks;
 
           // ✅ FIX: Ensure the template literal is clean, only using roleName
           const { data } = await API.get(
-            `/settings/users/permissions/${roleName}`, 
+            // The path must ONLY contain the roleName variable inside ${}
+            `/settings/users/permissions`, 
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setPermissions(data.permissions || []);
+          const rolePermissions = data[roleName] || [];
+
+          setPermissions(rolePermissions);
         } catch (err) {
           console.error('Failed to fetch permissions:', err);
           setPermissions([]); 
