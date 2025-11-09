@@ -53,10 +53,25 @@ export const DashboardPage = () => {
         </button>
       </header>
       <main className="dashboard-main">
-        <p className="welcome-message">
-          Here's a snapshot of your business activity.
-        </p>
-        <div className="metrics-grid">
+        {/* Changed class for a prominent banner look */}
+        <div className="welcome-banner"> 
+            <p>
+                Here's a snapshot of your business activity.
+            </p>
+        </div>
+        
+        {/* New layout container */}
+        <div className="metrics-layout">
+          
+          {/* Revenue card with specific classes for prominent styling */}
+          <div className="metric-card prominent-revenue-card">
+            <h2>Total Revenue</h2>
+            <p className="metric-value revenue-value">
+              ${metrics.totalRevenue.toLocaleString()}
+            </p>
+          </div>
+          
+          {/* Other cards remain standard */}
           <div className="metric-card">
             <h2>Active Clients</h2>
             <p className="metric-value">{metrics.activeClients}</p>
@@ -64,12 +79,6 @@ export const DashboardPage = () => {
           <div className="metric-card">
             <h2>Projects Completed (This Month)</h2>
             <p className="metric-value">{metrics.projectsCompleted}</p>
-          </div>
-          <div className="metric-card">
-            <h2>Total Revenue</h2>
-            <p className="metric-value">
-              ${metrics.totalRevenue.toLocaleString()}
-            </p>
           </div>
           <div className="metric-card">
             <h2>Open Tasks</h2>
