@@ -3,6 +3,7 @@ import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { ServiceModal } from '../../components/Website/ServiceModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
+// Note: You must create and import the ServicesPage.css file for styling!
 
 interface Service {
   _id: string;
@@ -78,6 +79,17 @@ const ServicesPage = () => {
         }
     };
 
+    // Helper functions for cleaner card actions
+    const handleOpenEditModal = (service: Service) => {
+        setEditingService(service);
+        setIsModalOpen(true);
+    };
+
+    const handleOpenDeleteModal = (service: Service) => {
+        setServiceToDelete(service);
+        setIsConfirmModalOpen(true);
+    };
+
 
     return (
         <>
@@ -95,43 +107,64 @@ const ServicesPage = () => {
                 message={`Are you sure you want to delete the service "${serviceToDelete?.name}"?`}
                 variant="danger"
             />
-            <div className="page-container">
-                <div className="page-header">
+            
+            {/* Main Page Container */}
+            <div className="services-page-container">
+                <header className="page-header">
                     <h1>Manage Services</h1>
-                    <button className="add-project-button" onClick={() => { setEditingService(null); setIsModalOpen(true); }}>
-                        + Add Service
+                </header>
+
+                {/* --- TOP SECTION: ADD NEW SERVICE BUTTON/CONTROLS --- */}
+                <div className="service-controls-card">
+                    <h2>Service Management</h2>
+                    <button 
+                        className="add-service-button" 
+                        onClick={() => { setEditingService(null); setIsModalOpen(true); }}
+                    >
+                        Add New Service
                     </button>
                 </div>
-                {loading && <p>Loading services...</p>}
+
+                {loading && <p className="loading-message">Loading services...</p>}
                 {error && <p className="error-message">{error}</p>}
-                <div className="table-container">
-                    <table className="pro-table">
-                        <thead>
-                            <tr>
-                                <th>Service Name</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {services.map(service => (
-                                <tr key={service._id}>
-                                    <td>{service.name}</td>
-                                    <td>{service.description}</td>
-                                    <td>
-                                        <span className={`status-badge ${service.isActive ? 'status-completed' : 'status-on-hold'}`}>
+
+                {/* --- BOTTOM SECTION: SERVICE LIST GRID (Replaces Table) --- */}
+                <div className="services-list-card">
+                    <h2>Existing Services</h2>
+                    <div className="services-grid">
+                        {!loading && services.length === 0 ? (
+                            <p className="no-services">No services found. Click "Add New Service" to get started.</p>
+                        ) : (
+                            services.map(service => (
+                                <div key={service._id} className="service-card">
+                                    <div className="service-header">
+                                        <h3 className="service-name">{service.name}</h3>
+                                        <span 
+                                            className={`status-badge ${service.isActive ? 'status-active' : 'status-inactive'}`}
+                                        >
                                             {service.isActive ? 'Active' : 'Inactive'}
                                         </span>
-                                    </td>
-                                    <td>
-                                        <button className="action-button" onClick={() => { setEditingService(service); setIsModalOpen(true); }}>Edit</button>
-                                        <button className="action-button" onClick={() => { setServiceToDelete(service); setIsConfirmModalOpen(true); }}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                    </div>
+                                    <p className="service-description">{service.description}</p>
+                                    
+                                    <div className="service-actions">
+                                        <button 
+                                            className="action-button edit-button" 
+                                            onClick={() => handleOpenEditModal(service)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            className="action-button delete-button" 
+                                            onClick={() => handleOpenDeleteModal(service)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
                 </div>
             </div>
         </>
