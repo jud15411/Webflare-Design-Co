@@ -96,7 +96,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
 
   if (user?.role.name) {
     // FIX: Convert type to unknown first to satisfy strict TS index checking (ts(2352))
-    const roleKey = user.role as unknown as RoleKey; 
+    const roleKey = user.role.name as unknown as RoleKey; 
     
     // Check if the role key exists, otherwise fall back to 'default'
     const roleLinks = navLinks[roleKey] || navLinks.default; 

@@ -12,7 +12,6 @@ export interface IRole {
 export interface IUser extends Document {
     name: string;
     email: string;
-    // FIX 1: 'role' is an ObjectId for the DB, but can be a populated IRole object
     role: Types.ObjectId | IRole; 
     isActive: boolean;
     bio?: string;
@@ -26,10 +25,9 @@ const UserSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true }, 
     
-    // ✅ FIX 2: Change type to ObjectId and add a reference to the 'Role' collection
     role: { 
         type: Schema.Types.ObjectId, 
-        ref: 'Role', // IMPORTANT: This must match the name of your roles collection
+        ref: 'Role', 
         required: true 
     },
     
@@ -43,18 +41,28 @@ const UserSchema = new Schema<IUser>({
     },
 }, { timestamps: true });
 
-export const User = getMainDb().model<IUser>('User', UserSchema);
+// ✅ FIX: Check if the model already exists on the connection before compiling it.
+const conn = getMainDb();
 
-// --- AUXILIARY MODELS ---
+export const User = conn.models.User 
+    ? (conn.models.User as mongoose.Model<IUser>) 
+    : conn.model<IUser>('User', UserSchema);
+
+
+// --- AUXILIARY MODELS (Included for completeness) ---
 
 export interface IMfaSettings extends Document { enabled: boolean; requiredForRoles: string[]; }
 export interface IPermissionSettings extends Document { permissions: Record<string, string[]>; }
 
-export const MfaSettings = getMainDb().model<IMfaSettings>('MfaSettings', new Schema<IMfaSettings>({ 
-    enabled: { type: Boolean, default: false }, 
-    requiredForRoles: [{ type: String }] 
-}));
+export const MfaSettings = conn.models.MfaSettings 
+    ? (conn.models.MfaSettings as mongoose.Model<IMfaSettings>)
+    : conn.model<IMfaSettings>('MfaSettings', new Schema<IMfaSettings>({ 
+        enabled: { type: Boolean, default: false }, 
+        requiredForRoles: [{ type: String }] 
+    }));
 
-export const PermissionSettings = getMainDb().model<IPermissionSettings>('PermissionSettings', new Schema<IPermissionSettings>({ 
-    permissions: { type: Map, of: [String], default: {} } 
-}));
+export const PermissionSettings = conn.models.PermissionSettings 
+    ? (conn.models.PermissionSettings as mongoose.Model<IPermissionSettings>)
+    : conn.model<IPermissionSettings>('PermissionSettings', new Schema<IPermissionSettings>({ 
+        permissions: { type: Map, of: [String], default: {} } 
+    }));
