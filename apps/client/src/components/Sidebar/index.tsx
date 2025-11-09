@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext'; 
 import { useBusiness } from '../../contexts/BusinessContext';
 import API from '../../utils/axios';
 import {
-  FaChevronDown,
   FaChevronRight,
   FaSignOutAlt,
-  FaUser,
+  FaUser, // FIX: Used explicitly for fallback icon
   FaSpinner,
 } from 'react-icons/fa';
 import './Sidebar.css';
-import { navLinks, type NavItem } from './navlinks';
+import { navLinks, type NavItem, type NavLinkItem, type NavDropdownItem } from './navlinks';
+
+// --- Type Definitions ---
+// Define the allowed role keys based on the structure of navLinks
+// Assumes that the type of user.role aligns with the keys in navLinks (e.g., 'ceo', 'sales', 'developer')
+type RoleKey = keyof typeof navLinks; 
+
+// --- Helper Functions ---
+/** Gets the first initial of the first and last name for the avatar fallback. */
+const getInitials = (name: string | undefined): string => {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length > 1) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+};
 
 // --- Component Props ---
 interface SidebarComponentProps {
@@ -31,141 +46,175 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
   const [permissions, setPermissions] = useState<string[]>([]);
   const [loadingPermissions, setLoadingPermissions] = useState(true);
 
+  // --- Permission Fetching Logic ---
   useEffect(() => {
     const fetchPermissions = async () => {
-      if (user?.role && token) {
+      if (user?.role && token) { 
         try {
+          // Assuming API endpoint is /settings/users/permissions/:role
           const { data } = await API.get(
-            `/settings/users/permissions`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
+            `/settings/users/permissions/${user.role}`, 
+            { headers: { Authorization: `Bearer ${token}` } }
           );
-          setPermissions(data[user.role.name as string] || []);
-        } catch (error) {
-          console.error('Failed to fetch permissions:', error);
+          setPermissions(data.permissions || []);
+        } catch (err) {
+          console.error('Failed to fetch permissions:', err);
+          setPermissions([]); 
         } finally {
           setLoadingPermissions(false);
         }
-      } else {
+      } else if (!user) {
         setLoadingPermissions(false);
       }
     };
 
     fetchPermissions();
-  }, [user, token]);
+  }, [user?.role, token]); 
 
+
+  const hasPermission = (key: string): boolean => {
+    if (key === 'dashboard' || key === 'profile') return true; 
+
+    return permissions.includes(key); 
+  };
+  
   const toggleDropdown = (key: string) => {
-    setOpenDropdowns((prev) => ({ ...prev, [key]: !prev[key] }));
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
-    if (closeMobileMenu) {
-      closeMobileMenu();
-    }
+    navigate('/');
+    closeMobileMenu?.();
   };
 
-  const getUserRole = () => {
-    if (!user?.role) return null;
-    if (typeof user.role === 'string') {
-      return user.role;
+  // --- Role-based Link Filtering (FIXED) ---
+  let accessibleLinks: NavItem[] = [];
+
+  if (user?.role) {
+    // FIX: Convert type to unknown first to satisfy strict TS index checking (ts(2352))
+    const roleKey = user.role as unknown as RoleKey; 
+    
+    // Check if the role key exists, otherwise fall back to 'default'
+    const roleLinks = navLinks[roleKey] || navLinks.default; 
+
+    if (roleLinks) {
+        accessibleLinks = roleLinks.filter((item) => {
+            const isDropdown = 'children' in item && item.children;
+
+            if (isDropdown) { 
+                // Dropdowns are included if ANY child is accessible
+                return (item as NavDropdownItem).children.some(child => hasPermission(child.key));
+            }
+            // Leaf links are included only if they have permission
+            return hasPermission(item.key);
+        });
     }
-    if (typeof user.role === 'object' && user.role !== null) {
-      return (user.role as any).name || null;
-    }
-    return null;
-  };
-
-  const userRole = getUserRole();
-
-  const filterNavLinks = (links: NavItem[]): NavItem[] => {
-    if (userRole === 'ceo') {
-      return links; // CEO sees everything
-    }
-
-    const filteredLinks = links.reduce((acc, item) => {
-      if (permissions.includes(item.key)) {
-        if (item.children) {
-          const filteredChildren = filterNavLinks(item.children);
-          if (filteredChildren.length > 0) {
-            acc.push({ ...item, children: filteredChildren });
-          }
-        } else {
-          acc.push(item);
-        }
-      }
-      return acc;
-    }, [] as NavItem[]);
-
-    return filteredLinks;
-  };
-
-  const userLinks = userRole
-    ? navLinks[userRole as keyof typeof navLinks] || []
-    : [];
-  const accessibleLinks = filterNavLinks(userLinks);
-
-  const renderNavItem = (item: NavItem) => {
-    const isActive =
-      pathname === item.pathname || pathname.startsWith(item.pathname + '/');
-
-    if ('children' in item && item.children) {
-      const isOpen = openDropdowns[item.key];
-      const hasActiveChild = item.children.some(
-        (child) => pathname === child.pathname
-      );
-
-      return (
-        <div key={item.key} className="nav-item">
-          <button
-            onClick={() => toggleDropdown(item.key)}
-            className={`nav-button nav-dropdown-button ${
-              isActive || hasActiveChild ? 'active' : ''
-            }`}>
-            <div className="nav-button-content">
-              <div className="nav-button-left">
-                <span className="nav-icon">{item.icon}</span>
-                <span className="nav-label">{item.label}</span>
-              </div>
-              <span className={`nav-arrow ${isOpen ? 'open' : ''}`}>
-                {isOpen ? <FaChevronDown /> : <FaChevronRight />}
-              </span>
-            </div>
-          </button>
-
-          <div className={`nav-submenu ${isOpen ? 'open' : ''}`}>
-            {item.children.map((subItem) => renderNavItem(subItem))}
-          </div>
-        </div>
-      );
-    }
+  } else {
+    // Fallback for unauthenticated users
+    accessibleLinks = navLinks.default?.filter((item) => hasPermission(item.key)) || [];
+  }
+  
+  // --- NEW Avatar Display Component for Sidebar Footer (FIXED FaUser usage) ---
+  const AvatarDisplay: React.FC = () => {
+    const avatarUrl = user?.avatarUrl;
 
     return (
-      <div key={item.key} className="nav-item">
-        <Link
-          to={item.pathname}
-          onClick={closeMobileMenu}
-          className={`nav-button ${isActive ? 'active' : ''}`}>
-          <span className="nav-icon">{item.icon}</span>
-          <span className="nav-label">{item.label}</span>
-        </Link>
-      </div>
+        <div className="profile-avatar-display">
+            {avatarUrl ? (
+                <img 
+                    src={avatarUrl} 
+                    alt="User Avatar" 
+                    className="avatar-image-circle"
+                />
+            ) : (
+                <span className="avatar-initials">
+                    {/* FIX: Explicitly use FaUser for the ultimate fallback icon 
+                        when no name is available, otherwise use initials */}
+                    {user?.name ? getInitials(user.name) : <FaUser />} 
+                </span>
+            )}
+        </div>
     );
   };
+  
+  // --- Conditional Nav Item Renderer (FIXED Type Safety) ---
+  const renderNavItem = (item: NavItem) => {
+    const isDropdown = 'children' in item && item.children;
+    const isActive = isDropdown 
+      ? (item as NavDropdownItem).children.some(child => pathname.startsWith(child.pathname)) 
+      : pathname === (item as NavLinkItem).pathname;
 
+    const linkContent = (
+      // FIX: Use a dedicated container for link content to manage layout
+      <div className="nav-button-content">
+        <span className="nav-icon">{item.icon}</span>
+        <span className="nav-label">{item.label}</span>
+        {isDropdown && (
+          <span className={`nav-arrow ${openDropdowns[item.key] ? 'open' : ''}`}>
+            <FaChevronRight />
+          </span>
+        )}
+      </div>
+    );
+
+    if (isDropdown) {
+      const dropdownItem = item as NavDropdownItem;
+      const isDropdownOpen = openDropdowns[item.key];
+
+      return (
+        <li key={item.key} className="nav-item">
+          <button // Use button for dropdown interaction
+            className={`nav-button ${isActive ? 'active' : ''}`}
+            onClick={() => {
+              closeMobileMenu?.();
+              toggleDropdown(item.key);
+            }}
+          >
+            {linkContent}
+          </button>
+          
+          <ul className={`nav-submenu ${isDropdownOpen ? 'open' : ''}`}>
+            {dropdownItem.children.filter(child => hasPermission(child.key)).map((child) => (
+              <li key={child.key}>
+                <Link
+                  to={child.pathname}
+                  className={`nav-sub-link ${pathname === child.pathname ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
+                >
+                  {child.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    }
+
+    const linkItem = item as NavLinkItem; 
+
+    return (
+      <li key={item.key} className="nav-item">
+        <Link // Use Link for navigation to a specific page
+          to={linkItem.pathname}
+          className={`nav-button ${isActive ? 'active' : ''}`}
+          onClick={closeMobileMenu}
+        >
+          {linkContent}
+        </Link>
+      </li>
+    );
+  };
+  
+  // --- Component Rendering ---
   if (authLoading || loadingPermissions) {
     return (
-      <aside className="custom-sidebar">
-        <div className="sidebar-header">
-          <div
-            className="loading-container"
-            style={{ textAlign: 'center', padding: '20px' }}>
-            <FaSpinner className="spinning-icon" />
-            <p style={{ marginTop: '10px', fontSize: '14px' }}>Loading...</p>
-          </div>
-        </div>
+      <aside className="custom-sidebar loading">
+        <FaSpinner className="spinner" />
+        <p>Loading...</p>
       </aside>
     );
   }
@@ -185,7 +234,9 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
 
       <nav className="sidebar-nav">
         {accessibleLinks.length > 0 ? (
-          accessibleLinks.map(renderNavItem)
+          <ul className="nav-list">
+            {accessibleLinks.map(renderNavItem)}
+          </ul>
         ) : (
           <div className="no-navigation">
             <p
@@ -205,10 +256,10 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
           to="/profile"
           className={`nav-button profile-button ${
             pathname === '/profile' ? 'active' : ''
-          }`}>
-          <span className="nav-icon">
-            <FaUser />
-          </span>
+          }`}
+          onClick={closeMobileMenu}
+        >
+          <AvatarDisplay /> 
           <span className="nav-label">Profile Settings</span>
         </Link>
 

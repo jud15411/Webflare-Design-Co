@@ -1,4 +1,4 @@
-/* New Dashboard.css - Dark Theme */
+/* New Dashboard.css - Dark Theme, Clean Header */
 
 /* Define a Dark Mode Color Palette */
 :root {
@@ -21,53 +21,25 @@
   color: var(--text-light); /* Set default text color */
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--card-dark);
-  padding-bottom: 20px;
-  margin-bottom: 30px;
-}
-
-.dashboard-header h1 {
-    color: var(--header-text);
-    font-size: 2em;
+/* --- New Page Title Styles (h1) --- */
+.dashboard-container h1 {
+    font-size: 2.2em;
     font-weight: 700;
+    color: var(--header-text);
+    margin-bottom: 5px; /* Reduced margin */
 }
 
-.logout-button {
-  background-color: var(--logout-red);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s;
-}
-
-.logout-button:hover {
-    background-color: #c53030; /* Darker red on hover */
-    transform: translateY(-1px);
-}
-
-.welcome-banner {
-    background-color: var(--card-dark);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border-left: 5px solid var(--accent-blue);
-}
-
-.welcome-banner p {
+/* --- New Subtitle Styles (p) --- */
+.dashboard-subtitle {
     font-size: 1.1em;
-    color: var(--text-light);
-    margin: 0;
+    color: var(--accent-blue);
+    margin-bottom: 30px; /* Space before the metrics grid starts */
+    font-weight: 300;
 }
 
-/* --- NEW LAYOUT: CSS GRID for Prominence --- */
+/* --- Dashboard Header and Logout Button styles removed --- */
 
+/* Metrics Grid Layout */
 .metrics-layout {
   display: grid;
   /* Define a 3-column grid */
@@ -102,32 +74,29 @@
 .metric-card h2 {
   font-size: 1.1em;
   color: var(--accent-blue); /* Title color */
-  margin-bottom: 10px; 
+  margin-bottom: 15px;
   font-weight: 500;
-  text-transform: uppercase;
 }
 
 .metric-value {
-  font-size: 2.5em; 
+  font-size: 2.5em;
   font-weight: 700;
-  color: var(--accent-blue);
-  line-height: 1.2;
+  color: var(--text-light);
+  margin: 0;
 }
 
-/* Override for the prominent revenue value to make it very large and green */
-.prominent-revenue-card .metric-value {
-    font-size: 4em; /* Much larger font */
-    font-weight: 900;
-    color: var(--revenue-green);
-    margin-top: 10px;
+.revenue-value {
+    font-size: 3.5em; /* Larger size for the prominent revenue card */
+    color: var(--revenue-green); /* Use vibrant green */
+    font-weight: 800;
 }
 
-
-/* Fallback/error styling */
+/* Error Messages */
 .error-message {
     color: var(--logout-red);
-    font-size: 1.2em;
-    font-weight: 600;
+    background-color: color-mix(in srgb, var(--logout-red) 15%, transparent);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--logout-red);
     text-align: center;
-    padding: 20px;
 }

@@ -1,62 +1,148 @@
+/* Sidebar.css - Revised for Sticky Header, Icon Header, and Scroll Fix */
+
 :root {
-  /* --- Refined Color Palette (Maintaining Dark Theme) --- */
+  /* --- Refined Color Palette --- */
   --sidebar-bg: #1e2128;
-  --sidebar-header-bg: #17212f; 
   --text-primary: #e6e6e6;
   --text-secondary: #a0a4ac;
   --link-hover-bg: #2c313a;
   --accent-color: #38bdf8; /* A brighter, more modern blue */
-  --border-color: rgba(160, 164, 172, 0.15);
+  --border-color: rgba(160, 164, 172, 0.15); /* Softer, less visible border */
   --logout-color: #f47174;
 }
 
 .custom-sidebar {
-  width: 220px; /* FIXED WIDTH */
+  width: 220px;
   background-color: var(--sidebar-bg);
   color: var(--text-primary);
   display: flex;
   flex-direction: column;
+  /* IMPORTANT: Set a fixed height and remove scroll from the main container */
   height: 100vh;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
   transition: width 0.3s ease;
   padding: 1rem 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden; /* Prevent main container scroll */
   
+  /* Scrollbar hide properties */
   scrollbar-width: none;
 }
-
 .custom-sidebar::-webkit-scrollbar {
     display: none;
 }
 
+/* --- New Header Styling for Avatar and Icons (Sticky Section) --- */
 .sidebar-header {
-  padding: 1rem 0.5rem;
-  text-align: center;
+  padding: 0.5rem 0.5rem 1rem; /* Adjust top padding */
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
-  background-color: var(--sidebar-bg);
-  position: sticky; 
-  top: 0;
-  z-index: 10;
+  flex-shrink: 0; /* Ensures header doesn't shrink when nav scrolls */
+}
+
+/* User Info and Action Icons Row */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.user-avatar-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    /* Allow the avatar/text block to take up the remaining space */
+    flex-grow: 1; 
+    overflow: hidden; /* Ensure text inside doesn't cause overflow */
+}
+
+.user-avatar-link:hover {
+    opacity: 0.8;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--link-hover-bg); /* Use a subtle background */
+    border: 1px solid var(--accent-color);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* Style for actual avatar image */
+.user-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* The name and business name area */
+.header-text {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 10px;
+    overflow: hidden; 
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .welcome-text {
-  font-size: 1rem;
+  font-size: 0.9rem; /* Slightly smaller to fit */
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .business-name {
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* Smaller subtext */
   color: var(--text-secondary);
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* NEW: Icon-only Logout Button in Header */
+.header-logout-button {
+    background: none;
+    border: none;
+    color: var(--logout-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.header-logout-button:hover {
+    color: color-mix(in srgb, var(--logout-color) 70%, white);
+}
+
+
+/* --- Navigation Scroll Area Fix (The main scroll container) --- */
 .sidebar-nav {
   flex-grow: 1;
   padding: 0 0.5rem;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  /* Scrollbar hide properties are inherited from .custom-sidebar */
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* --- Navigation Button Styling --- */
@@ -65,12 +151,10 @@
   align-items: center;
   text-decoration: none;
   color: var(--text-secondary);
-  /* Reduced horizontal padding */
   padding: 0.75rem 0.5rem; 
   margin: 0.25rem 0;
   border-radius: 6px;
   transition: all 0.2s ease;
-  /* NEW: Slightly smaller font for more room */
   font-size: 0.9rem; 
   font-weight: 500;
   cursor: pointer;
@@ -85,12 +169,11 @@
   background-color: var(--link-hover-bg);
 }
 
-/* --- Active State --- */
+/* --- Active State: Clean Left Border Bar --- */
 .nav-button.active {
   color: var(--text-primary);
   background-color: var(--link-hover-bg); 
   border-left: 4px solid var(--accent-color);
-  /* Adjusted padding for the new, smaller left border */
   padding-left: calc(0.5rem - 4px); 
   font-weight: 600;
 }
@@ -98,10 +181,8 @@
 /* --- Icon Styling --- */
 .nav-icon {
   font-size: 1.1rem;
-  /* NEW: Reduced margin to free up space for text */
   margin-right: 0.5rem; 
   color: var(--text-secondary);
-  /* Fixed width ensures consistent alignment for icons */
   width: 1.3rem; 
   text-align: center;
 }
@@ -113,10 +194,8 @@
 /* --- Label and Content --- */
 .nav-label {
   flex-grow: 1;
-  /* These properties are correct for preventing unwanted wrapping */
   white-space: nowrap;
   overflow: hidden;
-  /* IMPORTANT: The adjustments above ensure the ellipsis isn't needed/visible */
   text-overflow: ellipsis;
 }
 
@@ -128,8 +207,9 @@
 }
 
 .nav-arrow {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   transition: transform 0.2s ease;
+  color: var(--text-secondary);
 }
 
 .nav-arrow.open {
@@ -138,7 +218,7 @@
 
 /* --- Submenu Styling --- */
 .nav-submenu {
-  padding-left: 2rem; 
+  padding-left: 1.5rem;
   transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
   overflow: hidden;
   max-height: 0;
@@ -153,17 +233,17 @@
 }
 
 .nav-submenu .nav-button {
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 0.5rem;
     font-size: 0.9rem;
 }
 
 .nav-submenu .nav-button.active {
     background-color: transparent; 
     border-left: 3px solid var(--accent-color); /* Smaller bar for sub-items */
-    padding-left: calc(0.75rem - 3px);
+    padding-left: calc(0.5rem - 3px);
 }
 
-/* --- Footer Styles --- */
+/* --- Footer (Cleaned Up) --- */
 .sidebar-footer {
   padding: 1rem 0.5rem 0; 
   border-top: 1px solid var(--border-color);
@@ -171,34 +251,8 @@
   flex-shrink: 0;
 }
 
+/* Hide old buttons completely as their functionality is now in the header */
 .profile-button,
 .logout-button {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--text-secondary);
-  padding: 0.75rem 0.75rem;
-  margin: 0.25rem 0;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  width: 100%;
-}
-
-.profile-button:hover,
-.logout-button:hover {
-    color: var(--text-primary);
-    background-color: var(--link-hover-bg);
-}
-
-.logout-button {
-    color: var(--logout-color);
-}
-.logout-button:hover {
-    color: var(--text-primary);
-    background-color: var(--logout-color);
+    display: none !important; 
 }

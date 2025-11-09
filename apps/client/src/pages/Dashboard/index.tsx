@@ -11,6 +11,7 @@ interface Metrics {
 }
 
 export const DashboardPage = () => {
+  // Removed 'logout' as it's now handled entirely by the Sidebar
   const { token } = useAuth(); 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [error, setError] = useState('');
@@ -46,16 +47,14 @@ export const DashboardPage = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Welcome to the Dashboard!</h1>
-      </header>
+      {/* New Page Title */}
+      <h1>Dashboard Overview</h1>
+
       <main className="dashboard-main">
-        {/* Changed class for a prominent banner look */}
-        <div className="welcome-banner"> 
-            <p>
-                Here's a snapshot of your business activity.
-            </p>
-        </div>
+        {/* Simplified subtitle/banner */}
+        <p className="dashboard-subtitle">
+            Here's a snapshot of your business activity.
+        </p>
         
         {/* New layout container */}
         <div className="metrics-layout">

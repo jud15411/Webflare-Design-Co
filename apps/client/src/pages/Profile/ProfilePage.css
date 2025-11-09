@@ -1,6 +1,21 @@
+/* ProfilePage.css - Updated for Dark Theme and Avatar Management */
+
+:root {
+  --background-primary: #1a202c; /* Deep Charcoal/Navy Background (Page) */
+  --background-secondary: #2d3748; /* Card Background */
+  --text-primary: #e2e8f0; /* Off-white text */
+  --text-secondary: #a0a4ac; /* Muted text */
+  --accent-primary: #38bdf8; /* Main action color (Blue) */
+  --border-color: #4b5563; /* Subtle border/input outline */
+  --error-color: #f56565;
+  --success-color: #48bb78;
+  --border-radius-md: 8px;
+  --font-family: 'Inter', sans-serif, Arial;
+}
+
 .profile-page-container {
   padding: 40px;
-  background-color: var(--background-primary, #f0f2f5);
+  background-color: var(--background-primary);
   font-family: var(--font-family);
   min-height: 100vh;
 }
@@ -8,26 +23,91 @@
 .profile-form-wrapper {
   max-width: 700px;
   margin: 0 auto;
-  background-color: var(--background-secondary, #fff);
-  padding: 30px 40px;
-  border-radius: var(--border-radius-md, 8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid var(--border-color, #e0e0e0);
+  background-color: var(--background-secondary);
+  padding: 40px;
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .profile-form-wrapper h2 {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
   margin-bottom: 8px;
-  color: var(--text-primary, #111);
+  color: var(--text-primary);
 }
 
 .profile-form-wrapper p {
   font-size: 15px;
   margin-bottom: 30px;
-  color: var(--text-secondary, #555);
+  color: var(--text-secondary);
 }
 
+/* --- Avatar Management Section --- */
+.avatar-management-section {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.avatar-display-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--border-color); /* Background for initials/FaUser */
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    overflow: hidden;
+    border: 3px solid var(--accent-primary);
+    transition: box-shadow 0.2s;
+}
+
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-edit-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--accent-primary);
+    color: white;
+    border: 2px solid var(--background-secondary);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.avatar-edit-button:hover {
+    background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
+}
+
+
+/* --- Form and Group Styles --- */
 .form-group {
   margin-bottom: 20px;
 }
@@ -37,61 +117,185 @@
   font-weight: 500;
   margin-bottom: 8px;
   font-size: 14px;
-  color: var(--text-primary, #333);
+  color: var(--text-secondary);
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--border-color, #ccc);
-  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
   font-size: 15px;
-  background-color: var(--background-primary, #f9f9f9);
+  background-color: var(--background-primary);
   color: var(--text-primary);
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:disabled {
+    background-color: #1e2128;
+    color: var(--text-secondary);
+    cursor: not-allowed;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--accent-primary, #00a8e8);
-  box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.2);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); /* Accent blue shadow */
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
+/* Save Button */
 .save-button {
-  width: 100%;
-  padding: 14px;
+  padding: 12px 20px;
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
-  background-color: var(--accent-primary, #00a8e8);
-  border: none;
-  border-radius: var(--border-radius-md, 6px);
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.save-button:hover {
-  background-color: var(--accent-primary-darker, #007ea7);
+.save-button:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
 }
 
 .save-button:disabled {
-  background-color: #a0a0a0;
+  background-color: var(--border-color);
   cursor: not-allowed;
 }
 
+/* Messages */
 .form-message {
-  margin-top: 20px;
-  text-align: center;
-  font-weight: 500;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: var(--border-radius-md);
+    background-color: color-mix(in srgb, var(--success-color) 15%, transparent);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+    text-align: center;
 }
 
+/* Password Section Separator */
 .password-section {
-  margin-top: 40px;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px dashed var(--border-color);
+}
+.password-section h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.password-section p {
+    margin-bottom: 25px;
+}
+
+
+/* --- Avatar Selector Modal Styles --- */
+.avatar-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.avatar-modal-content {
+    background-color: var(--background-secondary);
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+    color: var(--error-color);
+}
+
+.avatar-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.avatar-option {
+    width: 100%;
+    padding-top: 100%; /* Makes the container square */
+    position: relative;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.1s;
+}
+
+.avatar-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.avatar-option:hover {
+    border-color: var(--text-secondary);
+    transform: scale(1.05);
+}
+
+.avatar-option.selected {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.4);
+}
+
+/* Styling for the 'Use Initials' Option */
+.avatar-clear {
+    background-color: var(--background-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.blank-avatar-icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.clear-label {
+    position: absolute;
+    bottom: 0.2rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
 }

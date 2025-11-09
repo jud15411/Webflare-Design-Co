@@ -25,6 +25,7 @@ export interface User {
   email: string;
   bio?: string;
   location?: string;
+  avatarUrl?: string | null;
 }
 
 interface LoginData {

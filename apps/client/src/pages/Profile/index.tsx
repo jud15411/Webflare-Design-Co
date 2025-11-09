@@ -1,10 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './ProfilePage.css';
-import API from '../../utils/axios'; // 1. Import the centralized API instance
+import API from '../../utils/axios';
+import { FaUser, FaCamera, FaSpinner, FaTimes } from 'react-icons/fa';
+// Assuming this utility file is now created
+import { AVATAR_OPTIONS, BLANK_AVATAR_URL } from '../../utils/avatars'; 
 
+
+// Helper function to get initials (re-used from Sidebar)
+const getInitials = (name: string | undefined): string => {
+    if (!name) return 'U';
+    const parts = name.split(' ');
+    if (parts.length > 1) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+};
+
+// --- Avatar Selector Modal Component (Internal to ProfilePage) ---
+interface AvatarSelectorModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSelect: (url: string | null) => void;
+    currentAvatarUrl: string | null | undefined;
+}
+
+const AvatarSelectorModal: React.FC<AvatarSelectorModalProps> = ({
+    isOpen,
+    onClose,
+    onSelect,
+    currentAvatarUrl,
+}) => {
+    if (!isOpen) return null;
+
+    // Filter out the BLANK_AVATAR_URL since it's only a control value
+    const selectedUrl = currentAvatarUrl === BLANK_AVATAR_URL ? null : currentAvatarUrl;
+
+    return (
+        <div className="avatar-modal-overlay" onClick={onClose}>
+            <div className="avatar-modal-content" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close-button" onClick={onClose}>
+                    <FaTimes />
+                </button>
+                <h2>Choose Your Avatar</h2>
+                <p>Select a fun, professional avatar to represent you in the dashboard.</p>
+                
+                <div className="avatar-selection-grid">
+                    {/* Option to clear avatar and revert to initials */}
+                    <div 
+                        className={`avatar-option avatar-clear ${selectedUrl === null ? 'selected' : ''}`}
+                        onClick={() => onSelect(null)}
+                    >
+                        <FaUser className="blank-avatar-icon" />
+                        <span className="clear-label">Use Initials</span>
+                    </div>
+
+                    {AVATAR_OPTIONS.map(avatar => (
+                        <div
+                            key={avatar.id}
+                            className={`avatar-option ${selectedUrl === avatar.url ? 'selected' : ''}`}
+                            onClick={() => onSelect(avatar.url)}
+                            title={avatar.alt}
+                        >
+                            <img 
+                                src={avatar.url} 
+                                alt={avatar.alt} 
+                                className="avatar-image" 
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- Main Profile Page Component ---
 export const ProfilePage: React.FC = () => {
-  const { user, setUser } = useAuth();
+  // FIX: Destructure token to use in API calls
+  const { user, setUser, token } = useAuth(); 
 
   // State for profile information
   const [profileData, setProfileData] = useState({
@@ -12,9 +86,12 @@ export const ProfilePage: React.FC = () => {
     email: '',
     bio: '',
     location: '',
+    // NEW: Include avatarUrl in state
+    avatarUrl: null as string | null,
   });
   const [profileMessage, setProfileMessage] = useState('');
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false); // NEW: Modal state
 
   // State for password change
   const [passwordData, setPasswordData] = useState({
@@ -32,6 +109,8 @@ export const ProfilePage: React.FC = () => {
         email: user.email || '',
         bio: user.bio || '',
         location: user.location || '',
+        // Initialize state with user's current avatar URL
+        avatarUrl: user.avatarUrl || null, 
       });
     }
   }, [user]);
@@ -47,21 +126,46 @@ export const ProfilePage: React.FC = () => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
+  
+  // Handle avatar selection from modal
+  const handleAvatarSelect = (url: string | null) => {
+    const newAvatarUrl = url === BLANK_AVATAR_URL ? null : url;
+    setProfileData(prev => ({ ...prev, avatarUrl: newAvatarUrl }));
+    setIsAvatarModalOpen(false);
+  };
+
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!token) {
+        setProfileMessage('❌ Error: Not authenticated.');
+        return;
+    }
+    
     setIsProfileLoading(true);
     setProfileMessage('');
+    
+    // Data now includes avatarUrl
+    const updateData = {
+        name: profileData.name,
+        email: profileData.email,
+        bio: profileData.bio,
+        location: profileData.location,
+        avatarUrl: profileData.avatarUrl, 
+    };
 
     try {
-      // 2. Replace fetch with API.patch
+      // 2. Use token for authorization
       const { data: updatedUser } = await API.patch(
         '/users/profile',
-        profileData
+        updateData,
+        { headers: { Authorization: `Bearer ${token}` } } 
       );
 
-      if (setUser) setUser(updatedUser);
+      // Ensure setUser is available before calling it
+      if (setUser) setUser(updatedUser); 
       setProfileMessage('✅ Profile updated successfully!');
+      setTimeout(() => setProfileMessage(''), 3000);
     } catch (error: any) {
       // 3. Update error handling for Axios
       setProfileMessage(
@@ -76,6 +180,11 @@ export const ProfilePage: React.FC = () => {
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!token) {
+        setPasswordMessage('❌ Error: Not authenticated.');
+        return;
+    }
+    
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setPasswordMessage('❌ New passwords do not match.');
       return;
@@ -84,11 +193,12 @@ export const ProfilePage: React.FC = () => {
     setPasswordMessage('');
 
     try {
-      // 4. Replace fetch with API.patch
+      // 4. Use token for authorization
       await API.patch('/users/update-password', {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
-      });
+      },
+      { headers: { Authorization: `Bearer ${token}` } });
 
       setPasswordMessage('✅ Password updated successfully!');
       setPasswordData({
@@ -96,6 +206,7 @@ export const ProfilePage: React.FC = () => {
         newPassword: '',
         confirmPassword: '',
       }); // Clear fields
+      setTimeout(() => setPasswordMessage(''), 3000);
     } catch (error: any) {
       // 5. Update error handling for Axios
       setPasswordMessage(
@@ -109,12 +220,46 @@ export const ProfilePage: React.FC = () => {
   };
 
   if (!user) return <div>Loading profile...</div>;
+  
+  const currentAvatarUrl = profileData.avatarUrl;
+    
+  // Determine what to show in the Avatar circle
+  const renderAvatarContent = () => {
+    if (currentAvatarUrl) {
+        return (
+            <img 
+                src={currentAvatarUrl} 
+                alt={`${user?.name || 'User'}'s Avatar`} 
+                className="profile-avatar-img"
+            />
+        );
+    }
+    // Fallback to initials if no URL is set
+    return user?.name ? getInitials(user.name) : <FaUser />;
+  };
 
   return (
     <div className="profile-page-container">
       <div className="profile-form-wrapper">
         <h2>Profile Settings</h2>
         <p>Update your personal and account information.</p>
+        
+        {/* --- NEW AVATAR SECTION --- */}
+        <div className="avatar-management-section">
+            <div className="avatar-display-wrapper">
+                <div className="profile-avatar">
+                    {renderAvatarContent()}
+                </div>
+                <button 
+                    className="avatar-edit-button" 
+                    onClick={() => setIsAvatarModalOpen(true)}
+                    title="Change Avatar"
+                >
+                    <FaCamera />
+                </button>
+            </div>
+        </div>
+
         <form onSubmit={handleProfileSubmit}>
           {/* Profile fields... */}
           <div className="form-group">
@@ -134,9 +279,10 @@ export const ProfilePage: React.FC = () => {
               type="email"
               id="email"
               name="email"
+              // Email is often read-only for security reasons
               value={profileData.email}
-              onChange={handleProfileChange}
-              required
+              readOnly
+              disabled
             />
           </div>
           <div className="form-group">
@@ -164,13 +310,17 @@ export const ProfilePage: React.FC = () => {
             type="submit"
             className="save-button"
             disabled={isProfileLoading}>
-            {isProfileLoading ? 'Saving...' : 'Save Changes'}
+            {isProfileLoading ? (
+                <>
+                    <FaSpinner className="spinner" /> Saving...
+                </>
+            ) : 'Save Changes'}
           </button>
         </form>
         {profileMessage && <p className="form-message">{profileMessage}</p>}
       </div>
 
-      {/* --- New Password Change Form --- */}
+      {/* --- Password Change Form --- */}
       <div className="profile-form-wrapper password-section">
         <h2>Change Password</h2>
         <form onSubmit={handlePasswordSubmit}>
@@ -216,6 +366,13 @@ export const ProfilePage: React.FC = () => {
         </form>
         {passwordMessage && <p className="form-message">{passwordMessage}</p>}
       </div>
+      
+      <AvatarSelectorModal
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+        onSelect={handleAvatarSelect}
+        currentAvatarUrl={currentAvatarUrl}
+    />
     </div>
   );
 };
