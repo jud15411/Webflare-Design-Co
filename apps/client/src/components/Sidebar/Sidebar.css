@@ -1,5 +1,3 @@
-/* Sidebar.css - Slimline Fixed Sidebar Design (Scrollbar Hidden) */
-
 :root {
   /* --- Refined Color Palette (Maintaining Dark Theme) --- */
   --sidebar-bg: #1e2128;
@@ -13,7 +11,7 @@
 }
 
 .custom-sidebar {
-  width: 220px; /* Reduced width for a slimline look */
+  width: 220px; /* FIXED WIDTH */
   background-color: var(--sidebar-bg);
   color: var(--text-primary);
   display: flex;
@@ -21,15 +19,13 @@
   height: 100vh;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
   transition: width 0.3s ease;
-  padding: 1rem 0.5rem; /* Reduced horizontal padding */
-  overflow-y: auto; /* Allows content scroll if needed */
+  padding: 1rem 0.5rem;
+  overflow-y: auto;
   overflow-x: hidden;
   
-  /* --- NEW: Hide Scrollbar (Standard for Firefox) --- */
   scrollbar-width: none;
 }
 
-/* --- NEW: Hide Scrollbar (Webkit browsers: Chrome, Safari, Edge) --- */
 .custom-sidebar::-webkit-scrollbar {
     display: none;
 }
@@ -38,8 +34,8 @@
   padding: 1rem 0.5rem;
   text-align: center;
   margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color); /* Cleaner separator */
-  background-color: var(--sidebar-bg); /* Use main BG color */
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--sidebar-bg);
   position: sticky; 
   top: 0;
   z-index: 10;
@@ -69,11 +65,13 @@
   align-items: center;
   text-decoration: none;
   color: var(--text-secondary);
-  padding: 0.75rem 0.75rem; /* Tighter padding for slim look */
+  /* Reduced horizontal padding */
+  padding: 0.75rem 0.5rem; 
   margin: 0.25rem 0;
   border-radius: 6px;
   transition: all 0.2s ease;
-  font-size: 0.95rem; 
+  /* NEW: Slightly smaller font for more room */
+  font-size: 0.9rem; 
   font-weight: 500;
   cursor: pointer;
   background-color: transparent;
@@ -87,33 +85,38 @@
   background-color: var(--link-hover-bg);
 }
 
-/* --- New Active State: Clean Left Border Bar --- */
+/* --- Active State --- */
 .nav-button.active {
   color: var(--text-primary);
   background-color: var(--link-hover-bg); 
-  border-left: 4px solid var(--accent-color); /* The signature highlight bar */
-  padding-left: calc(0.75rem - 4px); /* Adjust padding to keep alignment */
+  border-left: 4px solid var(--accent-color);
+  /* Adjusted padding for the new, smaller left border */
+  padding-left: calc(0.5rem - 4px); 
   font-weight: 600;
 }
 
 /* --- Icon Styling --- */
 .nav-icon {
   font-size: 1.1rem;
-  margin-right: 0.8rem;
+  /* NEW: Reduced margin to free up space for text */
+  margin-right: 0.5rem; 
   color: var(--text-secondary);
-  width: 1.5rem; 
+  /* Fixed width ensures consistent alignment for icons */
+  width: 1.3rem; 
   text-align: center;
 }
 
 .nav-button.active .nav-icon {
-    color: var(--accent-color); /* Accent color for the active icon */
+    color: var(--accent-color);
 }
 
 /* --- Label and Content --- */
 .nav-label {
   flex-grow: 1;
+  /* These properties are correct for preventing unwanted wrapping */
   white-space: nowrap;
   overflow: hidden;
+  /* IMPORTANT: The adjustments above ensure the ellipsis isn't needed/visible */
   text-overflow: ellipsis;
 }
 
