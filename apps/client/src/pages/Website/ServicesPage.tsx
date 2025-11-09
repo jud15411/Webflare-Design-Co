@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { ServiceModal } from '../../components/Website/ServiceModal';
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 // Note: You must create and import the ServicesPage.css file for styling!
+import './ServicesPage.css';
 
 interface Service {
   _id: string;
