@@ -52,8 +52,9 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       if (user?.role.name && token) { 
         try {
           // Assuming API endpoint is /settings/users/permissions/:role
+          const roleName = user.role.name;
           const { data } = await API.get(
-            `/settings/users/permissions/${user.role}`, 
+            `/settings/users/permissions/${roleName}}`, 
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setPermissions(data.permissions || []);
@@ -69,7 +70,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     };
 
     fetchPermissions();
-  }, [user?.role.name, token]); 
+  }, [user?.role, token]); 
 
 
   const hasPermission = (key: string): boolean => {
