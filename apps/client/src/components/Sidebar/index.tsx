@@ -49,7 +49,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
   // --- Permission Fetching Logic ---
   useEffect(() => {
     const fetchPermissions = async () => {
-      if (user?.role && token) { 
+      if (user?.role.name && token) { 
         try {
           // Assuming API endpoint is /settings/users/permissions/:role
           const { data } = await API.get(
@@ -69,7 +69,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     };
 
     fetchPermissions();
-  }, [user?.role, token]); 
+  }, [user?.role.name, token]); 
 
 
   const hasPermission = (key: string): boolean => {
@@ -94,7 +94,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
   // --- Role-based Link Filtering (FIXED) ---
   let accessibleLinks: NavItem[] = [];
 
-  if (user?.role) {
+  if (user?.role.name) {
     // FIX: Convert type to unknown first to satisfy strict TS index checking (ts(2352))
     const roleKey = user.role as unknown as RoleKey; 
     

@@ -1,26 +1,38 @@
-import { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 import { getMainDb } from '../../../../config/db.js';
 
-// --- INFERRED USER TYPES AND SCHEMA ---
+// --- Placeholder for Role Interface ---
+export interface IRole {
+    _id: string;
+    name: string;
+    description?: string;
+}
 
+// --- Main User Interface ---
 export interface IUser extends Document {
     name: string;
     email: string;
-    role: string;
+    // FIX 1: 'role' is an ObjectId for the DB, but can be a populated IRole object
+    role: Types.ObjectId | IRole; 
     isActive: boolean;
     bio?: string;
     location?: string;
     avatarUrl?: string | null; 
-    // FIX: Added 'password' to the interface to satisfy the schema definition
     password: string; 
 }
 
 const UserSchema = new Schema<IUser>({
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
-    // This now matches the IUser interface
     password: { type: String, required: true }, 
-    role: { type: String, required: true },
+    
+    // ✅ FIX 2: Change type to ObjectId and add a reference to the 'Role' collection
+    role: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Role', // IMPORTANT: This must match the name of your roles collection
+        required: true 
+    },
+    
     isActive: { type: Boolean, default: true },
     bio: { type: String, default: '' },
     location: { type: String, default: '' },
@@ -33,7 +45,7 @@ const UserSchema = new Schema<IUser>({
 
 export const User = getMainDb().model<IUser>('User', UserSchema);
 
-// --- ORIGINAL AUXILIARY MODELS ---
+// --- AUXILIARY MODELS ---
 
 export interface IMfaSettings extends Document { enabled: boolean; requiredForRoles: string[]; }
 export interface IPermissionSettings extends Document { permissions: Record<string, string[]>; }

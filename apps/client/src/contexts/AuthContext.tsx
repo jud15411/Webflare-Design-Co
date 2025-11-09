@@ -11,13 +11,11 @@ import { jwtDecode } from 'jwt-decode';
 
 // --- Type Definitions ---
 
-// ✅ CORRECTED: This now correctly reflects your lowercase database roles.
 interface Role {
   _id: string;
   name: 'ceo' | 'developer' | 'cto' | 'sales';
 }
 
-// ✅ CORRECTED: Update the User interface to use the Role type
 export interface User {
   id: string;
   role: Role; // 'role' is an object
@@ -33,12 +31,15 @@ interface LoginData {
   user?: User;
 }
 
-// ✅ CORRECTED: The JWT payload should also contain the populated role
+// ✅ FIX: Included all optional fields in the DecodedToken interface
 interface DecodedToken {
   id: string;
-  role: Role; // The token itself should contain the role object
+  role: Role; 
   name: string;
   email: string;
+  bio?: string; 
+  location?: string; 
+  avatarUrl?: string | null;
   iat: number;
   exp: number;
 }
@@ -82,6 +83,10 @@ const getUserFromToken = (token: string): User | null => {
       role: decoded.role,
       name: decoded.name,
       email: decoded.email,
+      // ✅ FIX: Ensure all optional properties are copied from the token payload to the User object
+      bio: decoded.bio,
+      location: decoded.location,
+      avatarUrl: decoded.avatarUrl,
     };
   } catch {
     return null;
@@ -107,7 +112,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedToken = localStorage.getItem('authToken');
         if (storedToken && !isTokenExpired(storedToken)) {
           setToken(storedToken);
-          setUser(getUserFromToken(storedToken));
+          const decodedUser = getUserFromToken(storedToken);
+          if (decodedUser) {
+              setUser(decodedUser);
+          }
         } else {
           localStorage.removeItem('authToken');
         }
