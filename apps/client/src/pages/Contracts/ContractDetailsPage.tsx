@@ -37,7 +37,7 @@ export const ContractDetailsPage: React.FC = () => {
     if (!token || !id) return;
     setLoading(true);
     try {
-      const { data } = await API.get(`/api/v1/contracts/${id}`, {
+      const { data } = await API.get(`/contracts/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setContract(data);
@@ -65,7 +65,7 @@ export const ContractDetailsPage: React.FC = () => {
   const handleSaveChanges = async () => {
     try {
       await API.put(
-        `/api/v1/contracts/${id}`,
+        `/contracts/${id}`,
         { contractData: formData },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +83,7 @@ export const ContractDetailsPage: React.FC = () => {
     setPreviewError('');
     try {
       // Request HTML format for the preview
-      const { data } = await API.get(`/api/v1/contracts/${id}/generate`, {
+      const { data } = await API.get(`/contracts/${id}/generate`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPreviewHtml(data);
@@ -99,7 +99,7 @@ export const ContractDetailsPage: React.FC = () => {
   const handleExport = async () => {
     try {
       const response = await API.get(
-        `/api/v1/contracts/${id}/generate?format=pdf`,
+        `/contracts/${id}/generate?format=pdf`,
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: 'blob',

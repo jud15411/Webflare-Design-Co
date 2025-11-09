@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
 
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const { data } = await API.post('/api/v1/client-portal-auth/login', {
+      const { data } = await API.post('/client-portal-auth/login', {
         email: normalizedEmail,
         password,
       });

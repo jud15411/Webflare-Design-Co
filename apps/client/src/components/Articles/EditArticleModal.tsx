@@ -51,7 +51,7 @@ const EditArticleModal = ({
 
     try {
       await API.put(
-        `/api/v1/articles/${article._id}`,
+        `/articles/${article._id}`,
         { title, content, section, status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

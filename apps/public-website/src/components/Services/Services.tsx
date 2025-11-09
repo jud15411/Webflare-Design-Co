@@ -17,7 +17,7 @@ export const Services: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const { data } = await API.get('/api/v1/public/website/services');
+        const { data } = await API.get('/public/website/services');
         setServices(data);
       } catch (error) {
         setError('Failed to fetch services.');

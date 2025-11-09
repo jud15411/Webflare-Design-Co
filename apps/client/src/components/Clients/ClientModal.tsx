@@ -104,11 +104,11 @@ export const ClientModal: React.FC<ClientModalProps> = ({
     e.preventDefault();
     try {
       if (client) {
-        await API.put(`/api/v1/clients/${client._id}`, formData, {
+        await API.put(`/clients/${client._id}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await API.post(`/api/v1/clients`, formData, {
+        await API.post(`/clients`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }

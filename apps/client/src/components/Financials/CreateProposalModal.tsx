@@ -46,7 +46,7 @@ const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const { data } = await API.get('/api/v1/financials/clients', {
+        const { data } = await API.get('/financials/clients', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClients(data);
@@ -101,7 +101,7 @@ const CreateProposalModal: React.FC<CreateProposalModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await API.post('/api/v1/financials/proposals', formData, {
+      await API.post('/financials/proposals', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onProposalCreated();

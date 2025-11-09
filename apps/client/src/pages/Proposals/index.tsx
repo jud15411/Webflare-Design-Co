@@ -23,7 +23,7 @@ const ProposalsPage = () => {
   const fetchProposals = async () => {
     try {
       setLoading(true);
-      const { data } = await API.get('/api/v1/financials/proposals', {
+      const { data } = await API.get('/financials/proposals', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProposals(data);
@@ -43,7 +43,7 @@ const ProposalsPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this proposal?')) {
       try {
-        await API.delete(`/api/v1/financials/proposals/${id}`, {
+        await API.delete(`/financials/proposals/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchProposals(); // Refresh list

@@ -24,7 +24,7 @@ const SubscriptionsPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await API.get('/api/v1/subscriptions', {
+      const { data } = await API.get('/subscriptions', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSubscriptions(data);
@@ -42,7 +42,7 @@ const SubscriptionsPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this subscription?')) {
       try {
-        await API.delete(`/api/v1/subscriptions/${id}`, {
+        await API.delete(`/subscriptions/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchSubscriptions();

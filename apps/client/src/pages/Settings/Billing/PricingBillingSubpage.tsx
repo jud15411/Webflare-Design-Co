@@ -25,7 +25,7 @@ const PricingBillingSubpage: React.FC<PricingBillingSubpageProps> = ({
     const fetchSettings = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get(`/api/v1/settings/billing/pricing`, {
+        const { data } = await API.get(`/settings/billing/pricing`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSettings(data);
@@ -72,7 +72,7 @@ const PricingBillingSubpage: React.FC<PricingBillingSubpageProps> = ({
     if (!settings) return;
     try {
       await API.put(
-        `/api/v1/settings/billing/pricing`,
+        `/settings/billing/pricing`,
         {
           ...settings,
           taxRate: settings.taxRate / 100, // Convert back to decimal for saving

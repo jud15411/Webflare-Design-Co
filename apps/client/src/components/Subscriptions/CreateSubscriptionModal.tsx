@@ -44,10 +44,10 @@ const CreateSubscriptionModal: React.FC<ModalProps> = ({
     const fetchData = async () => {
       try {
         const [clientRes, userRes] = await Promise.all([
-          API.get('/api/v1/clients', {
+          API.get('/clients', {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          API.get('/api/v1/users', {
+          API.get('/users', {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -72,7 +72,7 @@ const CreateSubscriptionModal: React.FC<ModalProps> = ({
     e.preventDefault();
     try {
       await API.post(
-        '/api/v1/subscriptions',
+        '/subscriptions',
         {
           ...formData,
           cost: parseFloat(formData.cost),

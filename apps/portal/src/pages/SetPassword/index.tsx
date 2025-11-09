@@ -29,7 +29,7 @@ const SetPasswordPage: React.FC = () => {
 
     try {
       const { data } = await API.post(
-        '/api/v1/client-portal-auth/set-initial-password',
+        '/client-portal-auth/set-initial-password',
         {
           email,
           password,

@@ -28,7 +28,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
     const fetchSettings = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get(`/api/v1/settings/users/mfa`, {
+        const { data } = await API.get(`/settings/users/mfa`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSettings(data);
@@ -60,7 +60,7 @@ const MFAEnforcementSubpage: React.FC<MFAEnforcementSubpageProps> = ({
   const handleSave = async () => {
     if (!settings) return;
     try {
-      await API.put(`/api/v1/settings/users/mfa`, settings, {
+      await API.put(`/settings/users/mfa`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('MFA settings updated successfully!');

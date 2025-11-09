@@ -18,7 +18,7 @@ export const Testimonials: React.FC = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const { data } = await API.get('/api/v1/public/website/testimonials');
+        const { data } = await API.get('/public/website/testimonials');
         setTestimonials(data);
       } catch (error) {
         setError('Failed to fetch testimonials.');

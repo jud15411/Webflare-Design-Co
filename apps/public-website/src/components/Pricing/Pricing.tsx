@@ -20,7 +20,7 @@ export const Pricing: React.FC = () => {
   useEffect(() => {
     const fetchTiers = async () => {
       try {
-        const { data } = await API.get('/api/v1/public/website/pricing');
+        const { data } = await API.get('/public/website/pricing');
         setTiers(data);
       } catch (error) {
         setError('Failed to fetch pricing tiers.');

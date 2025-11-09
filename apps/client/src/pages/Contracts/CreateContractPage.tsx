@@ -123,7 +123,7 @@ export const CreateContractPage: React.FC = () => {
     const fetchClients = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get('/api/v1/clients', {
+        const { data } = await API.get('/clients', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClients(data);
@@ -155,7 +155,7 @@ export const CreateContractPage: React.FC = () => {
     e.preventDefault();
     try {
       await API.post(
-        '/api/v1/contracts',
+        '/contracts',
         {
           client: selectedClient,
           serviceType,

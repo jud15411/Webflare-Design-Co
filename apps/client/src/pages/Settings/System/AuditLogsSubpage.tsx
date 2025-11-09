@@ -26,7 +26,7 @@ const AuditLogsSubpage: React.FC<AuditLogsSubpageProps> = ({ onBack }) => {
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await API.get(`/api/v1/settings/system/audit`, {
+      const { data } = await API.get(`/settings/system/audit`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLogs(data);

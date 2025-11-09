@@ -24,7 +24,7 @@ const ExpensesPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await API.get('/api/v1/financials/expenses', {
+      const { data } = await API.get('/financials/expenses', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(data);
@@ -43,7 +43,7 @@ const ExpensesPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this expense?')) {
       try {
-        await API.delete(`/api/v1/financials/expenses/${id}`, {
+        await API.delete(`/financials/expenses/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchExpenses(); // Refresh list after deletion

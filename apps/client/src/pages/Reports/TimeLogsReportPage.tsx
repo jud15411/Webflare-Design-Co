@@ -40,7 +40,7 @@ export const TimeLogsReportPage: React.FC = () => {
     const fetchUsers = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get(`/api/v1/users`, {
+        const { data } = await API.get(`/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(data);
@@ -58,7 +58,7 @@ export const TimeLogsReportPage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const { data } = await API.get(`/api/v1/timelogs/reports`, {
+        const { data } = await API.get(`/timelogs/reports`, {
           headers: { Authorization: `Bearer ${token}` },
           params: {
             startDate: filters.startDate || undefined,

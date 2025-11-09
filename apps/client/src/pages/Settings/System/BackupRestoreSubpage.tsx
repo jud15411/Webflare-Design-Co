@@ -27,7 +27,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
       setError('');
       setLoading(true);
       // Fix: Update API endpoint to match the backend
-      const { data } = await API.get(`/api/v1/settings/system/backup`, {
+      const { data } = await API.get(`/settings/system/backup`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBackups(data);
@@ -52,7 +52,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
       try {
         // Fix: Update API endpoint to match the backend
         await API.post(
-          `/api/v1/settings/system/backup`,
+          `/settings/system/backup`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +76,7 @@ const BackupRestoreSubpage: React.FC<BackupRestoreSubpageProps> = ({
       try {
         // Fix: Update API endpoint to match the backend
         await API.post(
-          `/api/v1/settings/system/backup/${id}/restore`,
+          `/settings/system/backup/${id}/restore`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },

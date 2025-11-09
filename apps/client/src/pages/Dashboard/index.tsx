@@ -19,7 +19,7 @@ export const DashboardPage = () => {
     const fetchMetrics = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get('/api/v1/dashboard', {
+        const { data } = await API.get('/dashboard', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMetrics(data);

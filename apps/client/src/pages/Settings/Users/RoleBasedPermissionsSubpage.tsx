@@ -44,10 +44,10 @@ const RoleBasedPermissionsSubpage: React.FC<
       setError('');
       setLoading(true);
       const [permissionsRes, rolesRes] = await Promise.all([
-        API.get(`/api/v1/settings/users/permissions`, {
+        API.get(`/settings/users/permissions`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        API.get(`/api/v1/roles`, {
+        API.get(`/roles`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -89,7 +89,7 @@ const RoleBasedPermissionsSubpage: React.FC<
     if (!permissions) return;
     try {
       await API.put(
-        `/api/v1/settings/users/permissions`,
+        `/settings/users/permissions`,
         { permissions },
         {
           headers: { Authorization: `Bearer ${token}` },

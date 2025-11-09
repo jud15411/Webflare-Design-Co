@@ -26,7 +26,7 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
     try {
       // Fix: Update API endpoint to match the backend
       const { data } = await API.get(
-        `/api/v1/settings/system/data-retention`,
+        `/settings/system/data-retention`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -57,7 +57,7 @@ const DataRetentionSubpage: React.FC<DataRetentionSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Update API endpoint to match the backend
-      await API.put(`/api/v1/settings/system/data-retention`, policy, {
+      await API.put(`/settings/system/data-retention`, policy, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Data retention policy updated successfully!');

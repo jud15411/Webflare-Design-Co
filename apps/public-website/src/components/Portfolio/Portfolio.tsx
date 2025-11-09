@@ -20,7 +20,7 @@ export const Portfolio: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const { data } = await API.get('/api/v1/public/website/portfolio');
+        const { data } = await API.get('/public/website/portfolio');
         setItems(data);
       } catch (error) {
         setError('Failed to fetch portfolio items.');

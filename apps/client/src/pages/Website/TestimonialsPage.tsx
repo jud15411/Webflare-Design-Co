@@ -28,7 +28,7 @@ const TestimonialsPage = () => {
     const fetchTestimonials = async () => {
         try {
             setLoading(true);
-            const { data } = await API.get('/api/v1/admin/website/testimonials', {
+            const { data } = await API.get('/admin/website/testimonials', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTestimonials(data);
@@ -47,8 +47,8 @@ const TestimonialsPage = () => {
 
     const handleSaveTestimonial = async (testimonialData: Omit<Testimonial, '_id'>) => {
         const url = editingTestimonial
-            ? `/api/v1/admin/website/testimonials/${editingTestimonial._id}`
-            : '/api/v1/admin/website/testimonials';
+            ? `/admin/website/testimonials/${editingTestimonial._id}`
+            : '/admin/website/testimonials';
         const method = editingTestimonial ? 'put' : 'post';
 
         try {
@@ -67,7 +67,7 @@ const TestimonialsPage = () => {
         if (!testimonialToDelete) return;
 
         try {
-            await API.delete(`/api/v1/admin/website/testimonials/${testimonialToDelete._id}`, {
+            await API.delete(`/admin/website/testimonials/${testimonialToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchTestimonials();

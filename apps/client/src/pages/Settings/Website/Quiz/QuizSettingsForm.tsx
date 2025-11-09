@@ -45,7 +45,7 @@ export const QuizSettingsForm: React.FC<QuizSettingsFormProps> = ({ settings, on
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await API.put('/api/v1/settings/quiz/parameters', formData, { headers: { Authorization: `Bearer ${token}` } });
+            await API.put('/settings/quiz/parameters', formData, { headers: { Authorization: `Bearer ${token}` } });
             onSave();
         } catch (error) {
             console.error("Failed to save quiz settings", error);

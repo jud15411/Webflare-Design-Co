@@ -42,7 +42,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
     const fetchClients = async () => {
       if (!token) return;
       try {
-        const { data } = await API.get('/api/v1/financials/clients', {
+        const { data } = await API.get('/financials/clients', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClients(data);
@@ -61,7 +61,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       if (!selectedClient || !token) return;
       try {
         const { data } = await API.get(
-          `/api/v1/financials/clients/${selectedClient}/projects`,
+          `/financials/clients/${selectedClient}/projects`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -117,7 +117,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
     e.preventDefault();
     try {
       await API.post(
-        '/api/v1/financials/invoices',
+        '/financials/invoices',
         {
           ...formData,
           client: selectedClient,

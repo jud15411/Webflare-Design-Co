@@ -85,9 +85,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave }) 
 
         try {
             if (question) {
-                await API.put(`/api/v1/settings/quiz/questions/${question._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+                await API.put(`/settings/quiz/questions/${question._id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
             } else {
-                await API.post('/api/v1/settings/quiz/questions', payload, { headers: { Authorization: `Bearer ${token}` } });
+                await API.post('/settings/quiz/questions', payload, { headers: { Authorization: `Bearer ${token}` } });
             }
             onSave();
         } catch (error) {

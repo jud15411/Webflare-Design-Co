@@ -25,7 +25,7 @@ export const ContractsPage: React.FC = () => {
       if (!token) return;
       setLoading(true);
       try {
-        const { data } = await API.get('/api/v1/contracts', {
+        const { data } = await API.get('/contracts', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setContracts(data);

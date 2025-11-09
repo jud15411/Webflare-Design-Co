@@ -36,7 +36,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       if (user?.role && token) {
         try {
           const { data } = await API.get(
-            `/api/v1/settings/users/permissions`,
+            `/settings/users/permissions`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }

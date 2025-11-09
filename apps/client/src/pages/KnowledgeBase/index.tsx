@@ -38,7 +38,7 @@ const KnowledgeBasePage = () => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await API.get(`/api/v1/articles`, {
+      const { data } = await API.get(`/articles`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setArticles(data);
@@ -61,7 +61,7 @@ const KnowledgeBasePage = () => {
     setError('');
     try {
       await API.post(
-        `/api/v1/articles`,
+        `/articles`,
         { title: newTitle, content: newContent, section: newSection },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -88,7 +88,7 @@ const KnowledgeBasePage = () => {
 
     try {
       setError('');
-      await API.delete(`/api/v1/articles/${articleToDeleteId}`, {
+      await API.delete(`/articles/${articleToDeleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchArticles();

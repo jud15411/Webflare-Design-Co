@@ -30,7 +30,7 @@ interface BusinessProviderProps {
   children: React.ReactNode;
 }
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api/v1';
 
 export const BusinessProvider: React.FC<BusinessProviderProps> = ({
   children,
@@ -45,7 +45,7 @@ export const BusinessProvider: React.FC<BusinessProviderProps> = ({
     try {
       setIsLoading(true);
       // NOTE: Your backend will need a public endpoint for this
-      const { data } = await axios.get(`${API_URL}/api/v1/settings/public`);
+      const { data } = await axios.get(`${API_URL}/settings/public`);
       setSettings({
         ...data,
         fullLogoUrl: data.logoUrl ? `${API_URL}${data.logoUrl}` : null,

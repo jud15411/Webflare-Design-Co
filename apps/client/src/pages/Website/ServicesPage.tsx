@@ -28,7 +28,7 @@ const ServicesPage = () => {
     const fetchServices = async () => {
         try {
             setLoading(true);
-            const { data } = await API.get('/api/v1/admin/website/services', {
+            const { data } = await API.get('/admin/website/services', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setServices(data);
@@ -47,8 +47,8 @@ const ServicesPage = () => {
 
     const handleSaveService = async (serviceData: Omit<Service, '_id'>) => {
         const url = editingService
-            ? `/api/v1/admin/website/services/${editingService._id}`
-            : '/api/v1/admin/website/services';
+            ? `/admin/website/services/${editingService._id}`
+            : '/admin/website/services';
         const method = editingService ? 'put' : 'post';
 
         try {
@@ -67,7 +67,7 @@ const ServicesPage = () => {
         if (!serviceToDelete) return;
 
         try {
-            await API.delete(`/api/v1/admin/website/services/${serviceToDelete._id}`, {
+            await API.delete(`/admin/website/services/${serviceToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchServices();

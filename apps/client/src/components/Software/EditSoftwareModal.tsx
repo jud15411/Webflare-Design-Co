@@ -61,7 +61,7 @@ const EditSoftwareModal = ({
     setError('');
 
     try {
-      await API.put(`/api/v1/software/${asset._id}`, form, {
+      await API.put(`/software/${asset._id}`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onAssetUpdated();

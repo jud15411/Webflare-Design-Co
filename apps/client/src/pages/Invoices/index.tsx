@@ -26,7 +26,7 @@ const InvoicesPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const { data } = await API.get('/api/v1/financials/invoices', {
+      const { data } = await API.get('/financials/invoices', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setInvoices(data);
@@ -44,7 +44,7 @@ const InvoicesPage = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this invoice?')) {
       try {
-        await API.delete(`/api/v1/financials/invoices/${id}`, {
+        await API.delete(`/financials/invoices/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchInvoices();

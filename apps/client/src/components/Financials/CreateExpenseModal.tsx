@@ -34,7 +34,7 @@ const CreateExpenseModal: React.FC<CreateExpenseModalProps> = ({
     setError('');
     try {
       await API.post(
-        '/api/v1/financials/expenses',
+        '/financials/expenses',
         {
           ...formData,
           amount: parseFloat(formData.amount),

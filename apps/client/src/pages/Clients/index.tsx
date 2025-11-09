@@ -31,7 +31,7 @@ export const ClientsPage: React.FC = () => {
     if (!token) return;
     setLoading(true);
     try {
-      const { data } = await API.get(`/api/v1/clients`, {
+      const { data } = await API.get(`/clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setClients(data);

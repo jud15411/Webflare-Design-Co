@@ -29,7 +29,7 @@ const PortfolioPage = () => {
     const fetchPortfolioItems = async () => {
         try {
             setLoading(true);
-            const { data } = await API.get('/api/v1/admin/website/portfolio', {
+            const { data } = await API.get('/admin/website/portfolio', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPortfolioItems(data);
@@ -48,8 +48,8 @@ const PortfolioPage = () => {
 
     const handleSaveItem = async (itemData: Omit<PortfolioItem, '_id'>) => {
         const url = editingItem
-            ? `/api/v1/admin/website/portfolio/${editingItem._id}`
-            : '/api/v1/admin/website/portfolio';
+            ? `/admin/website/portfolio/${editingItem._id}`
+            : '/admin/website/portfolio';
         const method = editingItem ? 'put' : 'post';
 
         try {
@@ -68,7 +68,7 @@ const PortfolioPage = () => {
         if (!itemToDelete) return;
 
         try {
-            await API.delete(`/api/v1/admin/website/portfolio/${itemToDelete._id}`, {
+            await API.delete(`/admin/website/portfolio/${itemToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchPortfolioItems();

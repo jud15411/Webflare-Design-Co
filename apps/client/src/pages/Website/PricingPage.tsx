@@ -29,7 +29,7 @@ const PricingPage = () => {
     const fetchPricingTiers = async () => {
         try {
             setLoading(true);
-            const { data } = await API.get('/api/v1/admin/website/pricing', {
+            const { data } = await API.get('/admin/website/pricing', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPricingTiers(data);
@@ -48,8 +48,8 @@ const PricingPage = () => {
 
     const handleSaveTier = async (tierData: Omit<PricingTier, '_id' | 'features'> & { features: string }) => {
         const url = editingTier
-            ? `/api/v1/admin/website/pricing/${editingTier._id}`
-            : '/api/v1/admin/website/pricing';
+            ? `/admin/website/pricing/${editingTier._id}`
+            : '/admin/website/pricing';
         const method = editingTier ? 'put' : 'post';
 
         try {
@@ -71,7 +71,7 @@ const PricingPage = () => {
         if (!tierToDelete) return;
 
         try {
-            await API.delete(`/api/v1/admin/website/pricing/${tierToDelete._id}`, {
+            await API.delete(`/admin/website/pricing/${tierToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchPricingTiers();

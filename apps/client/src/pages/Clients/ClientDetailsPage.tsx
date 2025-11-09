@@ -48,7 +48,7 @@ export const ClientDetailsPage: React.FC = () => {
     if (!token || !id) return;
     setLoading(true);
     try {
-      const { data } = await API.get(`/api/v1/clients/${id}`, {
+      const { data } = await API.get(`/clients/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setClient(data);
@@ -69,7 +69,7 @@ export const ClientDetailsPage: React.FC = () => {
     try {
       // No need to get data back, just refetch on success
       await API.patch(
-        `/api/v1/clients/${client._id}/portal-access`,
+        `/clients/${client._id}/portal-access`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

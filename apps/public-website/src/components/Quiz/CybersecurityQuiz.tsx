@@ -45,7 +45,7 @@ export const CybersecurityQuiz: React.FC = () => {
     const fetchQuiz = async () => {
       try {
         // FIX: The URL was missing the `/public` segment.
-        const { data } = await API.get('/api/v1/public/website/quiz');
+        const { data } = await API.get('/public/website/quiz');
         setSettings(data.settings);
         setQuestions(data.questions);
         if (data.settings?.timeLimit) {
@@ -95,7 +95,7 @@ export const CybersecurityQuiz: React.FC = () => {
 
   const handleCertificateDownload = async () => {
     try {
-        const response = await API.post('/api/v1/quiz/generate-certificate', {
+        const response = await API.post('/quiz/generate-certificate', {
             name: userName,
             score: Math.round((score / questions.length) * 100)
         }, {

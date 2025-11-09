@@ -30,7 +30,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
       setLoading(true);
       // Fix: Update API endpoint to match the backend
       const { data } = await API.get(
-        `/api/v1/settings/company-info/services`,
+        `/settings/company-info/services`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -64,7 +64,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     e.preventDefault();
     try {
       // Fix: Update API endpoint to match the backend
-      await API.post(`/api/v1/settings/company-info/services`, form, {
+      await API.post(`/settings/company-info/services`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setForm({ name: '', price: 0, description: '' });
@@ -79,7 +79,7 @@ const ServicesManagementSubpage: React.FC<ServicesManagementSubpageProps> = ({
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
         // Fix: Update API endpoint to match the backend
-        await API.delete(`/api/v1/settings/company-info/services/${id}`, {
+        await API.delete(`/settings/company-info/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchServices(); // Refresh list

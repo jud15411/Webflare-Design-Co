@@ -41,7 +41,7 @@ const ReportsPage = () => {
       try {
         setError('');
         setLoading(true);
-        const { data } = await API.get(`/api/v1/reports`, {
+        const { data } = await API.get(`/reports`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

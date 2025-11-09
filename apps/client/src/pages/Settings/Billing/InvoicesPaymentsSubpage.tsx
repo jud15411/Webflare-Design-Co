@@ -37,10 +37,10 @@ const InvoicesPaymentsSubpage: React.FC<InvoicesPaymentsSubpageProps> = ({
         setLoading(true);
         const [settingsRes, invoicesRes] = await Promise.all([
           // Fix: Updated API endpoints to match the new backend routes
-          API.get(`/api/v1/settings/billing/invoices/settings`, {
+          API.get(`/settings/billing/invoices/settings`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          API.get(`/api/v1/settings/billing/invoices/recent`, {
+          API.get(`/settings/billing/invoices/recent`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -63,7 +63,7 @@ const InvoicesPaymentsSubpage: React.FC<InvoicesPaymentsSubpageProps> = ({
     try {
       // The backend does not support this route yet, but we will keep the endpoint as a placeholder for future implementation
       await API.post(
-        `/api/v1/settings/billing/invoices/rules`,
+        `/settings/billing/invoices/rules`,
         { rule: newRule },
         {
           headers: { Authorization: `Bearer ${token}` },

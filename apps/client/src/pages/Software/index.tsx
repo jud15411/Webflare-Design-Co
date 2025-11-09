@@ -40,7 +40,7 @@ const SoftwarePage = () => {
     try {
       setError('');
       setLoading(true);
-      const { data } = await API.get(`/api/v1/software`, {
+      const { data } = await API.get(`/software`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAssets(data);
@@ -69,7 +69,7 @@ const SoftwarePage = () => {
     setError('');
     try {
       await API.post(
-        `/api/v1/software`,
+        `/software`,
         { ...form, assignedTo: hardcodedAssignedToId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -97,7 +97,7 @@ const SoftwarePage = () => {
   const handleConfirmDelete = async () => {
     if (!assetToDeleteId) return;
     try {
-      await API.delete(`/api/v1/software/${assetToDeleteId}`, {
+      await API.delete(`/software/${assetToDeleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchAssets();

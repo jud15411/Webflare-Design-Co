@@ -27,7 +27,7 @@ const ClientPortalSubpage: React.FC<ClientPortalSubpageProps> = ({
     const fetchSettings = async () => {
       try {
         const { data } = await API.get(
-          `/api/v1/settings/billing/client-portal`,
+          `/settings/billing/client-portal`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -58,7 +58,7 @@ const ClientPortalSubpage: React.FC<ClientPortalSubpageProps> = ({
     if (!settings) return;
 
     try {
-      await API.put(`/api/v1/settings/billing/client-portal`, settings, {
+      await API.put(`/settings/billing/client-portal`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccessMessage('Client portal settings updated successfully!');
