@@ -1,6 +1,13 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
 import { getMainDb } from '../../../../config/db.js';
 
+export enum UserRole {
+  CEO = 'ceo',
+  DEVELOPER = 'developer',
+  CTO = 'cto',
+  SALES = 'sales',
+}
+
 // --- Placeholder for Role Interface ---
 export interface IRole {
     _id: string;
