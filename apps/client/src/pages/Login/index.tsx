@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
 
     try {
       // ✅ FIX: Point to the correct admin authentication endpoint
-      const { data } = await API.post('/api/v1/auth/login', {
+      const { data } = await API.post('/auth/login', {
         email,
         password,
       });

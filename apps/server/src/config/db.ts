@@ -1,13 +1,22 @@
+// db.ts
+
 import mongoose from 'mongoose';
 
 let mainDb: mongoose.Connection;
 let publicDb: mongoose.Connection;
 
+// Check the environment once for use in connection functions
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 // This function ESTABLISHES the main DB connection
 export const connectMainDB = async () => {
   try {
-    mainDb = await mongoose.createConnection(process.env.MONGO_URI!).asPromise();
-    console.log(`Main MongoDB Connected: ${mainDb.host}`);
+    // Dynamically select the URI based on environment
+    const uri = isDevelopment ? process.env.DEV_MONGO_URI : process.env.MONGO_URI;
+    if (!uri) throw new Error('Main DB URI is not defined for the current environment.');
+
+    mainDb = await mongoose.createConnection(uri).asPromise();
+    console.log(`Main MongoDB Connected: ${mainDb.host} (${isDevelopment ? 'Development' : 'Production'})`);
   } catch (error: any) {
     console.error(`Main DB Error: ${error.message}`);
     process.exit(1);
@@ -17,17 +26,19 @@ export const connectMainDB = async () => {
 // This function ESTABLISHES the public DB connection
 export const connectPublicDB = async () => {
   try {
-    publicDb = await mongoose.createConnection(process.env.MONGO_URI_PUBLIC!).asPromise();
-    console.log(`Public Website MongoDB Connected: ${publicDb.host}`);
+    // Dynamically select the URI based on environment
+    const uri = isDevelopment ? process.env.DEV_MONGO_URI_PUBLIC : process.env.MONGO_URI_PUBLIC;
+    if (!uri) throw new Error('Public DB URI is not defined for the current environment.');
+
+    publicDb = await mongoose.createConnection(uri).asPromise();
+    console.log(`Public Website MongoDB Connected: ${publicDb.host} (${isDevelopment ? 'Development' : 'Production'})`);
   } catch (error: any) {
     console.error(`Public DB Error: ${error.message}`);
     process.exit(1);
   }
 };
 
-// --- THE FIX ---
 // These functions SAFELY RETRIEVE the established connection.
-// Your models will use these "getter" functions.
 export const getMainDb = () => {
   if (!mainDb) {
     throw new Error('Main DB has not been connected yet. Make sure connectMainDB() is called at server startup.');
