@@ -11,7 +11,7 @@ interface Metrics {
 }
 
 export const DashboardPage = () => {
-  const { token, logout } = useAuth(); // Get token and logout from context
+  const { token } = useAuth(); 
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [error, setError] = useState('');
 
@@ -48,9 +48,6 @@ export const DashboardPage = () => {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Welcome to the Dashboard!</h1>
-        <button className="logout-button" onClick={logout}>
-          Logout
-        </button>
       </header>
       <main className="dashboard-main">
         {/* Changed class for a prominent banner look */}
