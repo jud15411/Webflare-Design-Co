@@ -1,4 +1,4 @@
-/* Sidebar.css - Slimline Fixed Sidebar Design */
+/* Sidebar.css - Slimline Fixed Sidebar Design (Scrollbar Hidden) */
 
 :root {
   /* --- Refined Color Palette (Maintaining Dark Theme) --- */
@@ -24,6 +24,14 @@
   padding: 1rem 0.5rem; /* Reduced horizontal padding */
   overflow-y: auto; /* Allows content scroll if needed */
   overflow-x: hidden;
+  
+  /* --- NEW: Hide Scrollbar (Standard for Firefox) --- */
+  scrollbar-width: none;
+}
+
+/* --- NEW: Hide Scrollbar (Webkit browsers: Chrome, Safari, Edge) --- */
+.custom-sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-header {
