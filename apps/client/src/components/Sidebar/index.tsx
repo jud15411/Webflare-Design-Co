@@ -6,16 +6,16 @@ import API from '../../utils/axios';
 import {
   FaChevronRight,
   FaSignOutAlt,
-  FaUser, // FIX: Used explicitly for fallback icon
+  FaUser,
   FaSpinner,
 } from 'react-icons/fa';
 import './Sidebar.css';
+// FIX: Ensure types are imported correctly
 import { navLinks, type NavItem, type NavLinkItem, type NavDropdownItem } from './navlinks';
 
 // --- Type Definitions ---
 // Define the allowed role keys based on the structure of navLinks
-// Assumes that the type of user.role aligns with the keys in navLinks (e.g., 'ceo', 'sales', 'developer')
-type RoleKey = keyof typeof navLinks; 
+type RoleKey = keyof typeof navLinks;
 
 // --- Helper Functions ---
 /** Gets the first initial of the first and last name for the avatar fallback. */
@@ -46,15 +46,18 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
   const [permissions, setPermissions] = useState<string[]>([]);
   const [loadingPermissions, setLoadingPermissions] = useState(true);
 
-  // --- Permission Fetching Logic ---
+  // --- Permission Fetching Logic (FIXED API PATH) ---
   useEffect(() => {
     const fetchPermissions = async () => {
-      if (user?.role.name && token) { 
+      // Check if user and token exist, and the role object is present
+      if (user?.role?.name && token) { 
         try {
-          // Assuming API endpoint is /settings/users/permissions/:role
+          // ✅ FIX: Extract the clean role name string
           const roleName = user.role.name;
+
+          // ✅ FIX: Ensure the template literal is clean, only using roleName
           const { data } = await API.get(
-            `/settings/users/permissions/${roleName}}`, 
+            `/settings/users/permissions/${roleName}`, 
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setPermissions(data.permissions || []);
@@ -69,13 +72,16 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       }
     };
 
+    // Only run if user changes or token changes
     fetchPermissions();
-  }, [user?.role, token]); 
+  }, [user?.role?.name, token]); 
 
 
   const hasPermission = (key: string): boolean => {
+    // For simplicity, always allow dashboard and profile if authenticated.
     if (key === 'dashboard' || key === 'profile') return true; 
 
+    // Check if the permission key is in the fetched permissions list
     return permissions.includes(key); 
   };
   
@@ -92,14 +98,12 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     closeMobileMenu?.();
   };
 
-  // --- Role-based Link Filtering (FIXED) ---
+  // --- Role-based Link Filtering (CONFIRMED FIX) ---
   let accessibleLinks: NavItem[] = [];
 
-  if (user?.role.name) {
-    // FIX: Convert type to unknown first to satisfy strict TS index checking (ts(2352))
+  if (user?.role) {
+    // ✅ FIX: Use user.role.name to get the string for indexing navLinks
     const roleKey = user.role.name as unknown as RoleKey; 
-    
-    // Check if the role key exists, otherwise fall back to 'default'
     const roleLinks = navLinks[roleKey] || navLinks.default; 
 
     if (roleLinks) {
@@ -119,7 +123,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     accessibleLinks = navLinks.default?.filter((item) => hasPermission(item.key)) || [];
   }
   
-  // --- NEW Avatar Display Component for Sidebar Footer (FIXED FaUser usage) ---
+  // --- Avatar Display Component ---
   const AvatarDisplay: React.FC = () => {
     const avatarUrl = user?.avatarUrl;
 
@@ -133,8 +137,6 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
                 />
             ) : (
                 <span className="avatar-initials">
-                    {/* FIX: Explicitly use FaUser for the ultimate fallback icon 
-                        when no name is available, otherwise use initials */}
                     {user?.name ? getInitials(user.name) : <FaUser />} 
                 </span>
             )}
@@ -142,7 +144,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
     );
   };
   
-  // --- Conditional Nav Item Renderer (FIXED Type Safety) ---
+  // --- Conditional Nav Item Renderer ---
   const renderNavItem = (item: NavItem) => {
     const isDropdown = 'children' in item && item.children;
     const isActive = isDropdown 
@@ -150,7 +152,6 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
       : pathname === (item as NavLinkItem).pathname;
 
     const linkContent = (
-      // FIX: Use a dedicated container for link content to manage layout
       <div className="nav-button-content">
         <span className="nav-icon">{item.icon}</span>
         <span className="nav-label">{item.label}</span>
@@ -168,7 +169,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
 
       return (
         <li key={item.key} className="nav-item">
-          <button // Use button for dropdown interaction
+          <button
             className={`nav-button ${isActive ? 'active' : ''}`}
             onClick={() => {
               closeMobileMenu?.();
@@ -199,7 +200,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
 
     return (
       <li key={item.key} className="nav-item">
-        <Link // Use Link for navigation to a specific page
+        <Link
           to={linkItem.pathname}
           className={`nav-button ${isActive ? 'active' : ''}`}
           onClick={closeMobileMenu}
