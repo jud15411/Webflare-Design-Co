@@ -24,7 +24,9 @@ export const FuturisticHero: React.FC = () => {
           We build blazing‑fast websites and bulletproof security for ambitious brands. Bold ideas. Solid execution. Zero compromise.
         </p>
         <div className={styles.actions}>
+          <Link to="/contact">
           <Button as="a" href="#contact">Start a Project</Button>
+          </Link>
           <Link to="/portfolio">
             <Button as="a" href="portfolio" variant="secondary">See Work</Button>
           </Link>

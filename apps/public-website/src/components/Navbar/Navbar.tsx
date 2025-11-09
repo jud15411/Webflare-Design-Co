@@ -41,6 +41,16 @@ export const Navbar = () => {
               Pricing
             </NavLink>
           </li>
+          <li> 
+            <NavLink
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
+              to="/contact"
+            >
+              Contact
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

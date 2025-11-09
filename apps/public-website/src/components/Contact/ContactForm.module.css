@@ -1,0 +1,77 @@
+/* src/components/Contact/ContactForm.module.css */
+
+.form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--space-8);
+    background-color: var(--surface-color-subtle, #1a1a1a); /* Subtle dark background */
+    border-radius: var(--border-radius-lg, 8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.formGroup {
+    margin-bottom: var(--space-6);
+}
+
+.label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--on-surface-color, #ffffff);
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: var(--space-4);
+    border: 1px solid var(--border-color, #333);
+    border-radius: var(--border-radius-md, 4px);
+    background-color: var(--surface-color, #222);
+    color: var(--on-surface-variant-color, #ccc);
+    font-size: var(--font-size-base, 16px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+    border-color: var(--primary-color, #007bff);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.textarea {
+    resize: vertical;
+}
+
+.submitButton {
+    display: block;
+    width: 100%;
+    padding: var(--space-4);
+    background-color: var(--primary-color, #007bff);
+    color: var(--on-primary-color, #ffffff);
+    border: none;
+    border-radius: var(--border-radius-md, 4px);
+    font-size: var(--font-size-lg, 18px);
+    font-weight: var(--font-weight-bold, 700);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.submitButton:hover {
+    background-color: var(--primary-color-dark, #0056b3);
+}
+
+.submitButton:active {
+    transform: translateY(1px);
+}
+
+.statusMessage {
+    padding: var(--space-4);
+    margin-top: var(--space-4);
+    text-align: center;
+    border-radius: var(--border-radius-md, 4px);
+    font-weight: var(--font-weight-medium, 500);
+    /* Basic styling for feedback */
+    background-color: var(--primary-color-subtle, rgba(0, 123, 255, 0.1));
+    color: var(--primary-color, #007bff);
+}
