@@ -6,6 +6,7 @@ import { AnimatedOrbs } from '../Visual/AnimatedOrbs/AnimatedOrbs';
 import { ScanlineOverlay } from '../Visual/ScanlineOverlay/ScanlineOverlay';
 import { Button } from '../UI/Button/Button';
 import { useInView } from '../../hooks/useInView';
+import { Link } from 'react-router-dom';
 
 export const FuturisticHero: React.FC = () => {
   const { ref, inView } = useInView<HTMLDivElement>();
@@ -24,7 +25,9 @@ export const FuturisticHero: React.FC = () => {
         </p>
         <div className={styles.actions}>
           <Button as="a" href="#contact">Start a Project</Button>
-          <Button as="a" href="#portfolio" variant="secondary">See Work</Button>
+          <Link to="/portfolio">
+            <Button as="a" href="portfolio" variant="secondary">See Work</Button>
+          </Link>
         </div>
       </div>
     </section>
