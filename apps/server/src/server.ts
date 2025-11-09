@@ -1,27 +1,48 @@
 import { createServer } from 'http';
 import express, { type Request, type Response } from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
+import cors, { type CorsOptions } from 'cors';
 
-// Only import modules that DO NOT depend on the database connection here
 import { connectMainDB, connectPublicDB } from './config/db.js';
 
-// Centralized error handling for uncaught exceptions
 process.on('uncaughtException', (error) => {
   console.error('🔴 An uncaught exception occurred:', error);
   process.exit(1);
 });
 
+const allowedOrigins = [
+    'https://firmaplex.tech', // Your main domain
+    'https://www.firmaplex.tech', // The 'www' version
+    'http://localhost:3000', // Example for local dev
+    'http://localhost:5173', // Example for local dev (Vite)
+    // Add your EC2 public domain/IP if you access it directly
+    // e.g., 'http://ec2-xx-xx-xx.compute.amazonaws.com' 
+];
+
+const netlifyPreviewRegex = /https:\/\/(?:[a-z0-9-]+--)?webflare-design-co\.netlify\.app$/;
+
+const corsOptions: CorsOptions = {
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true); 
+
+        if (allowedOrigins.includes(origin) || netlifyPreviewRegex.test(origin)) {
+            callback(null, true);
+        } else {
+            console.error(`CORS Blocked: Origin ${origin} not allowed by policy.`);
+            callback(new Error('Not allowed by CORS'), false);
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, 
+};
+
 const startServer = async () => {
   try {
-    // 1. Wait for BOTH database connections to be fully established FIRST.
     await Promise.all([connectMainDB(), connectPublicDB()]);
     console.log('✅ Both databases connected successfully.');
 
     const { initWebSocketServer } = await import('./websockets.js');
 
-    // 2. NOW that the DBs are ready, dynamically import routes.
-    // This prevents any model files from loading until after the DB is connected.
     const authRoutes = (await import('./api/v1/auth/auth.routes.js')).default;
     const articleRoutes = (await import('./api/v1/articles/article.routes.js')).default;
     const softwareRoutes = (await import('./api/v1/software/software.routes.js')).default;
@@ -64,13 +85,13 @@ const startServer = async () => {
     const server = createServer(app);
     const PORT = process.env.PORT || 5001;
 
-    app.use(cors());
     app.use(helmet());
     app.use(express.json());
 
+    app.use(cors(corsOptions));
+
     initWebSocketServer(server);
 
-    // 3. Use the dynamically imported routes
     app.use('/api/v1/auth', authRoutes);
     app.use('/api/v1/articles', articleRoutes);
     app.use('/api/v1/software', softwareRoutes);
@@ -122,5 +143,4 @@ const startServer = async () => {
   }
 };
 
-// 4. Call the async function to start the application
 startServer();

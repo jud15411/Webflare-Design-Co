@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const API = axios.create({
   // Use import.meta.env for Vite environment variables
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
 });
 
 // Use an interceptor to automatically add the auth token to every request
