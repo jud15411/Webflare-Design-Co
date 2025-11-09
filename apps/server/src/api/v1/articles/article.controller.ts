@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { Article, articleSections } from './article.model.js';
 import { type AuthRequest } from '../../middleware/auth.middleware.js';
 import { Role } from '../roles/role.model.js';
-import { UserRole } from '../auth/user.model.js';
+import { UserRole } from '../settings/users/users.model.js';
 
 // FIX: Correct Zod enum validation syntax
 const articleSchema = z.object({

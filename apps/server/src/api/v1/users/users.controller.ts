@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import { z } from 'zod';
-import { User } from '../auth/user.model.js';
+import { User } from '../settings/users/users.model.js';
 import { type AuthRequest } from '../../middleware/auth.middleware.js';
 import { type IRole } from '../roles/role.model.js';
 import { Types } from 'mongoose';

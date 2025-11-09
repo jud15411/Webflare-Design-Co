@@ -1,6 +1,6 @@
 import { type Response } from 'express';
 import { type AuthRequest } from '../../middleware/auth.middleware.js';
-import { User } from '../auth/user.model.js';
+import { User } from '../settings/users/users.model.js';
 import { Schedule } from '../schedules/schedule.model.js';
 import { TimeLog } from './timeLog.model.js';
 import { ClockInRequest } from '../requests/clockInRequest.model.js';

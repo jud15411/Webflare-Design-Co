@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express';
-import { User } from './user.model.js';
+import { User } from '../settings/users/users.model.js';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 

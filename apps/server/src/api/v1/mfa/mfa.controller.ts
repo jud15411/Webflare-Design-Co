@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import { z } from 'zod';
-import { UserRole } from '../auth/user.model.js';
+import { UserRole } from '../settings/users/users.model.js';
 
 // Define the shape of our placeholder MFA settings
 interface IMfaSettings {

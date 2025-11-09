@@ -11,7 +11,7 @@ import {
 import { protect } from '../../middleware/auth.middleware.js';
 // 1. Import your role authorization middleware
 import { authorizeRoles } from '../../middleware/role.middleware.js';
-import { UserRole } from '../auth/user.model.js'; // Assuming you have role enums
+import { UserRole } from '../settings/users/users.model.js'; // Assuming you have role enums
 
 const router = Router();
 

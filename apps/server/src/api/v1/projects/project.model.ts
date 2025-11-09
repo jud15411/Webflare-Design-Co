@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-import { type User } from '../auth/user.model.js';
+import { type User } from '../settings/users/users.model.js';
 import { getMainDb } from '../../../config/db.js';
 
 // Remove the enum and rely on the string values directly

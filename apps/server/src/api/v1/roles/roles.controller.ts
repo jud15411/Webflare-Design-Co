@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import { Role } from './role.model.js';
-import { User } from '../auth/user.model.js';
+import { User } from '../settings/users/users.model.js';
 
 // Get all roles
 export const getRoles = async (req: Request, res: Response) => {

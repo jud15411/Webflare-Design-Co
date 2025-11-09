@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { getPolicy, updatePolicy } from './data-retention.controller.js';
 import { protect } from '../../middleware/auth.middleware.js';
 import { authorizeRoles } from '../../middleware/role.middleware.js';
-import { UserRole } from '../auth/user.model.js';
+import { UserRole } from '../settings/users/users.model.js';
 
 const router = Router();
 

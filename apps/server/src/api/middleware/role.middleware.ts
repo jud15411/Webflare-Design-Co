@@ -1,6 +1,6 @@
 import { type Response, type NextFunction } from 'express';
 import { type AuthRequest } from './auth.middleware.js';
-import { UserRole } from '../v1/auth/user.model.js';
+import { UserRole } from '../v1/settings/users/users.model.js';
 import { Role } from '../v1/roles/role.model.js'; // 1. Import the Role model
 
 export const authorizeRoles = (...roles: UserRole[]) => {

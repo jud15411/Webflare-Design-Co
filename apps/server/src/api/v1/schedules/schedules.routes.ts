@@ -6,7 +6,7 @@ import {
 } from './schedules.controller.js';
 import { protect } from '../../middleware/auth.middleware.js';
 import { authorizeRoles } from '../../middleware/role.middleware.js';
-import { UserRole } from '../auth/user.model.js'; // Import the UserRole enum
+import { UserRole } from '../settings/users/users.model.js'; // Import the UserRole enum
 
 const router = express.Router();
 

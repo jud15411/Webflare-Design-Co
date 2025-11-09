@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { Server } from 'http';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
-import { User } from './api/v1/auth/user.model.js';
+import { User } from './api/v1/settings/users/users.model.js';
 import { ClientUser } from './api/v1/client/clientUser.model.js';
 import { Message } from './api/v1/messages/message.model.js';
 // FIX: Use createRequire to bypass the ES Module import issue for ioredis

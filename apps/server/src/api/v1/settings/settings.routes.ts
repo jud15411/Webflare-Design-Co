@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { protect } from '../../../middleware/auth.middleware.js';
 import { authorizeRoles } from '../../middleware/role.middleware.js';
-import { UserRole } from '../auth/user.model.js';
+import { UserRole } from './users/users.model.js';
 import companyRoutes from './company/company.routes.js';
 import billingRoutes from './billing/billing.routes.js';
 import usersRoutes from './users/users.routes.js';

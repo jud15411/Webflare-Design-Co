@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
-import { User, type IUser } from '../v1/auth/user.model.js';
+import { User, type IUser } from '../v1/settings/users/users.model.js';
 import { type IRole } from '../v1/roles/role.model.js';
 
 // Extend the Request interface to include the user property

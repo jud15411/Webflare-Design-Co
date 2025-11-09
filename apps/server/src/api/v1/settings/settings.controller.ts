@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express';
 import { z } from 'zod';
 import { type AuthRequest } from '../../middleware/auth.middleware.js';
-import { UserRole } from '../auth/user.model.js';
+import { UserRole } from './users/users.model.js';
 
 // Define schemas for validating incoming data
 const companyInfoSchema = z.object({
