@@ -139,6 +139,10 @@
   /* Scrollbar hide properties are inherited from .custom-sidebar */
 }
 
+.sidebar-nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
 .sidebar-nav ul {
     list-style: none;
     padding: 0;
