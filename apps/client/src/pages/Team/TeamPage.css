@@ -1,19 +1,36 @@
+/* New TeamPage.css - Stacked Layout and Modern Dark Table */
+
+/*
+  Using the assumed dark theme variables for consistency:
+  --background-primary: Deep background/Input background
+  --background-secondary: Card background
+  --text-primary: Light main text
+  --text-secondary: Muted text
+  --accent-primary: Main action color (e.g., blue)
+  --border-color: Subtle divider
+  --status-failed-text: Danger color (red)
+  --status-approved-text: Success color (green)
+*/
+
 .team-page-container {
   padding: 40px;
-  font-family: var(--font-family);
+  /* Assuming global font-family is set, e.g., Inter/sans-serif */
+  /* font-family: var(--font-family); */
+  min-height: 100vh;
 }
 
 .team-page-container h1 {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 2.5em; /* Larger title */
+  font-weight: 700;
   margin-bottom: 30px;
   color: var(--text-primary);
 }
 
+/* --- Layout Change: Stacked Sections --- */
 .team-management-layout {
-  display: grid;
-  grid-template-columns: 350px 1fr;
-  gap: 30px;
+  display: flex; /* Use flexbox to stack sections */
+  flex-direction: column;
+  gap: 40px; /* Separates the form section from the list section */
 }
 
 /* Card Styles */
@@ -21,91 +38,143 @@
 .team-list-card {
   background-color: var(--background-secondary);
   padding: 30px;
-  border-radius: var(--border-radius-md);
+  border-radius: 12px; /* Smoother corners */
   border: 1px solid var(--border-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .add-user-card h2,
 .team-list-card h2 {
-  font-size: 20px;
+  font-size: 1.8em; /* Larger title */
+  font-weight: 600;
   margin-top: 0;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 15px;
 }
 
 /* Form Styles */
 .add-user-card .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .add-user-card label {
   display: block;
   font-weight: 500;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 1em;
+  color: var(--text-secondary);
 }
 .add-user-card input,
 .add-user-card select {
   width: 100%;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 12px; /* Larger padding for better usability */
+  border-radius: 8px;
   border: 1px solid var(--border-color);
-  background-color: var(--background-primary);
+  background-color: var(--background-primary); /* High contrast input background */
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 1em;
+  transition: border-color 0.2s;
 }
+
+.add-user-card input:focus,
+.add-user-card select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
 .add-user-button {
   width: 100%;
-  padding: 12px;
-  font-size: 15px;
+  padding: 14px; /* Larger button */
+  font-size: 1em;
   font-weight: 600;
   color: #fff;
   background-color: var(--accent-primary);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
+  transition: background-color 0.2s;
 }
 
-/* Table Styles */
+.add-user-button:hover {
+    background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
+}
+
+
+/* --- Modern Table Styles --- */
 .team-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate; /* Use separate borders for better look */
+  border-spacing: 0;
 }
+
 .team-table th,
 .team-table td {
-  padding: 12px 15px;
+  padding: 15px 20px; /* Increased padding */
   text-align: left;
-  border-bottom: 1px solid var(--border-color);
+  /* Removed individual border-bottom for a cleaner look */
 }
+
+.team-table thead {
+    background-color: var(--background-primary); /* Header row stands out */
+    border-radius: 8px 8px 0 0;
+}
+
 .team-table th {
-  font-size: 13px;
+  font-size: 0.9em;
   color: var(--text-secondary);
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
+
+.team-table tbody tr {
+    /* Use primary background for rows for contrast against card background */
+    background-color: var(--background-primary); 
+    transition: background-color 0.2s;
+    border-bottom: 1px solid var(--border-color); /* Separator line */
+}
+
+.team-table tbody tr:hover {
+    background-color: var(--background-hover);
+}
+
+.team-table tbody tr:last-child {
+    border-bottom: none; /* No line after the last row */
+}
+
 .team-table td {
-  font-size: 14px;
+  font-size: 1em;
   color: var(--text-primary);
 }
 
-/* --- Base Styles for Action Buttons --- */
+/* --- Inactive User Row Styling --- */
+.inactive-user {
+  /* No special background color to keep row hover clean */
+}
+
+.inactive-user td {
+  color: var(--text-secondary) !important; /* Mute the text color */
+  text-decoration: none; /* Removed the line-through */
+  opacity: 0.7; /* Subtle visual dimming */
+}
+
+/* --- Action Buttons --- */
 .toggle-status-button,
 .remove-button {
-  background: none;
   border: 1px solid;
-  padding: 6px 12px;
+  padding: 8px 15px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 0.9em;
+  font-weight: 600;
   transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  margin-right: 10px; /* Increased spacing */
 }
 
-.toggle-status-button {
-  margin-right: 8px;
-}
-
-/* --- Secondary Action: Deactivate Button --- */
+/* Deactivate Button (Active User) - Secondary Action */
 .toggle-status-button {
   border-color: var(--text-secondary);
   color: var(--text-secondary);
@@ -116,64 +185,54 @@
   color: var(--text-primary);
 }
 
-/* --- Destructive Action: Remove Button --- */
+/* Remove Button - Destructive Action */
 .remove-button {
   border-color: var(--status-failed-text);
   color: var(--status-failed-text);
 }
 
 .remove-button:hover {
-  background-color: var(--status-failed-bg);
-  color: #fff; /* White text on red background */
+  background-color: var(--status-failed-text);
+  color: var(--background-primary); /* Text becomes a neutral dark color on red hover */
 }
 
-/* --- Positive Action: Activate Button (for inactive users) --- */
+/* Activate Button (Inactive User) - Positive Action */
 .inactive-user .toggle-status-button {
   border-color: var(--status-approved-text);
   color: var(--status-approved-text);
 }
 
 .inactive-user .toggle-status-button:hover {
-  background-color: var(--status-approved-bg);
-  color: var(--status-approved-text);
+  background-color: var(--status-approved-text);
+  color: var(--background-primary); /* Text becomes a neutral dark color on green hover */
 }
 
 /* Role Badges */
 .role-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-.role-developer {
-  background-color: #3e8ed0;
-  color: #fff;
-}
-.role-cto {
-  background-color: #f14668;
-  color: #fff;
-}
-.role-sales {
-  background-color: #48c78e;
-  color: #fff;
+  padding: 5px 10px;
+  border-radius: 16px; /* Pill shape */
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase; /* Use uppercase for badges */
+  letter-spacing: 0.5px;
+  display: inline-block;
 }
 
+/* Re-using your specific role colors */
+.role-badge:not([class*="role-"]) {
+    /* Default style for roles not explicitly mapped */
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Error Message Style */
 .error-message {
   color: var(--status-failed-text);
-  background-color: var(--status-failed-bg);
-  padding: 10px;
-  border-radius: 6px;
+  background-color: color-mix(in srgb, var(--status-failed-text) 10%, var(--background-secondary));
+  border: 1px solid var(--status-failed-text);
+  padding: 15px;
+  border-radius: 8px;
   text-align: center;
-}
-
-.inactive-user {
-  /* Use the new dark-theme friendly background color */
-  background-color: var(--background-inactive);
-}
-
-.inactive-user td {
-  /* Mute the text color and keep the line-through */
-  color: var(--text-secondary);
-  text-decoration: line-through;
+  font-weight: 600;
+  margin-top: 20px;
 }
