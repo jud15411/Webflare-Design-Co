@@ -1,19 +1,20 @@
-/* New RolesPage.css - Modern Dark Theme */
+/* New RolesPage.css - Stacked Layout, Full-Width Grid */
 
 /*
-  Assuming the following variable mappings for a dark theme:
-  --background-primary: Deep background (e.g., #1f2937)
-  --background-secondary: Card background (e.g., #2d3748)
-  --text-primary: Light text (e.g., #e5e7eb)
-  --text-secondary: Muted text (e.g., #9ca3af)
-  --accent-primary: Main action color (e.g., #3b82f6)
-  --border-color: Subtle divider (e.g., #4b5563)
-  --background-hover: Darker hover state (e.g., #374151)
-  --status-failed-text: Danger/Delete color (e.g., #ef4444)
+  Using the same dark theme variables for consistency.
 */
+:root {
+  --background-primary: #1f2937; 
+  --background-secondary: #2d3748; 
+  --text-primary: #e5e7eb; 
+  --text-secondary: #9ca3af; 
+  --accent-primary: #3b82f6; 
+  --border-color: #4b5563; 
+  --background-hover: #374151; 
+  --status-failed-text: #ef4444; 
+}
 
 .page-container {
-    /* Ensure the entire page background is consistent, based on your application's global styling */
     min-height: 100vh;
     padding-bottom: 50px;
 }
@@ -22,30 +23,29 @@
     font-size: 2.5em;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increased margin */
 }
 
+/* --- Layout Change: Remove grid-template-columns for a stacked layout --- */
 .roles-page-layout {
-  display: grid;
-  /* Maintain the 400px column for the form, but make it look integrated */
-  grid-template-columns: 400px 1fr;
-  gap: 40px; /* Increased gap for better breathing room */
-  align-items: flex-start;
+  display: flex; /* Use flexbox to stack sections */
+  flex-direction: column;
+  gap: 40px; /* Separates the form section from the list section */
 }
 
-.role-form-card,
-.role-list-card {
-  /* Use secondary background for cards */
+/* --- Role Form Card (Top Section) --- */
+.role-form-card {
+  /* It now takes up the full width */
   background-color: var(--background-secondary);
   padding: 30px;
-  border-radius: 12px; /* Smoother corners */
+  border-radius: 12px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .role-form-card h2,
 .role-list-card h2 {
-  font-size: 1.8em; /* Larger title */
+  font-size: 1.8em;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 30px;
@@ -54,9 +54,9 @@
   padding-bottom: 15px;
 }
 
-/* Form Styles */
+/* Form Styles remain largely the same, but adjusted spacing/size */
 .role-form .form-group {
-  margin-bottom: 25px; /* Increased spacing */
+  margin-bottom: 25px;
 }
 
 .role-form label {
@@ -64,16 +64,16 @@
   font-weight: 500;
   margin-bottom: 10px;
   font-size: 1em;
-  color: var(--text-secondary); /* Muted label */
+  color: var(--text-secondary);
 }
 
 .role-form input,
 .role-form textarea {
   width: 100%;
-  padding: 12px; /* Larger padding for easier clicking/typing */
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  background-color: var(--background-primary); /* Use primary background for inputs to stand out */
+  background-color: var(--background-primary);
   color: var(--text-primary);
   font-size: 1em;
   transition: border-color 0.3s;
@@ -94,7 +94,7 @@
   display: flex;
   gap: 15px;
   margin-top: 30px;
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: flex-end;
 }
 
 .role-form-buttons button {
@@ -113,7 +113,7 @@
 }
 
 .submit-button:hover {
-    background-color: color-mix(in srgb, var(--accent-primary) 80%, black); /* Darken accent on hover */
+    background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
 }
 
 .cancel-button {
@@ -122,35 +122,46 @@
 }
 
 .cancel-button:hover {
-    background-color: color-mix(in srgb, var(--background-hover) 80%, white); /* Slightly lighten hover background */
+    background-color: color-mix(in srgb, var(--background-hover) 80%, white);
 }
 
-/* --- List/Role Card Styles --- */
-
-.role-list {
-  /* This ensures the list items act as a flowing set of cards */
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* --- Role List Card (Full-Width Bottom Section) --- */
+.role-list-card {
+    /* Full width card for the list */
+    background-color: var(--background-secondary);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* --- NEW: Role Grid for better density and scannability --- */
 .role-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  
+  /* Implement the responsive grid layout */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 300px minimum width */
+  gap: 20px; /* FIX: Use grid gap to control spacing between cards */
 }
 
+/* --- Role Card Styles --- */
 .role-list-item {
-  /* Transforming list items into discrete, scannable cards */
+  /* Individual item styling */
   display: flex;
+  flex-direction: column; /* Stack info and actions vertically within the card */
   justify-content: space-between;
-  align-items: center;
   padding: 20px;
-  background-color: var(--background-primary); /* Primary background for contrast against card background */
+  height: auto; /* Allow height to adjust */
+  background-color: var(--background-primary);
   border-radius: 10px;
-  border-left: 5px solid var(--accent-primary); /* Accent border for visual interest */
+  border-left: 5px solid var(--accent-primary);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  /* FIX: Remove border-bottom from list items to ensure no overlapping */
+  border-bottom: none !important; 
 }
 
 .role-list-item:hover {
@@ -159,13 +170,8 @@
     background-color: var(--background-hover);
 }
 
-/* Remove default border since we are using card styling */
-.role-list-item:last-child {
-  border-bottom: none;
-}
-
 .role-info {
-    flex-grow: 1; /* Allows the info section to take up available space */
+    margin-bottom: 20px; /* Space between info and action buttons */
 }
 
 .role-info h3 {
@@ -184,10 +190,11 @@
 .role-actions {
     display: flex;
     gap: 10px;
+    margin-top: auto; /* Push buttons to the bottom of the card */
 }
 
 .role-actions button {
-  margin-left: 0; /* Remove old margin */
+  flex-grow: 1; /* Make buttons expand to fill the bottom width */
   background: var(--background-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
@@ -202,7 +209,6 @@
 }
 
 .role-actions .delete-button {
-  /* Use the danger color for a clear warning */
   border-color: var(--status-failed-text); 
   color: var(--status-failed-text);
   background-color: color-mix(in srgb, var(--status-failed-text) 10%, var(--background-primary));
@@ -210,5 +216,5 @@
 
 .role-actions .delete-button:hover {
     background-color: var(--status-failed-text);
-    color: var(--background-primary); /* White/light text on red hover */
+    color: var(--background-primary);
 }
