@@ -1,3 +1,5 @@
+// TaskModal/index.tsx
+
 import React, { useState, useEffect, type FormEvent } from 'react';
 import './TaskModal.css';
 
@@ -7,10 +9,18 @@ interface User {
   name: string;
 }
 
-// Add Project interface
 interface Project {
   _id: string;
   name: string;
+}
+
+// NEW: Sprint Interface
+interface Sprint { 
+    _id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    status: 'Planning' | 'Active' | 'Completed';
 }
 
 interface Task {
@@ -21,21 +31,29 @@ interface Task {
   category: 'Cybersecurity' | 'Web Development';
   dueDate: string;
   assignedTo: User;
-  project: Project; // Update task to include project
+  project: Project; 
+  storyPoints?: number; // NEW
+  sprint?: Sprint | null; // NEW
 }
 
+// FIXED: Define the correct type for data passed to onSave (string IDs, required storyPoints)
+type TaskDataForSave = Omit<Task, '_id' | 'assignedTo' | 'project' | 'sprint'> & {
+    assignedTo: string;
+    project: string;
+    storyPoints: number; // Required field
+    sprint?: string | null; // Optional sprint ID
+};
+
+
+// FIXED: Update TaskModalProps to use the new type and include sprints
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (
-    task: Omit<Task, '_id' | 'assignedTo' | 'project'> & {
-      assignedTo: string;
-      project: string;
-    }
-  ) => void;
+  onSave: (taskData: TaskDataForSave) => void | Promise<void>; 
   task: Task | null;
   users: User[];
-  projects: Project[]; // Add projects to props
+  projects: Project[]; 
+  sprints: Sprint[]; // NEW: Sprints passed from parent component
 }
 
 const getFormattedDate = (date: Date): string => {
@@ -52,28 +70,33 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   onSave,
   task,
   users,
-  projects, // Destructure projects from props
+  projects, 
+  sprints, // Destructure new sprints prop
 }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     assignedTo: '',
-    project: '', // Add project to form state
+    project: '', 
     dueDate: getFormattedDate(new Date()),
     status: 'To Do' as Task['status'],
     category: 'Web Development' as Task['category'],
+    storyPoints: 0, // NEW default for storyPoints
+    sprint: '' as string | null, // NEW default for sprint
   });
 
   useEffect(() => {
     if (task) {
       setFormData({
         title: task.title,
-        description: task.description,
+        description: task.description || '',
         assignedTo: task.assignedTo?._id || '',
         project: task.project?._id || '',
         dueDate: getFormattedDate(new Date(task.dueDate)),
         status: task.status,
         category: task.category,
+        storyPoints: task.storyPoints || 0, // NEW
+        sprint: task.sprint?._id || '', // NEW
       });
     } else {
       // Reset to default for "Add New"
@@ -85,24 +108,43 @@ export const TaskModal: React.FC<TaskModalProps> = ({
         dueDate: getFormattedDate(new Date()),
         status: 'To Do',
         category: 'Web Development',
+        storyPoints: 0, // NEW
+        sprint: '', // NEW
       });
     }
-  }, [task, users, projects, isOpen]);
+  }, [task, users, projects, isOpen, sprints]);
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Handle number input for storyPoints
+    const value = 
+      e.target.name === 'storyPoints' 
+      ? parseInt(e.target.value) || 0 
+      : e.target.value;
+
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Convert sprint to null if it's an empty string (to clear the reference in the backend)
+    const dataToSave: TaskDataForSave = {
+        ...formData,
+        sprint: formData.sprint === '' ? null : formData.sprint,
+        storyPoints: formData.storyPoints,
+    };
+
+    onSave(dataToSave);
   };
 
   if (!isOpen) return null;
+
+  // Filter for only Planning and Active Sprints to assign tasks
+  const availableSprints = sprints.filter(s => s.status === 'Planning' || s.status === 'Active');
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -144,6 +186,36 @@ export const TaskModal: React.FC<TaskModalProps> = ({
               rows={3}
             />
           </div>
+          {/* NEW: Sprint and Story Points Row */}
+          <div className="form-row">
+            <div className="form-group">
+                <label htmlFor="sprint">Assign to Sprint</label>
+                <select
+                    name="sprint"
+                    value={formData.sprint || ''} // Use empty string for option value to represent null/undefined
+                    onChange={handleChange}
+                >
+                    <option value="">(Backlog)</option>
+                    {availableSprints.map((sprint) => (
+                        <option key={sprint._id} value={sprint._id}>
+                            {sprint.name} ({sprint.status})
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="form-group" style={{ maxWidth: '100px' }}>
+                <label htmlFor="storyPoints">Story Points</label>
+                <input
+                    type="number"
+                    name="storyPoints"
+                    value={formData.storyPoints}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                />
+            </div>
+          </div>
+          {/* End of NEW row */}
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="assignedTo">Assign To</label>

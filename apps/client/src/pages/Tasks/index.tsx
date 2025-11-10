@@ -1,8 +1,8 @@
 // TasksPage/index.tsx
 
-import React, { useState, useEffect, useCallback } from 'react';
-import API from '../../utils/axios'; // Import the new axios instance
-import { AxiosError } from 'axios'; // Import AxiosError for better error typing
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import API from '../../utils/axios'; 
+import { AxiosError } from 'axios'; 
 import { ConfirmationModal } from '../../components/Common/ConfirmationModal/ConfirmationModal';
 import { TaskModal } from '../../components/TaskModal';
 import './TasksPage.css';
@@ -24,6 +24,14 @@ interface Project {
   client: Client;
 }
 
+interface Sprint { // NEW
+  _id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  status: 'Planning' | 'Active' | 'Completed';
+}
+
 interface Task {
   _id: string;
   title: string;
@@ -33,9 +41,21 @@ interface Task {
   dueDate: string;
   assignedTo: User;
   project: Project;
+  storyPoints?: number; // NEW
+  sprint?: Sprint | null; // NEW
 }
 
+// NEW TYPE FOR SAVE OPERATION: This is the data TaskModal must pass to onSave
+type TaskDataForSave = Omit<Task, '_id' | 'assignedTo' | 'project' | 'sprint'> & {
+    assignedTo: string; // The ID string
+    project: string; // The ID string
+    storyPoints: number; // Required field now
+    sprint?: string | null; // Optional ID string
+};
+
+
 type TaskCategory = 'Cybersecurity' | 'Web Development';
+type TaskStatus = 'To Do' | 'In Progress' | 'Done';
 
 // Define a type for API error responses
 interface ApiError {
@@ -47,9 +67,10 @@ export const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-  const [activeFilter, setActiveFilter] =
-    useState<TaskCategory>('Web Development');
+  const [sprints, setSprints] = useState<Sprint[]>([]); // NEW
+  const [activeSprintId, setActiveSprintId] = useState<'backlog' | string>('backlog'); // Default to Backlog
+  const [activeCategory, setActiveCategory] =
+    useState<TaskCategory>('Web Development'); 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,7 +80,6 @@ export const TasksPage: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
-  // Refactored to use Axios instance
   const fetchTasks = useCallback(async () => {
     try {
       const response = await API.get<Task[]>('/tasks');
@@ -71,10 +91,26 @@ export const TasksPage: React.FC = () => {
         'Failed to fetch tasks. Please try again.';
       setError(message);
     }
-  }, []); // No dependencies needed
+  }, []); 
+
+  const fetchSprints = useCallback(async () => { // NEW
+    try {
+      const response = await API.get<Sprint[]>('/sprints');
+      setSprints(response.data);
+      const activeSprint = response.data.find(s => s.status === 'Active');
+      if (activeSprint) {
+         setActiveSprintId(activeSprint._id);
+      }
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      const message =
+        axiosError.response?.data?.message ||
+        'Failed to load sprints.';
+      setError(message);
+    }
+  }, []);
 
   useEffect(() => {
-    // Refactored to use Axios instance
     const fetchAuxData = async () => {
       try {
         const [usersRes, projectsRes] = await Promise.all([
@@ -95,16 +131,27 @@ export const TasksPage: React.FC = () => {
     const fetchAllData = async () => {
       setIsLoading(true);
       setError(null);
-      await Promise.all([fetchTasks(), fetchAuxData()]);
+      await Promise.all([fetchTasks(), fetchAuxData(), fetchSprints()]);
       setIsLoading(false);
     };
 
     fetchAllData();
-  }, [fetchTasks]); // Token dependency removed
+  }, [fetchTasks, fetchSprints]); 
 
-  useEffect(() => {
-    setFilteredTasks(tasks.filter((task) => task.category === activeFilter));
-  }, [tasks, activeFilter]);
+  // Derived state for the Agile Board/Backlog view
+  const viewTasks = useMemo(() => {
+    // 1. Filter by Category
+    const categoryTasks = tasks.filter((task) => task.category === activeCategory);
+    
+    // 2. Filter by Sprint (or Backlog)
+    if (activeSprintId === 'backlog') {
+      // Tasks not assigned to a sprint (sprint is null or undefined)
+      return categoryTasks.filter(task => !task.sprint?._id); 
+    } else {
+      // Tasks in the active sprint
+      return categoryTasks.filter(task => task.sprint?._id === activeSprintId); 
+    }
+  }, [tasks, activeCategory, activeSprintId]); 
 
   const handleOpenAddTaskModal = () => {
     setEditingTask(null);
@@ -116,12 +163,8 @@ export const TasksPage: React.FC = () => {
     setIsTaskModalOpen(true);
   };
 
-  // Refactored to use Axios instance
   const handleSaveTask = async (
-    taskData: Omit<Task, '_id' | 'assignedTo' | 'project'> & {
-      assignedTo: string;
-      project: string;
-    }
+    taskData: TaskDataForSave // FIXED: Use the new, correct type
   ) => {
     try {
       if (editingTask) {
@@ -144,7 +187,6 @@ export const TasksPage: React.FC = () => {
     setIsDeleteModalOpen(true);
   };
 
-  // Refactored to use Axios instance
   const handleConfirmDelete = async () => {
     if (!taskToDelete) return;
     try {
@@ -162,87 +204,159 @@ export const TasksPage: React.FC = () => {
     }
   };
 
+  // NEW: Component for a single Task Card (Agile Board)
+  const TaskCard: React.FC<{ task: Task }> = ({ task }) => (
+    <div className="task-card">
+        <div className="card-header">
+            <span className="task-points">{task.storyPoints || 0} SP</span>
+            <span 
+              className={`status-badge status-${task.status.toLowerCase().replace(' ', '-')}`}>
+              {task.status}
+            </span>
+        </div>
+        <div className="task-title-card">{task.title}</div>
+        <div className="task-meta">
+            <span className="task-assigned">Assignee: {task.assignedTo?.name || 'Unassigned'}</span>
+            <span className="task-project">Project: {task.project?.name}</span>
+        </div>
+        <div className="card-actions">
+            <button
+                className="edit-button"
+                onClick={() => handleOpenEditTaskModal(task)}>
+                Edit
+            </button>
+            <button
+                className="remove-button"
+                onClick={() => openDeleteModal(task)}>
+                Delete
+            </button>
+        </div>
+    </div>
+  );
+
+  // NEW: Component for the Kanban Board Column
+  const BoardColumn: React.FC<{ status: TaskStatus, tasks: Task[] }> = ({ status, tasks }) => (
+    <div className="board-column">
+        <h3 className="column-header">{status} ({tasks.length})</h3>
+        <div className="column-list">
+            {tasks.map(task => (
+                <TaskCard key={task._id} task={task} />
+            ))}
+            {!tasks.length && <p className="no-tasks-message">No tasks here.</p>}
+        </div>
+    </div>
+  );
+
+  const activeSprint = sprints.find(s => s._id === activeSprintId);
+  const isBacklogView = activeSprintId === 'backlog';
+
   return (
     <div className="tasks-page-container">
       <div className="tasks-header">
-        <h1>Tasks</h1>
+        <h1>
+          {isBacklogView 
+            ? 'Product Backlog' 
+            : `Sprint: ${activeSprint?.name || 'Loading...'}`
+          }
+        </h1>
         <button onClick={handleOpenAddTaskModal} className="add-task-button">
           Add Task
         </button>
       </div>
 
-      <div className="filter-controls">
-        <button
-          className={activeFilter === 'Web Development' ? 'active' : ''}
-          onClick={() => setActiveFilter('Web Development')}>
-          Web Development
-        </button>
-        <button
-          className={activeFilter === 'Cybersecurity' ? 'active' : ''}
-          onClick={() => setActiveFilter('Cybersecurity')}>
-          Cybersecurity
-        </button>
+      {/* Filter Controls for Category and Sprint/Backlog */}
+      <div className="filter-controls-group">
+        <div className="filter-controls">
+          <span className="filter-label">Category:</span>
+          <button
+            className={activeCategory === 'Web Development' ? 'active' : ''}
+            onClick={() => setActiveCategory('Web Development')}>
+            Web Development
+          </button>
+          <button
+            className={activeCategory === 'Cybersecurity' ? 'active' : ''}
+            onClick={() => setActiveCategory('Cybersecurity')}>
+            Cybersecurity
+          </button>
+        </div>
+
+        <div className="sprint-controls">
+          <span className="filter-label">View:</span>
+           <button
+            className={isBacklogView ? 'active' : ''}
+            onClick={() => setActiveSprintId('backlog')}>
+            Backlog
+          </button>
+          {sprints.map(sprint => (
+            <button
+              key={sprint._id}
+              className={activeSprintId === sprint._id ? 'active' : ''}
+              onClick={() => setActiveSprintId(sprint._id as 'backlog' | string)}>
+              {sprint.name} ({sprint.status})
+            </button>
+          ))}
+        </div>
       </div>
 
+
+      {/* Main Task List/Board */}
       <div className="tasks-list-card">
         {isLoading ? (
           <p>Loading tasks...</p>
         ) : error ? (
           <p className="error-message">{error}</p>
-        ) : (
+        ) : isBacklogView ? (
+          // Simple list/table view for the Backlog 
           <table className="tasks-table">
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Project (Client)</th>
                 <th>Assigned To</th>
-                <th>Due Date</th>
-                <th>Status</th>
+                <th>Story Points</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredTasks.length > 0 ? (
-                filteredTasks.map((task) => (
+              {viewTasks.length > 0 ? (
+                viewTasks.map((task) => (
                   <tr key={task._id}>
                     <td>
                       <div className="task-title">{task.title}</div>
                       <div className="task-description">{task.description}</div>
                     </td>
-                    <td>
-                      {task.project?.name} ({task.project?.client?.clientName})
-                    </td>
+                    <td>{task.project?.name} ({task.project?.client?.clientName})</td>
                     <td>{task.assignedTo?.name || 'Unassigned'}</td>
-                    <td>{new Date(task.dueDate).toLocaleDateString()}</td>
+                    <td><span className="task-points-backlog">{task.storyPoints || '-'} SP</span></td>
                     <td>
-                      <span
-                        className={`status-badge status-${task.status
-                          .toLowerCase()
-                          .replace(' ', '-')}`}>
-                        {task.status}
-                      </span>
-                    </td>
-                    <td>
-                      <button
-                        className="edit-button"
-                        onClick={() => handleOpenEditTaskModal(task)}>
-                        Edit
-                      </button>
-                      <button
-                        className="remove-button"
-                        onClick={() => openDeleteModal(task)}>
-                        Delete
-                      </button>
+                      <button className="edit-button" onClick={() => handleOpenEditTaskModal(task)}>Edit</button>
+                      <button className="remove-button" onClick={() => openDeleteModal(task)}>Delete</button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6}>No tasks found for this category.</td>
+                  <td colSpan={5}>No tasks in the Backlog for this category.</td>
                 </tr>
               )}
             </tbody>
           </table>
+        ) : (
+          // Kanban Board View for Active Sprint
+          <div className="kanban-board">
+            <BoardColumn 
+              status="To Do" 
+              tasks={viewTasks.filter(t => t.status === 'To Do')} 
+            />
+            <BoardColumn 
+              status="In Progress" 
+              tasks={viewTasks.filter(t => t.status === 'In Progress')} 
+            />
+            <BoardColumn 
+              status="Done" 
+              tasks={viewTasks.filter(t => t.status === 'Done')} 
+            />
+          </div>
         )}
       </div>
 
@@ -253,6 +367,7 @@ export const TasksPage: React.FC = () => {
         task={editingTask}
         users={users}
         projects={projects}
+        sprints={sprints} // Pass sprints to the modal for selection
       />
 
       <ConfirmationModal
