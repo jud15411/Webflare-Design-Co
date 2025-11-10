@@ -1,3 +1,4 @@
+// index.tsx
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -6,7 +7,7 @@ import API from '../../utils/axios';
 import {
   FaChevronDown,
   FaChevronRight,
-  FaSignOutAlt,
+  FaSignOutAlt, // Imported and used for the icon
   FaUser,
   FaSpinner,
 } from 'react-icons/fa';
@@ -177,10 +178,23 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
   return (
     <aside className="custom-sidebar">
       <div className="sidebar-header">
-        <h3 className="welcome-text">Welcome, {user?.name || 'User'}!</h3>
-        <p className="business-name">
-          {settings?.companyName || 'Firmaplex Admin'}
-        </p>
+        {/* NEW HEADER STRUCTURE */}
+        <div className="header-actions"> 
+          {/* User Info Block (Acting as the primary content link/area) */}
+          <div className="header-text"> 
+            <h3 className="welcome-text">Welcome, {user?.name || 'User'}!</h3>
+            <p className="business-name">
+              {settings?.companyName || 'Firmaplex Admin'}
+            </p>
+          </div>
+          {/* Logout Button (Icon-only, styled red by Sidebar.css) */}
+          <button
+            onClick={handleLogout}
+            className="header-logout-button"
+            aria-label="Logout">
+            <FaSignOutAlt />
+          </button>
+        </div>
       </div>
 
       <nav className="sidebar-nav">
@@ -200,6 +214,7 @@ export const SidebarComponent: React.FC<SidebarComponentProps> = ({
         )}
       </nav>
 
+      {/* The sidebar-footer is kept here but the old buttons are hidden by Sidebar.css */}
       <div className="sidebar-footer">
         <Link
           to="/profile"
