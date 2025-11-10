@@ -2,7 +2,9 @@
 
 # Build settings (these can also be set in the UI)
 [build]
-  command = "npm run build:frontends"
+  # 🎯 FIX: Explicitly export the VITE variable before running the build:frontends script.
+  # This ensures the key is available to sub-processes in your monorepo workspaces.
+  command = "export VITE_WEB3FORMS_ACCESS_KEY=$VITE_WEB3FORMS_ACCESS_KEY && npm run build:frontends"
   publish = "dist"
 
 # Redirect rules for handling the three SPAs

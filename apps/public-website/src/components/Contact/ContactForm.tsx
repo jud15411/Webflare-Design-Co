@@ -4,7 +4,7 @@ import styles from './ContactForm.module.css';
 
 // 🚀 Accessing the key from the environment variable
 // (Ensure your environment variable is prefixed correctly: REACT_APP_ for CRA, VITE_ for Vite)
-const ACCESS_KEY = process.env.VITE_WEB3FORMS_ACCESS_KEY; 
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY; 
 
 interface FormData {
   name: string;
