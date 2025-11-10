@@ -83,6 +83,7 @@ export const ContactForm: React.FC = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      <input type="checkbox" name="botcheck" className={styles.botcheckInput} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.label}>Name</label>
         <input

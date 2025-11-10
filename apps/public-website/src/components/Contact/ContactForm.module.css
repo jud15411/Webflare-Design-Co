@@ -75,3 +75,13 @@
     background-color: var(--primary-color-subtle, rgba(0, 123, 255, 0.1));
     color: var(--primary-color, #007bff);
 }
+
+.botcheckInput {
+    /* Ensures the field is completely invisible and cannot be navigated to */
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
