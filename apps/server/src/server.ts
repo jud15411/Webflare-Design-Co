@@ -129,7 +129,7 @@ const startServer = async () => {
     app.use('/api/v1/feedback', feedbackRoutes);
     app.use('/api/v1/admin/website', adminWebsiteRoutes);
     app.use('/api/v1/public/website', publicWebsiteRoutes);
-    app.use('api.v1/sprints', sprintsRoutes);
+    app.use('/api/v1/sprints', sprintsRoutes);
 
     app.get('/api/v1/health', (req: Request, res: Response) => {
       res.status(200).json({ status: 'OK', message: 'Server is healthy' });
