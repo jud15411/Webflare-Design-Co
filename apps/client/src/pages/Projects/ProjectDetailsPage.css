@@ -1,3 +1,5 @@
+/* ProjectDetailsPage.css */
+
 .project-details-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -30,4 +32,62 @@
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-weight: bold;
+}
+
+/* --- NEW STYLES FOR DIFFERENTIATION --- */
+
+/* Base style for detail groups */
+.detail-group {
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.detail-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-group p {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+.detail-group strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Category-Specific Panel Styles */
+.web-dev-panel {
+    border-left: 4px solid #007bff; /* Blue accent */
+}
+
+.security-panel {
+    border-left: 4px solid #dc3545; /* Red accent */
+}
+
+/* Custom Web Dev Link Style */
+.web-dev-panel a {
+    color: #007bff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.web-dev-panel a:hover {
+    text-decoration: underline;
+}
+
+/* Custom Cyber Sec Scope Style */
+.target-systems-box {
+    background-color: var(--background-primary);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    white-space: pre-wrap; /* Preserves line breaks */
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 5px;
 }

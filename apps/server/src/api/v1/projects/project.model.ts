@@ -1,3 +1,5 @@
+// project.model.ts
+
 import { Schema, model, Document } from 'mongoose';
 import { type User } from '../settings/users/users.model.js';
 import { getMainDb } from '../../../config/db.js';
@@ -23,8 +25,7 @@ export interface IProject extends Document {
   client: Schema.Types.ObjectId;
   clientFeedback?: string;
   website_link?: string;
-  // --- NEW FIELD ---
-  target_systems?: string;
+  target_systems?: string; // <--- ADDED to interface
 }
 
 const projectSchema = new Schema<IProject>(
@@ -51,8 +52,7 @@ const projectSchema = new Schema<IProject>(
     },
     clientFeedback: { type: String },
     website_link: { type: String },
-    // --- NEW SCHEMA FIELD ---
-    target_systems: { type: String }, 
+    target_systems: { type: String }, // <--- ADDED to schema
   },
   { timestamps: true }
 );

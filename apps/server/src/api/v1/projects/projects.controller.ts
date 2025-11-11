@@ -1,3 +1,5 @@
+// projects.controller.ts
+
 import { type Request, type Response } from 'express';
 // Remove ProjectCategory from the import
 import { Project, ProjectStatus } from './project.model.js';
@@ -59,18 +61,9 @@ export const getProjectById = async (req: Request, res: Response) => {
  */
 export const createProject = async (req: Request, res: Response) => {
   try {
-    const { 
-      name, 
-      description, 
-      category, 
-      status, 
-      startDate, 
-      client, 
-      team, 
-      website_link,
-      target_systems // <--- ADDED: New field for Cybersecurity
-    } = req.body;
-    
+    // ADD target_systems to destructuring
+    const { name, description, category, status, startDate, client, team, website_link, target_systems } =
+      req.body;
     const newProject = new Project({
       name,
       description,
@@ -80,7 +73,7 @@ export const createProject = async (req: Request, res: Response) => {
       client,
       team,
       website_link,
-      target_systems, // <--- ADDED: Save the new field
+      target_systems, // ADD target_systems to the new project creation
     });
     const savedProject = await newProject.save();
     await savedProject.populate(['client', 'team']);
@@ -99,7 +92,6 @@ export const createProject = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    // Mongoose handles saving only the fields present in req.body that match the schema
     const updatedProject = await Project.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
@@ -110,7 +102,6 @@ export const updateProject = async (req: Request, res: Response) => {
     }
 
     if (updatedProject.status === ProjectStatus.COMPLETED) {
-      // Clean up messages when a project is completed
       await Message.deleteMany({ project: updatedProject._id });
     }
 

@@ -1,3 +1,5 @@
+// projects.ts
+
 // A simple User type for the employee list
 export interface User {
   _id: string;
@@ -15,23 +17,21 @@ export const ProjectCategories = ['Cybersecurity', 'Web Development'] as const;
 export type ProjectCategory = typeof ProjectCategories[number];
 
 
-// The full Project object (how it's read from the DB)
+// The full Project object
 export interface Project {
   _id: string;
   name: string;
   description: string;
   status: string;
-  category: ProjectCategory;
-  startDate: string; // New: Now a required field
+  category: ProjectCategory; // Use the new type alias
+  startDate: string;
   client: ProjectClient;
   team: User[];
-  
-  // Category-specific fields
-  website_link?: string;      // Web Development specific
-  target_systems?: string;    // Cybersecurity specific (Optional)
+  website_link?: string;
+  target_systems?: string; // <--- ADDED for Cybersecurity
 }
 
-// The data structure for the project form (how it's sent to the DB)
+// The data structure for the project form
 export interface ProjectFormData {
   _id?: string;
   name: string;
@@ -40,11 +40,6 @@ export interface ProjectFormData {
   category: string;
   client: string;
   team: string[];
-  
-  // New required field
-  startDate: string;
-  
-  // Category-specific fields
   website_link?: string;
-  target_systems?: string;
+  target_systems?: string; // <--- ADDED for Cybersecurity
 }
