@@ -1,33 +1,33 @@
-// src/components/projects/CybersecurityProjectList.tsx
+// src/components/projects/WebDevelopmentProjectList.tsx
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../../utils/axios';
+import API from '../../../utils/axios';
 import { AxiosError } from 'axios';
-import { ConfirmationModal } from '../Common/ConfirmationModal/ConfirmationModal';
-import { ProjectFormModal } from './ProjectFormModal';
+import { ConfirmationModal } from '../../Common/ConfirmationModal/ConfirmationModal';
+import { ProjectFormModal } from '../ProjectFormModal';
+import { WebDevelopmentProjectCard } from './WebDevelopmentProjectCard'; // <--- NEW IMPORT
 import {
   type Project,
   type ProjectFormData,
   type ProjectClient,
   type User,
-} from '../../types/projects';
+} from '../../../types/projects';
 import './ProjectList.css'; // Common styles
-import './CybersecurityProjectList.css'; // Specific Cybersecurity styles (new file)
+import './WebDevelopmentProjectList.css'; // Specific Web Dev styles
 
 interface Client extends ProjectClient {}
 interface ApiError {
   message: string;
 }
 
-const getStatusClass = (status: string): string => {
-  return `status-${status.toLowerCase().replace(/ /g, '-')}`;
-};
+// ... (getStatusClass remains the same)
 
-export const CybersecurityProjectList: React.FC = () => {
-  const category = 'Cybersecurity'; // Fixed category
+export const WebDevelopmentProjectList: React.FC = () => {
+  const category = 'Web Development';
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
+  // ... (clients, users, isLoading, error, modals state remains the same)
   const [clients, setClients] = useState<Client[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,6 +39,8 @@ export const CybersecurityProjectList: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
+  // ... (fetchAllData, handleOpenAddModal, handleOpenEditModal, handleOpenDeleteModal, 
+  //     handleFormSubmit, handleConfirmDelete functions remain the same)
   const fetchAllData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -131,85 +133,57 @@ export const CybersecurityProjectList: React.FC = () => {
       setError(message);
     }
   };
-
+  
   return (
-    <div className="page-container security-page-container">
+    <div className="page-container webdev-page-container">
       <div className="page-header">
-        <h1>🔒 {category} Projects</h1>
-        <button className="add-project-button security-add-button" onClick={handleOpenAddModal}>
-          Add New Project
+        <h1>🛠️ {category} Projects</h1>
+        <button className="add-project-button webdev-add-button" onClick={handleOpenAddModal}>
+          + Add New Project
         </button>
       </div>
-
-      {/* This is a placeholder for a unique Cybersecurity-specific feature, 
-        like a summary of high-risk vulnerabilities or a timeline of penetration tests. 
-      */}
-      <div className="security-specific-snapshot">
-        <p>🚨 **Vulnerability/Risk Snapshot** (e.g., Critical Findings, Next Audit Date)</p>
-      </div>
       
+      {/* NEW: Dedicated Metrics Panel */}
+      <div className="webdev-metrics-panel metrics-panel">
+        <div>
+            <p className="metric-label">Total Projects</p>
+            <p className="metric-value">{projects.length}</p>
+        </div>
+        <div>
+            <p className="metric-label">Avg. Lighthouse Score</p>
+            <p className="metric-value metric-good">92</p> {/* Placeholder Value */}
+        </div>
+        <div>
+            <p className="metric-label">Live Deployments</p>
+            <p className="metric-value">{projects.filter(p => p.status === 'Completed' && p.website_link).length}</p>
+        </div>
+      </div>
+
       {error && <p className="error-message">{error}</p>}
       {isLoading && <p>Loading projects...</p>}
+      
+      {/* NEW: Project Grid */}
       {!isLoading && !error && (
-        <div className="table-container">
-          <table className="pro-table security-table">
-            <thead>
-              <tr>
-                <th>Project Name</th>
-                <th>Client</th>
-                <th>Assigned Team</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projects.length > 0 ? (
-                projects.map((project) => (
-                  <tr key={project._id}>
-                    <td>{project.name}</td>
-                    <td>{project.client?.clientName || 'N/A'}</td>
-                    <td>
-                      {project.team.map((member) => member.name).join(', ') || 'N/A'}
-                    </td>
-                    <td>
-                      <span
-                        className={`status-badge ${getStatusClass(
-                          project.status
-                        )}`}>
-                        {project.status}
-                      </span>
-                    </td>
-                    <td>
-                      <button
-                        className="action-button security-action-btn"
-                        onClick={() => navigate(`/projects/${project._id}`)}>
-                        Chat & Details
-                      </button>
-                      <button
-                        className="action-button security-action-btn"
-                        onClick={() => handleOpenEditModal(project)}>
-                        Edit
-                      </button>
-                      <button
-                        className="action-button security-action-btn"
-                        onClick={() => handleOpenDeleteModal(project)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="no-projects-message">
-                    There are currently no {category} projects.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="project-grid">
+          {projects.length > 0 ? (
+            projects.map((project) => (
+              <WebDevelopmentProjectCard 
+                key={project._id}
+                project={project}
+                onEdit={handleOpenEditModal}
+                onDelete={handleOpenDeleteModal}
+                onViewDetails={(id) => navigate(`/projects/${id}`)}
+              />
+            ))
+          ) : (
+            <p className="no-projects-message">
+              There are currently no {category} projects.
+            </p>
+          )}
         </div>
       )}
 
+      {/* ... (Modals remain the same) */}
       <ProjectFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}

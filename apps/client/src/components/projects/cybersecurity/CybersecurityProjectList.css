@@ -1,0 +1,56 @@
+/* src/components/projects/CybersecurityProjectList.css */
+
+.security-page-container h1 {
+  color: #dc3545; /* Red */
+}
+
+.security-add-button {
+  background-color: #dc3545;
+}
+
+.security-metrics-panel {
+    border-left: 5px solid #dc3545;
+}
+
+.security-card {
+    border-left: 5px solid #dc3545;
+}
+
+/* Risk Level Badge */
+.risk-level {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.risk-low {
+    background-color: var(--status-approved-bg);
+    color: var(--status-approved-text);
+}
+.risk-medium {
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending-text);
+}
+.risk-high {
+    background-color: var(--status-failed-bg);
+    color: white;
+}
+
+.card-scope {
+    font-size: 13px;
+    margin-top: 10px;
+    color: var(--text-secondary);
+    border-top: 1px dashed var(--border-color);
+    padding-top: 10px;
+}
+
+.security-action-btn {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.security-action-btn:hover {
+    background-color: #dc3545;
+    color: white;
+}

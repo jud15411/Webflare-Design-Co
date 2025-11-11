@@ -2,7 +2,7 @@
 
 import React from 'react';
 // Import the new specific component
-import { CybersecurityProjectList } from '../../components/projects/CybersecurityProjectList';
+import { CybersecurityProjectList } from '../../components/projects/cybersecurity/CybersecurityProjectList';
 
 export const CybersecurityProjectsPage: React.FC = () => {
   // Use the specific component instead of the generic one
