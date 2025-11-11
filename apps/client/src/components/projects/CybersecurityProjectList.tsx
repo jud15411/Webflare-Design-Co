@@ -1,7 +1,9 @@
+// src/components/projects/CybersecurityProjectList.tsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../../utils/axios'; // Import the new axios instance
-import { AxiosError } from 'axios'; // Import AxiosError for better error typing
+import API from '../../utils/axios';
+import { AxiosError } from 'axios';
 import { ConfirmationModal } from '../Common/ConfirmationModal/ConfirmationModal';
 import { ProjectFormModal } from './ProjectFormModal';
 import {
@@ -10,15 +12,10 @@ import {
   type ProjectClient,
   type User,
 } from '../../types/projects';
-import './ProjectList.css';
-
-interface ProjectListProps {
-  category: 'Cybersecurity' | 'Web Development';
-}
+import './ProjectList.css'; // Common styles
+import './CybersecurityProjectList.css'; // Specific Cybersecurity styles (new file)
 
 interface Client extends ProjectClient {}
-
-// Define a type for API error responses
 interface ApiError {
   message: string;
 }
@@ -27,7 +24,8 @@ const getStatusClass = (status: string): string => {
   return `status-${status.toLowerCase().replace(/ /g, '-')}`;
 };
 
-export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
+export const CybersecurityProjectList: React.FC = () => {
+  const category = 'Cybersecurity'; // Fixed category
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
@@ -107,7 +105,6 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
           projects.map((p) => (p._id === savedProject._id ? savedProject : p))
         );
       } else {
-        // Re-fetch to get the fully populated new project
         await fetchAllData();
       }
       setIsFormModalOpen(false);
@@ -136,18 +133,26 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container security-page-container">
       <div className="page-header">
-        <h1>{category} Projects</h1>
-        <button className="add-project-button" onClick={handleOpenAddModal}>
+        <h1>🔒 {category} Projects</h1>
+        <button className="add-project-button security-add-button" onClick={handleOpenAddModal}>
           Add New Project
         </button>
       </div>
+
+      {/* This is a placeholder for a unique Cybersecurity-specific feature, 
+        like a summary of high-risk vulnerabilities or a timeline of penetration tests. 
+      */}
+      <div className="security-specific-snapshot">
+        <p>🚨 **Vulnerability/Risk Snapshot** (e.g., Critical Findings, Next Audit Date)</p>
+      </div>
+      
       {error && <p className="error-message">{error}</p>}
       {isLoading && <p>Loading projects...</p>}
       {!isLoading && !error && (
         <div className="table-container">
-          <table className="pro-table">
+          <table className="pro-table security-table">
             <thead>
               <tr>
                 <th>Project Name</th>
@@ -176,17 +181,17 @@ export const ProjectList: React.FC<ProjectListProps> = ({ category }) => {
                     </td>
                     <td>
                       <button
-                        className="action-button"
+                        className="action-button security-action-btn"
                         onClick={() => navigate(`/projects/${project._id}`)}>
                         Chat & Details
                       </button>
                       <button
-                        className="action-button"
+                        className="action-button security-action-btn"
                         onClick={() => handleOpenEditModal(project)}>
                         Edit
                       </button>
                       <button
-                        className="action-button"
+                        className="action-button security-action-btn"
                         onClick={() => handleOpenDeleteModal(project)}>
                         Delete
                       </button>

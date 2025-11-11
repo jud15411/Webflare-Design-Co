@@ -4,8 +4,20 @@
 .form-body {
   display: flex;
   flex-direction: column;
+  gap: 18px; /* Consistent vertical spacing */
+}
+
+/* --- NEW STYLES FOR TWO-COLUMN LAYOUT --- */
+.form-group-row {
+  display: flex;
   gap: 18px;
 }
+
+.form-group-row .half-width {
+  flex: 1; /* Makes each group take half the row width */
+}
+/* ------------------------------------------ */
+
 
 .form-group {
   display: flex;
@@ -13,10 +25,11 @@
 }
 
 .form-group label {
-  font-weight: 500;
+  font-weight: 600; /* Bolder label */
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 13px; /* Smaller label for density */
   color: var(--text-secondary);
+  text-transform: uppercase; /* Uppercase for label clarity */
 }
 
 .form-group input,
@@ -26,10 +39,21 @@
   padding: 12px;
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--border-color);
-  background-color: var(--background-primary);
+  background-color: var(--background-input, #252831); /* Placeholder for input background */
   color: var(--text-primary);
   font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+/* Enhanced Focus State */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-primary); /* Highlight border on focus */
+  box-shadow: 0 0 0 2px var(--accent-primary-low-opacity, rgba(0, 123, 255, 0.2)); 
+}
+
 
 .form-group textarea {
   min-height: 100px;

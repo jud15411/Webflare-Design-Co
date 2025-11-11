@@ -23,6 +23,8 @@ export interface IProject extends Document {
   client: Schema.Types.ObjectId;
   clientFeedback?: string;
   website_link?: string;
+  // --- NEW FIELD ---
+  target_systems?: string;
 }
 
 const projectSchema = new Schema<IProject>(
@@ -49,6 +51,8 @@ const projectSchema = new Schema<IProject>(
     },
     clientFeedback: { type: String },
     website_link: { type: String },
+    // --- NEW SCHEMA FIELD ---
+    target_systems: { type: String }, 
   },
   { timestamps: true }
 );

@@ -15,20 +15,23 @@ export const ProjectCategories = ['Cybersecurity', 'Web Development'] as const;
 export type ProjectCategory = typeof ProjectCategories[number];
 
 
-// The full Project object
+// The full Project object (how it's read from the DB)
 export interface Project {
   _id: string;
   name: string;
   description: string;
   status: string;
-  category: ProjectCategory; // Use the new type alias
-  startDate: string;
+  category: ProjectCategory;
+  startDate: string; // New: Now a required field
   client: ProjectClient;
   team: User[];
-  website_link?: string;
+  
+  // Category-specific fields
+  website_link?: string;      // Web Development specific
+  target_systems?: string;    // Cybersecurity specific (Optional)
 }
 
-// The data structure for the project form
+// The data structure for the project form (how it's sent to the DB)
 export interface ProjectFormData {
   _id?: string;
   name: string;
@@ -37,5 +40,11 @@ export interface ProjectFormData {
   category: string;
   client: string;
   team: string[];
+  
+  // New required field
+  startDate: string;
+  
+  // Category-specific fields
   website_link?: string;
+  target_systems?: string;
 }

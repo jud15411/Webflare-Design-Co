@@ -1,8 +1,10 @@
 // src/pages/Projects/WebDevelopmentProjectsPage.tsx
 
 import React from 'react';
-import { ProjectList } from '../../components/projects/ProjectList';
+// Import the new specific component
+import { WebDevelopmentProjectList } from '../../components/projects/WebDevelopmentProjectList'; 
 
 export const WebDevelopmentProjectsPage: React.FC = () => {
-  return <ProjectList category="Web Development" />;
+  // Use the specific component instead of the generic one
+  return <WebDevelopmentProjectList />;
 };

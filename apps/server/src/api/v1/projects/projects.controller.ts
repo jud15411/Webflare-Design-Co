@@ -59,8 +59,18 @@ export const getProjectById = async (req: Request, res: Response) => {
  */
 export const createProject = async (req: Request, res: Response) => {
   try {
-    const { name, description, category, status, startDate, client, team, website_link } =
-      req.body;
+    const { 
+      name, 
+      description, 
+      category, 
+      status, 
+      startDate, 
+      client, 
+      team, 
+      website_link,
+      target_systems // <--- ADDED: New field for Cybersecurity
+    } = req.body;
+    
     const newProject = new Project({
       name,
       description,
@@ -70,6 +80,7 @@ export const createProject = async (req: Request, res: Response) => {
       client,
       team,
       website_link,
+      target_systems, // <--- ADDED: Save the new field
     });
     const savedProject = await newProject.save();
     await savedProject.populate(['client', 'team']);
@@ -88,6 +99,7 @@ export const createProject = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    // Mongoose handles saving only the fields present in req.body that match the schema
     const updatedProject = await Project.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
@@ -98,6 +110,7 @@ export const updateProject = async (req: Request, res: Response) => {
     }
 
     if (updatedProject.status === ProjectStatus.COMPLETED) {
+      // Clean up messages when a project is completed
       await Message.deleteMany({ project: updatedProject._id });
     }
 
