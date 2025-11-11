@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Chat } from '../../components/Chat/Chat';
+// import { Chat } from '../../components/Chat/Chat';
 import { useAuth } from '../../contexts/AuthContext';
 import { type Project } from '../../types/projects';
 import './ProjectDetailsPage.css';
