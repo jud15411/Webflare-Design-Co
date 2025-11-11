@@ -102,10 +102,12 @@ export const ProjectDetailsPage: React.FC = () => {
             )}
           </div>
         </div>
+        {/*
         <div className="chat-panel">
           <h2>Project Communication</h2>
           <Chat projectId={id!} />
         </div>
+        */}
       </div>
     </div>
   );
