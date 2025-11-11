@@ -13,7 +13,7 @@ import {
   type ProjectClient,
   type User,
 } from '../../../types/projects';
-import './ProjectList.css'; // Common styles
+import '../ProjectList.css'; // Common styles
 import './WebDevelopmentProjectList.css'; // Specific Web Dev styles
 
 interface Client extends ProjectClient {}
