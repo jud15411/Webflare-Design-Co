@@ -35,6 +35,7 @@ import ServicesPage from './pages/Website/ServicesPage';
 import PortfolioPage from './pages/Website/PortfolioPage';
 import PricingPage from './pages/Website/PricingPage';
 import TestimonialsPage from './pages/Website/TestimonialsPage';
+import SupportTicketsPage from './pages/SupportTickets';
 
 // Note: The NavDropdown component can be moved to its own file if desired.
 interface NavDropdownProps {
@@ -137,6 +138,7 @@ function App() {
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/projects/:id" element={<ProjectDetailsPage />} />
           <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/support-tickets" element={<SupportTicketsPage />} />
           <Route path="/website/services" element={<ServicesPage />} />
           <Route path="/website/portfolio" element={<PortfolioPage />} />
           <Route path="/website/pricing" element={<PricingPage />} />

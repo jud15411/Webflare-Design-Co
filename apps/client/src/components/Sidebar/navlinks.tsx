@@ -184,6 +184,12 @@ export const navLinks: { [key: string]: NavItem[] } = {
           pathname: '/contracts',
           icon: <FaHandshake />,
         },
+        {
+          key: 'support-tickets',
+          label: 'Support Tickets',
+          pathname: '/support-tickets',
+          icon: <FaCommentDots />,
+        },
       ],
     },
     {
@@ -342,6 +348,12 @@ export const navLinks: { [key: string]: NavItem[] } = {
           label: 'Contracts',
           pathname: '/contracts',
           icon: <FaHandshake />,
+        },
+        {
+          key: 'support-tickets',
+          label: 'Support Tickets',
+          pathname: '/support-tickets',
+          icon: <FaCommentDots />,
         },
       ],
     },

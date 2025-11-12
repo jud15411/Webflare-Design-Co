@@ -1,0 +1,311 @@
+/* Support Tickets Page Styles (uses admin theme variables from App.css) */
+
+/* ---------------------------------------------------------------------- */
+/* --- Layout & Base Styles --- */
+/* ---------------------------------------------------------------------- */
+
+.page-container {
+    padding: 24px;
+}
+.page-header h1 {
+    margin: 0 0 6px 0;
+}
+.page-header p {
+    margin: 0 0 16px 0;
+    color: var(--text-secondary);
+}
+.card {
+    background: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 16px 8px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+.card h2 {
+    margin: 4px 0 12px 0;
+    font-size: 1.1rem;
+}
+.card.accent {
+    /* Highlighting the active ticket detail card */
+    border-color: var(--primary-color, #2563eb); 
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+}
+
+.grid {
+    display: grid;
+    gap: 20px;
+}
+/* 🚨 IMPROVEMENT: Make ticket detail column wider (1/3 vs 2/3 split) */
+.grid.two {
+    grid-template-columns: 1fr 2fr; 
+}
+.ticket-detail-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Ticket List Item Styles (TicketItem.tsx) --- */
+/* ---------------------------------------------------------------------- */
+
+.ticket-item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--border-color);
+    background: var(--background-primary);
+}
+
+.ticket-item:hover {
+    background: var(--hover-color, rgba(255, 255, 255, 0.05));
+    border-color: var(--primary-color-light, #5c81f3);
+}
+
+.ticket-item.active {
+    /* Highlight the selected ticket item */
+    background: var(--primary-color, #2563eb); 
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+}
+
+/* Force white text for active state */
+.ticket-item.active * {
+    color: white !important; 
+}
+
+.ticket-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.ticket-subject {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+.ticket-item-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Ticket Detail View: Meta Data --- */
+/* ---------------------------------------------------------------------- */
+
+.ticket-meta { 
+    margin-top: 8px; 
+    font-size: 13px; 
+    color: var(--text-secondary); 
+    display:flex; 
+    gap:12px;
+    flex-wrap:wrap; 
+    align-items:center; 
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+/* Status Colors (Chips) - Defined with light background for contrast */
+.chip.status-new { background-color: #3b82f61a; color: #3b82f6; border-color: #3b82f64d; } /* Blue */
+.chip.status-open { background-color: #10b9811a; color: #10b981; border-color: #10b9814d; } /* Green */
+.chip.status-in-progress { background-color: #f59e0b1a; color: #f59e0b; border-color: #f59e0b4d; } /* Amber */
+.chip.status-on-hold { background-color: #6366f11a; color: #6366f1; border-color: #6366f14d; } /* Indigo */
+.chip.status-awaiting-client-reply { background-color: #f43f5e1a; color: #f43f5e; border-color: #f43f5e4d; } /* Rose */
+.chip.status-resolved, .chip.status-closed { background-color: #6b72801a; color: #6b7280; border-color: #6b72804d; } /* Gray */
+
+/* Priority Colors (Badges) */
+.badge.priority-low { background-color: #6b72801a; color: #6b7280; } /* Gray */
+.badge.priority-medium { background-color: #10b9811a; color: #10b981; } /* Green */
+.badge.priority-high { background-color: #f59e0b1a; color: #f59e0b; } /* Amber */
+.badge.priority-urgent-critical { background-color: #ef44441a; color: #ef4444; } /* Red */
+
+/* ---------------------------------------------------------------------- */
+/* --- Ticket Detail View: Message Bubbles --- */
+/* ---------------------------------------------------------------------- */
+
+.messages { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    max-height: 400px; 
+    overflow-y: auto; 
+    padding: 12px 0;
+    margin-top: 0;
+}
+
+.bubble { 
+    max-width: 85%;
+    padding: 10px 14px; 
+    border-radius: 18px; 
+    font-size: 0.95rem;
+    line-height: 1.4;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bubble.client {
+    /* Messages sent by the user (client) */
+    align-self: flex-end;
+    background-color: var(--primary-color, #2563eb); 
+    color: white;
+    border-top-right-radius: 4px; /* Straight edge on the right/top corner */
+}
+
+.bubble.admin {
+    /* Messages from the agent/admin */
+    align-self: flex-start;
+    background-color: var(--background-elevated, #374151); 
+    color: var(--text-primary, white);
+    border-top-left-radius: 4px; /* Straight edge on the left/top corner */
+}
+
+.bubble .timestamp { 
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: inherit; 
+    opacity: 0.7;
+    text-align: right;
+}
+
+.bubble.admin .timestamp {
+    text-align: left;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Form and State Styles --- */
+/* ---------------------------------------------------------------------- */
+
+.form-group {
+    margin-bottom: 16px;
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-bottom: 8px; 
+}
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--input-background, #343740);
+    color: var(--text-primary, white);
+    resize: vertical;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* Button utility classes are assumed to be defined elsewhere, 
+   but added basic styles for completeness */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--primary-color, #2563eb);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color-darker, #1d4ed8);
+}
+
+.btn-primary:disabled {
+  background-color: var(--background-secondary, #4b5563);
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Empty/Loading States */
+.loading-state, .error-state, .no-ticket-selected {
+    padding: 40px;
+    text-align: center;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.error-icon {
+    color: #ef4444;
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.empty-state {
+    padding: 24px;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* --- Responsive Styles --- */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .grid.two {
+        grid-template-columns: 1fr;
+    }
+    .ticket-list-col {
+        order: 1; /* List comes first */
+    }
+    .ticket-detail-col {
+        order: 2; /* Detail comes second */
+    }
+}

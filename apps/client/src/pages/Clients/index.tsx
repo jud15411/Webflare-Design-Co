@@ -3,21 +3,9 @@ import API from '../../utils/axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { ClientModal } from '../../components/Clients/ClientModal';
 import { useNavigate } from 'react-router-dom';
+import { type Client } from '../../types/client'; // Import the updated Client interface
 import './ClientsPage.css';
 
-interface Client {
-  _id: string;
-  clientName: string;
-  primaryContact: {
-    name: string;
-    email: string;
-    role: string;
-  };
-  status: string;
-  servicesPurchased: string[];
-  assignedTeamMembers: { _id: string; name: string }[];
-  portalAccessGranted?: boolean;
-}
 
 export const ClientsPage: React.FC = () => {
   const { token } = useAuth();
@@ -31,12 +19,14 @@ export const ClientsPage: React.FC = () => {
     if (!token) return;
     setLoading(true);
     try {
-      const { data } = await API.get(`/clients`, {
+      // The backend now merges portal access status into the client object
+      const { data } = await API.get(`/clients`, { 
         headers: { Authorization: `Bearer ${token}` },
       });
       setClients(data);
     } catch (error) {
       console.error('Failed to fetch clients', error);
+      // NOTE: In a real app, show a notification to the user
     } finally {
       setLoading(false);
     }
@@ -44,30 +34,36 @@ export const ClientsPage: React.FC = () => {
 
   useEffect(() => {
     fetchClients();
-  }, [token]);
+  }, [token]); 
 
-  const handleOpenModal = (client: Client | null = null) => {
+  const handleOpenModal = (client: Client | null) => {
     setSelectedClient(client);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (didUpdate = false) => {
     setIsModalOpen(false);
     setSelectedClient(null);
-    fetchClients();
+    if (didUpdate) {
+      fetchClients(); // Refresh list if a client was added/edited
+    }
   };
+
+  if (loading) {
+    return <div className="page-container">Loading clients...</div>;
+  }
 
   return (
     <div className="page-container">
-      <div className="page-header">
-        <h1>Client Management</h1>
-        <button className="add-client-btn" onClick={() => handleOpenModal()}>
-          + Add New Client
+      <header className="page-header">
+        <h1>Clients Management ({clients.length})</h1>
+        <button onClick={() => handleOpenModal(null)} className="add-client-btn">
+          Add New Client
         </button>
-      </div>
+      </header>
 
-      {loading ? (
-        <p>Loading clients...</p>
+      {clients.length === 0 ? (
+        <p className="no-data-message">No clients found. Click 'Add New Client' to get started.</p>
       ) : (
         <div className="clients-grid">
           {clients.map((client) => (
@@ -92,7 +88,7 @@ export const ClientsPage: React.FC = () => {
                 <ul>
                   {client.servicesPurchased
                     .slice(0, 3)
-                    .map((service, index) => (
+                    .map((service: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) => (
                       <li key={index}>{service}</li>
                     ))}
                 </ul>

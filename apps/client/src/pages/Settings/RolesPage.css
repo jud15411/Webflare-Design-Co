@@ -1,4 +1,4 @@
-/* New RolesPage.css - Stacked Layout, Full-Width Grid */
+/* RolesPage.css - Two-Column Layout and Refined Role Cards */
 
 /*
   Using the same dark theme variables for consistency.
@@ -23,19 +23,26 @@
     font-size: 2.5em;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 30px; /* Increased margin */
+    margin-bottom: 30px; 
 }
 
-/* --- Layout Change: Remove grid-template-columns for a stacked layout --- */
-.roles-page-layout {
-  display: flex; /* Use flexbox to stack sections */
-  flex-direction: column;
-  gap: 40px; /* Separates the form section from the list section */
+/* --- NEW Layout: Two-Column Grid --- */
+.roles-page-layout-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Sidebar for form, main content for list */
+  gap: 30px;
+  align-items: start;
 }
 
-/* --- Role Form Card (Top Section) --- */
-.role-form-card {
-  /* It now takes up the full width */
+@media (max-width: 1000px) {
+  .roles-page-layout-grid {
+    grid-template-columns: 1fr; /* Stack panels on smaller screens */
+  }
+}
+
+/* --- Panel Styles (Form & List) --- */
+.role-form-panel, /* New class */
+.role-list-panel { /* New class */
   background-color: var(--background-secondary);
   padding: 30px;
   border-radius: 12px;
@@ -43,8 +50,8 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.role-form-card h2,
-.role-list-card h2 {
+.role-form-panel h2,
+.role-list-panel h2 {
   font-size: 1.8em;
   font-weight: 600;
   margin-top: 0;
@@ -54,7 +61,7 @@
   padding-bottom: 15px;
 }
 
-/* Form Styles remain largely the same, but adjusted spacing/size */
+/* --- Form Styles (Sidebar) --- */
 .role-form .form-group {
   margin-bottom: 25px;
 }
@@ -112,6 +119,10 @@
   background-color: var(--accent-primary);
 }
 
+.role-form-buttons:not(:has(.cancel-button)) .submit-button {
+    flex-grow: 1; /* Make submit button full width if no cancel button */
+}
+
 .submit-button:hover {
     background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
 }
@@ -125,42 +136,30 @@
     background-color: color-mix(in srgb, var(--background-hover) 80%, white);
 }
 
-/* --- Role List Card (Full-Width Bottom Section) --- */
-.role-list-card {
-    /* Full width card for the list */
-    background-color: var(--background-secondary);
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* --- NEW: Role Grid for better density and scannability --- */
+/* --- Role List Card Grid --- */
 .role-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
   
-  /* Implement the responsive grid layout */
+  /* Implement a responsive grid layout for the cards */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 300px minimum width */
-  gap: 20px; /* FIX: Use grid gap to control spacing between cards */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 20px; 
 }
 
-/* --- Role Card Styles --- */
+/* --- Role Card Styles (Refined) --- */
 .role-list-item {
-  /* Individual item styling */
   display: flex;
-  flex-direction: column; /* Stack info and actions vertically within the card */
+  flex-direction: column;
   justify-content: space-between;
   padding: 20px;
-  height: auto; /* Allow height to adjust */
   background-color: var(--background-primary);
   border-radius: 10px;
-  border-left: 5px solid var(--accent-primary);
+  border-left: 5px solid var(--accent-primary); /* Accent border on the left */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  /* FIX: Remove border-bottom from list items to ensure no overlapping */
+  cursor: pointer; /* Indicate card is clickable for edit */
   border-bottom: none !important; 
 }
 
@@ -171,7 +170,7 @@
 }
 
 .role-info {
-    margin-bottom: 20px; /* Space between info and action buttons */
+    margin-bottom: 20px;
 }
 
 .role-info h3 {
@@ -185,16 +184,17 @@
   margin: 0;
   font-size: 0.9em;
   color: var(--text-secondary);
+  min-height: 2.7em; /* Ensure description space consistency */
 }
 
 .role-actions {
     display: flex;
     gap: 10px;
-    margin-top: auto; /* Push buttons to the bottom of the card */
+    margin-top: auto;
 }
 
 .role-actions button {
-  flex-grow: 1; /* Make buttons expand to fill the bottom width */
+  flex-grow: 1;
   background: var(--background-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
@@ -204,8 +204,14 @@
   transition: all 0.2s;
 }
 
-.role-actions button:hover {
-    background-color: var(--background-hover);
+.role-actions .edit-button { /* Styling for the new edit button class */
+    border-color: var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.role-actions .edit-button:hover {
+    background-color: var(--text-secondary);
+    color: var(--background-primary);
 }
 
 .role-actions .delete-button {
@@ -217,4 +223,16 @@
 .role-actions .delete-button:hover {
     background-color: var(--status-failed-text);
     color: var(--background-primary);
+}
+
+/* Error message style remains the same */
+.error-message {
+  color: var(--status-failed-text);
+  background-color: color-mix(in srgb, var(--status-failed-text) 10%, var(--background-secondary));
+  border: 1px solid var(--status-failed-text);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 25px; 
 }

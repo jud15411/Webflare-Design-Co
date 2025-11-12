@@ -10,8 +10,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build:frontends": "npm run build -w apps/public-website && npm run build -w apps/client && npm run build -w apps/portal && npm run organize:dist",
-    "organize:dist": "mkdir -p dist && cp -r apps/public-website/dist/* dist/ && mkdir -p dist/firmaplex-admin-panel && cp -r apps/client/dist/* dist/firmaplex-admin-panel/ && mkdir -p dist/client-portal && cp -r apps/portal/dist/* dist/client-portal/"
+    "build:frontends": "npm run build -w apps/public-website && npm run build -w apps/client && npm run build -w apps/client-portal && npm run organize:dist",
+    "organize:dist": "mkdir -p dist && cp -r apps/public-website/dist/* dist/ && mkdir -p dist/firmaplex-admin-panel && cp -r apps/client/dist/* dist/firmaplex-admin-panel/ && mkdir -p dist/client-portal && cp -r apps/client-portal/dist/* dist/client-portal/"
   },
   "keywords": [],
   "author": "",

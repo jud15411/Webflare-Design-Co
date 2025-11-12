@@ -51,7 +51,7 @@ export const RolesPage: React.FC = () => {
       }
     };
     fetchRoles();
-  }, []); // The token dependency is no longer needed
+  }, []); 
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -132,9 +132,9 @@ export const RolesPage: React.FC = () => {
       </div>
       {error && <p className="error-message">{error}</p>}
 
-      <div className="roles-page-layout">
-        {/* --- Form Card --- */}
-        <div className="role-form-card">
+      <div className="roles-page-layout-grid"> {/* Updated class for grid */}
+        {/* --- Form Panel (Sidebar) --- */}
+        <div className="role-form-panel"> {/* Updated class for form panel */}
           <h2>{roleToEdit ? 'Edit Role' : 'Add New Role'}</h2>
           <form className="role-form" onSubmit={handleFormSubmit}>
             <div className="form-group">
@@ -171,8 +171,8 @@ export const RolesPage: React.FC = () => {
           </form>
         </div>
 
-        {/* --- List Card --- */}
-        <div className="role-list-card">
+        {/* --- List Panel (Main Content) --- */}
+        <div className="role-list-panel"> {/* Updated class for list panel */}
           <h2>Existing Roles</h2>
           {isLoading ? (
             <p>Loading...</p>
@@ -180,18 +180,31 @@ export const RolesPage: React.FC = () => {
             <div className="role-list">
               <ul>
                 {roles.map((role) => (
-                  <li key={role._id} className="role-list-item">
+                  // Entire li is now clickable to select for edit
+                  <li 
+                    key={role._id} 
+                    className="role-list-item"
+                    onClick={() => handleSelectRoleToEdit(role)} 
+                  >
                     <div className="role-info">
                       <h3>{role.name}</h3>
-                      <p>{role.description}</p>
+                      <p>{role.description || 'No description provided.'}</p>
                     </div>
                     <div className="role-actions">
-                      <button onClick={() => handleSelectRoleToEdit(role)}>
+                      <button 
+                        className="edit-button" // New class for consistent styling
+                        onClick={(e) => {
+                          e.stopPropagation(); // Stop propagation to prevent li click
+                          handleSelectRoleToEdit(role);
+                        }}>
                         Edit
                       </button>
                       <button
                         className="delete-button"
-                        onClick={() => handleOpenDeleteModal(role)}>
+                        onClick={(e) => {
+                          e.stopPropagation(); // Stop propagation to prevent li click
+                          handleOpenDeleteModal(role);
+                        }}>
                         Delete
                       </button>
                     </div>

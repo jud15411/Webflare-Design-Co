@@ -13,7 +13,7 @@ process.on('uncaughtException', (error) => {
 const allowedOrigins = [
     'https://firmaplex.tech', // Your main domain
     'https://www.firmaplex.tech', // The 'www' version
-    'http://localhost:3000', // Example for local dev
+    'http://localhost:5000', // Example for local dev
     'http://localhost:5173', // Example for local dev (Vite)
     // Add your EC2 public domain/IP if you access it directly
     // e.g., 'http://ec2-xx-xx-xx.compute.amazonaws.com' 
@@ -51,7 +51,6 @@ const startServer = async () => {
     const servicesRoutes = (await import('./api/v1/services/services.routes.js')).default;
     const billingRoutes = (await import('./api/v1/billing/billing.routes.js')).default;
     const invoicesRoutes = (await import('./api/v1/invoices/invoices.routes.js')).default;
-    const clientPortalRoutes = (await import('./api/v1/client-portal/client-portal.routes.js')).default;
     const usersRoutes = (await import('./api/v1/users/users.routes.js')).default;
     const permissionsRoutes = (await import('./api/v1/permissions/permissions.routes.js')).default;
     const mfaRoutes = (await import('./api/v1/mfa/mfa.routes.js')).default;
@@ -72,12 +71,13 @@ const startServer = async () => {
     const financialRoutes = (await import('./api/v1/financials/financials.routes.js')).default;
     const subscriptionRoutes = (await import('./api/v1/subscriptions/subscriptions.routes.js')).default;
     const dashboardRoutes = (await import('./api/v1/dashboard/dashboard.routes.js')).default;
-    const clientPortalAuthRoutes = (await import('./api/v1/client-portal-auth/auth.routes.js')).default;
-    const portalDashboardRoutes = (await import('./api/v1/client-portal/dashboard/dashboard.routes.js')).default;
     const messageRoutes = (await import('./api/v1/messages/message.routes.js')).default;
-    const portalProjectRoutes = (await import('./api/v1/client-portal/projects/projects.routes.js')).default;
     const feedbackRoutes = (await import('./api/v1/feedback/feedback.routes.js')).default;
     const sprintsRoutes = (await import('./api/v1/sprints/sprints.routes.js')).default;
+    const clientAuthRoutes = (await import('./api/v1/clientAuth/clientAuth.routes.js')).default;
+    const clientPortalProjectRoutes = (await import('./api/v1/clientPortal/clientProjects.routes.js')).default;
+    const ticketsRoutes = (await import('./api/v1/tickets/tickets.routes.js')).default;
+    const clientPortalTicketRoutes = (await import('./api/v1/clientPortal/clientTickets.routes.js')).default;
 
     const { adminWebsiteRoutes, publicWebsiteRoutes } = (await import('./api/v1/website/website.routes.js'));
 
@@ -101,7 +101,6 @@ const startServer = async () => {
     app.use('/api/v1/services', servicesRoutes);
     app.use('/api/v1/billing', billingRoutes);
     app.use('/api/v1/invoices', invoicesRoutes);
-    app.use('/api/v1/client-portal', clientPortalRoutes);
     app.use('/api/v1/users', usersRoutes);
     app.use('/api/v1/permissions', permissionsRoutes);
     app.use('/api/v1/mfa', mfaRoutes);
@@ -122,20 +121,22 @@ const startServer = async () => {
     app.use('/api/v1/financials', financialRoutes);
     app.use('/api/v1/subscriptions', subscriptionRoutes);
     app.use('/api/v1/dashboard', dashboardRoutes);
-    app.use('/api/v1/client-portal-auth', clientPortalAuthRoutes);
-    app.use('/api/v1/portal/dashboard', portalDashboardRoutes);
     app.use('/api/v1/messages', messageRoutes);
-    app.use('/api/v1/portal/projects', portalProjectRoutes);
     app.use('/api/v1/feedback', feedbackRoutes);
     app.use('/api/v1/admin/website', adminWebsiteRoutes);
     app.use('/api/v1/public/website', publicWebsiteRoutes);
     app.use('/api/v1/sprints', sprintsRoutes);
+    app.use('/api/v1/client-auth', clientAuthRoutes);
+    app.use('/api/v1/client-portal', clientPortalProjectRoutes);
+    app.use('/api/v1/tickets', ticketsRoutes);
+    app.use('/api/v1/client-portal', clientPortalTicketRoutes);
 
     app.get('/api/v1/health', (req: Request, res: Response) => {
       res.status(200).json({ status: 'OK', message: 'Server is healthy' });
     });
 
     server.listen(PORT, () => {
+      console.log(` Server is listening on port ${PORT}`);
       console.log(`🚀 Server is listening on port ${PORT}`);
     });
 

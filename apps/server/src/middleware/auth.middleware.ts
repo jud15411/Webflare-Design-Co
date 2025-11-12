@@ -7,7 +7,7 @@ import { type IRole } from '../api/v1/roles/role.model.js';
 export interface AuthRequest extends Request {
   user?: IUser;
 }
-
+console.log('JWT_SECRET Status:', process.env.JWT_SECRET ? 'Loaded' : 'MISSING');
 /**
  * Middleware to protect routes. It verifies the JWT and attaches the
  * full user document with the populated role to the request object.
@@ -22,6 +22,8 @@ export const protect = async (
 
   if (authHeader && authHeader.startsWith('Bearer ')) {
     token = authHeader.split(' ')[1];
+  } else if (req.query.token) { // FIX: Check for token in query parameters
+    token = req.query.token as string;
   }
 
   if (!token) {

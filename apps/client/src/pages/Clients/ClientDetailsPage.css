@@ -9,6 +9,8 @@
   padding: 25px;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
+  display: flex; /* Use flex for layout control inside the card */
+  flex-direction: column;
 }
 
 .details-card h3 {
@@ -33,6 +35,36 @@
   text-decoration: underline;
 }
 
+/* Status Indicator Pill Styling */
+.status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px; /* Fully rounded */
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 5px;
+  line-height: 1; /* Keep the pill height tight */
+}
+
+/* Specific Status Colors (adjust to your palette if necessary) */
+.status-active {
+  background-color: var(--success-bg, #d4edda);
+  color: var(--success-text, #155724);
+}
+.status-inactive {
+  background-color: var(--danger-bg, #f8d7da);
+  color: var(--danger-text, #721c24);
+}
+.status-prospect, .status-lead {
+  background-color: var(--info-bg, #bee5eb);
+  color: var(--info-text, #0c5460);
+}
+.status-suspended {
+  background-color: var(--warning-bg, #fff3cd);
+  color: var(--warning-text, #856404);
+}
+
+/* Styling for the Back Button */
 .back-btn {
   background-color: var(--background-hover);
   color: var(--text-primary);
@@ -41,20 +73,36 @@
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-weight: bold;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s;
+  margin-bottom: 20px; /* Added spacing below the button */
+  align-self: flex-start; /* Aligns button to the left */
 }
 
 .back-btn:hover {
   background-color: var(--border-color);
 }
 
+/* Styling for the new Portal Access Button */
 .portal-access-btn {
-  background-color: var(--accent-primary);
-  color: white;
+  /* Aligns button to the left within its card */
+  align-self: flex-start;
+  /* Distinct style to draw attention to this important action */
+  background-color: var(--accent-secondary);
+  color: var(--background-primary);
   border: none;
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  margin-top: 10px;
+  font-weight: bold;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 15px; /* Space from the text above */
+}
+
+.portal-access-btn:hover {
+  background-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.portal-access-btn:active {
+  transform: translateY(0);
 }

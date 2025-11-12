@@ -1,9 +1,24 @@
+/* General Layout */
+.page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
 .clients-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
+/* Card Styling */
 .client-card {
   background-color: var(--background-secondary);
   padding: 20px;
@@ -16,13 +31,43 @@
 .client-card h3 {
   margin-top: 0;
   color: var(--accent-primary);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.client-card p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+/* Status Badges */
+.status-active { color: #10b981; font-weight: bold; } /* Green */
+.status-inactive { color: #f59e0b; font-weight: bold; } /* Yellow/Amber */
+.status-prospect { color: #3b82f6; font-weight: bold; } /* Blue */
+.status-lead { color: #8b5cf6; font-weight: bold; } /* Purple */
+.status-suspended { color: #ef4444; font-weight: bold; } /* Red */
+
+
+/* Services List */
+.services-list {
+  margin-top: 10px;
+}
+
+.services-list strong {
+    display: block;
+    margin-bottom: 5px;
 }
 
 .services-list ul {
   padding-left: 20px;
   margin: 5px 0 0;
+  list-style: disc;
+}
+.services-list li {
+    font-size: 0.9rem;
 }
 
+/* Actions */
 .card-actions {
   margin-top: auto;
   padding-top: 15px;
@@ -39,32 +84,33 @@
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.add-client-btn:hover {
+  background-color: var(--accent-hover);
 }
 
 .card-actions button {
+  flex: 1;
   border: 1px solid var(--border-color);
   background-color: var(--background-hover);
   color: var(--text-primary);
   padding: 8px 12px;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .card-actions button:hover {
-  background-color: var(--border-color);
-}
-
-/* Style the "View Details" button as the primary action */
-.card-actions button:last-of-type {
-  background-color: var(--accent-primary);
+  background-color: var(--background-tertiary);
   border-color: var(--accent-primary);
-  color: var(--background-secondary);
-  font-weight: bold;
 }
 
-.card-actions button:last-of-type:hover {
-  background-color: var(--accent-primary-darker);
-  border-color: var(--accent-primary-darker);
+/* Fallback/Message Styles */
+.loading-state, .error-state, .no-data-message {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
 }

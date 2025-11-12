@@ -1,51 +1,34 @@
-/* New TeamPage.css - Stacked Layout and Modern Dark Table */
+/* New TeamPage.css - Two-Column Layout and Modern Dark Table */
 
-/*
-  Using the assumed dark theme variables for consistency:
-  --background-primary: Deep background/Input background
-  --background-secondary: Card background
-  --text-primary: Light main text
-  --text-secondary: Muted text
-  --accent-primary: Main action color (e.g., blue)
-  --border-color: Subtle divider
-  --status-failed-text: Danger color (red)
-  --status-approved-text: Success color (green)
-*/
-
-.team-page-container {
-  padding: 40px;
-  /* Assuming global font-family is set, e.g., Inter/sans-serif */
-  /* font-family: var(--font-family); */
-  min-height: 100vh;
-}
-
-.team-page-container h1 {
-  font-size: 2.5em; /* Larger title */
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: var(--text-primary);
-}
-
-/* --- Layout Change: Stacked Sections --- */
+/* --- Layout Change: Two-Column Grid --- */
 .team-management-layout {
-  display: flex; /* Use flexbox to stack sections */
-  flex-direction: column;
-  gap: 40px; /* Separates the form section from the list section */
+  display: grid;
+  /* Sidebar (Add User) takes a fixed width, Main List takes the rest */
+  grid-template-columns: 350px 1fr; 
+  gap: 30px; 
+  align-items: start; /* Content starts at the top */
 }
 
-/* Card Styles */
-.add-user-card,
-.team-list-card {
+/* Responsive adjustment for smaller screens */
+@media (max-width: 1000px) {
+    .team-management-layout {
+        grid-template-columns: 1fr; /* Stack the sections */
+    }
+}
+
+/* Card/Panel Styles - Apply to both new panels */
+.add-user-panel,
+.team-list-panel {
   background-color: var(--background-secondary);
   padding: 30px;
-  border-radius: 12px; /* Smoother corners */
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.add-user-card h2,
-.team-list-card h2 {
-  font-size: 1.8em; /* Larger title */
+.add-user-panel h2,
+.team-list-panel h2 {
+  font-size: 1.5em; /* Slightly smaller for better fit */
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 30px;
@@ -54,38 +37,39 @@
   padding-bottom: 15px;
 }
 
-/* Form Styles */
-.add-user-card .form-group {
+
+/* --- Form Styles (Add User Panel) --- */
+.add-user-panel .form-group {
   margin-bottom: 20px;
 }
-.add-user-card label {
+.add-user-panel label {
   display: block;
   font-weight: 500;
   margin-bottom: 8px;
   font-size: 1em;
   color: var(--text-secondary);
 }
-.add-user-card input,
-.add-user-card select {
+.add-user-panel input,
+.add-user-panel select {
   width: 100%;
-  padding: 12px; /* Larger padding for better usability */
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  background-color: var(--background-primary); /* High contrast input background */
+  background-color: var(--background-primary);
   color: var(--text-primary);
   font-size: 1em;
   transition: border-color 0.2s;
 }
 
-.add-user-card input:focus,
-.add-user-card select:focus {
+.add-user-panel input:focus,
+.add-user-panel select:focus {
     outline: none;
     border-color: var(--accent-primary);
 }
 
 .add-user-button {
   width: 100%;
-  padding: 14px; /* Larger button */
+  padding: 14px;
   font-size: 1em;
   font-weight: 600;
   color: #fff;
@@ -101,24 +85,25 @@
     background-color: color-mix(in srgb, var(--accent-primary) 80%, black);
 }
 
+/* --- Team List Table Styles (Main Panel) --- */
+.team-table-container {
+    overflow-x: auto; /* Ensures table is responsive */
+}
 
-/* --- Modern Table Styles --- */
 .team-table {
   width: 100%;
-  border-collapse: separate; /* Use separate borders for better look */
+  border-collapse: separate; 
   border-spacing: 0;
 }
 
 .team-table th,
 .team-table td {
-  padding: 15px 20px; /* Increased padding */
+  padding: 15px 15px;
   text-align: left;
-  /* Removed individual border-bottom for a cleaner look */
 }
 
 .team-table thead {
-    background-color: var(--background-primary); /* Header row stands out */
-    border-radius: 8px 8px 0 0;
+    background-color: var(--background-primary); 
 }
 
 .team-table th {
@@ -130,18 +115,17 @@
 }
 
 .team-table tbody tr {
-    /* Use primary background for rows for contrast against card background */
     background-color: var(--background-primary); 
     transition: background-color 0.2s;
-    border-bottom: 1px solid var(--border-color); /* Separator line */
+    border-bottom: 1px solid var(--border-color-light); 
 }
 
 .team-table tbody tr:hover {
-    background-color: var(--background-hover);
+    background-color: var(--hover-color);
 }
 
 .team-table tbody tr:last-child {
-    border-bottom: none; /* No line after the last row */
+    border-bottom: none; 
 }
 
 .team-table td {
@@ -149,32 +133,67 @@
   color: var(--text-primary);
 }
 
-/* --- Inactive User Row Styling --- */
-.inactive-user {
-  /* No special background color to keep row hover clean */
+/* Column Width Adjustments */
+.status-col {
+    width: 100px;
+    text-align: center;
+}
+.actions-col {
+    width: 240px; 
+    text-align: right;
+}
+.team-table th:last-child {
+    text-align: right;
 }
 
+/* --- Inactive User Row Styling --- */
 .inactive-user td {
-  color: var(--text-secondary) !important; /* Mute the text color */
-  text-decoration: none; /* Removed the line-through */
-  opacity: 0.7; /* Subtle visual dimming */
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
+}
+
+/* --- Status Text and Badges --- */
+.status-text {
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-active {
+    color: var(--status-approved-text); /* Green */
+}
+
+.status-inactive {
+    color: var(--status-draft-text); /* Yellow/Muted */
+}
+
+/* Role Badges */
+.role-badge {
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  background-color: color-mix(in srgb, var(--accent-primary) 10%, var(--background-secondary));
+  color: var(--accent-primary);
 }
 
 /* --- Action Buttons --- */
 .toggle-status-button,
 .remove-button {
   border: 1px solid;
-  padding: 8px 15px;
+  padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9em;
   font-weight: 600;
   transition: all 0.2s ease-in-out;
   background-color: transparent;
-  margin-right: 10px; /* Increased spacing */
+  margin-left: 10px; 
 }
 
-/* Deactivate Button (Active User) - Secondary Action */
+/* Deactivate Button (Active User) */
 .toggle-status-button {
   border-color: var(--text-secondary);
   color: var(--text-secondary);
@@ -193,7 +212,7 @@
 
 .remove-button:hover {
   background-color: var(--status-failed-text);
-  color: var(--background-primary); /* Text becomes a neutral dark color on red hover */
+  color: var(--background-primary); 
 }
 
 /* Activate Button (Inactive User) - Positive Action */
@@ -204,28 +223,18 @@
 
 .inactive-user .toggle-status-button:hover {
   background-color: var(--status-approved-text);
-  color: var(--background-primary); /* Text becomes a neutral dark color on green hover */
+  color: var(--background-primary);
 }
 
-/* Role Badges */
-.role-badge {
-  padding: 5px 10px;
-  border-radius: 16px; /* Pill shape */
-  font-size: 0.8em;
-  font-weight: 700;
-  text-transform: uppercase; /* Use uppercase for badges */
-  letter-spacing: 0.5px;
-  display: inline-block;
+/* --- Utility Messages --- */
+.loading-message,
+.no-users-message {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
-/* Re-using your specific role colors */
-.role-badge:not([class*="role-"]) {
-    /* Default style for roles not explicitly mapped */
-    background-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-/* Error Message Style */
 .error-message {
   color: var(--status-failed-text);
   background-color: color-mix(in srgb, var(--status-failed-text) 10%, var(--background-secondary));
@@ -234,5 +243,5 @@
   border-radius: 8px;
   text-align: center;
   font-weight: 600;
-  margin-top: 20px;
+  margin-bottom: 25px; /* Added margin to push content down */
 }

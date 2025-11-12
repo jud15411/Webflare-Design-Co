@@ -1,0 +1,158 @@
+/* File: apps/portal/src/pages/DashboardPage.css */
+
+/* Define CSS Variables for a clean, modern look - Standardized with LoginPage.css */
+:root {
+    --portal-primary: #6c5ce7; /* vibrant indigo */
+    --portal-secondary: #0f1226; /* deep navy */
+    --portal-card-bg: rgba(255, 255, 255, 0.08); /* glass */
+    --portal-text: #e8e8f0;
+    --portal-text-muted: #b9b9c6;
+    --portal-border: rgba(255, 255, 255, 0.16);
+    --portal-shadow-light: 0 10px 25px rgba(0, 0, 0, 0.25);
+    --portal-shadow-medium: 0 20px 50px rgba(0, 0, 0, 0.35);
+    --portal-accent-1: #a78bfa;
+    --portal-accent-2: #22d3ee;
+}
+
+.portal-dashboard {
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(96, 165, 250, 0.12), transparent 60%),
+      radial-gradient(1200px 600px at 90% 90%, rgba(167, 139, 250, 0.12), transparent 60%),
+      linear-gradient(145deg, #0b0f1f 0%, var(--portal-secondary) 100%);
+    color: var(--portal-text);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Header Styling */
+.dashboard-header {
+    background: linear-gradient(135deg, var(--portal-primary), var(--portal-accent-2));
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--portal-shadow-light);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+/* Navigation and Logout Button */
+/* .dashboard-header nav {
+    /* Container for navigation items 
+} */
+
+.logout-button {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, color 0.2s ease, background 0.2s ease;
+    box-shadow: inset 0 -2px 6px rgba(0,0,0,0.2);
+}
+
+.logout-button:hover {
+    transform: translateY(-1px);
+    background-color: rgba(255,255,255,0.15);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35), 0 0 0 4px rgba(34, 211, 238, 0.15);
+}
+
+/* Main Content Area */
+.dashboard-content {
+    padding: 30px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-content h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--portal-border);
+    padding-bottom: 10px;
+}
+
+/* Info Box / Card */
+.info-box {
+    background: var(--portal-card-bg);
+    border: 1px solid var(--portal-border);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: var(--portal-shadow-medium);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+
+.info-box p {
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.info-box code {
+    background: rgba(255,255,255,0.12);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: var(--portal-text);
+}
+
+/* Polished Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-card {
+  width: min(900px, 92vw);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.modal-grid { display: grid; gap: 12px; }
+.modal-grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+@media (max-width: 900px){ .modal-grid.two { grid-template-columns: 1fr; } }
+.modal-span-2 { grid-column: span 2; }
+@media (max-width: 900px){ .modal-span-2 { grid-column: auto; } }
+
+.modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top: 16px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(34,211,238,0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 16px 36px rgba(34,211,238,0.35); }
+
+/* Identity card spacing to separate it from the grid */
+.identity-box {
+    margin-bottom: 24px;
+}

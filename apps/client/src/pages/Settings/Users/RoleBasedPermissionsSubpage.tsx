@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../../utils/axios';
 import { useAuth } from '../../../contexts/AuthContext';
-import '../Settings.css';
+import './RoleBasedPermissions.css'; // Updated CSS import
 import { navLinks, type NavItem } from '../../../components/Sidebar/navlinks';
 
 interface Role {
@@ -111,7 +111,7 @@ const RoleBasedPermissionsSubpage: React.FC<
   }
 
   return (
-    <div className="settings-subpage">
+    <div className="settings-subpage role-permissions-page">
       <header className="subpage-header">
         <button onClick={onBack} className="back-button">
           ← Back
@@ -120,15 +120,18 @@ const RoleBasedPermissionsSubpage: React.FC<
       </header>
       <main className="settings-main">
         <div className="settings-section">
-          <h3>Set Access Controls</h3>
-          <p>Grant or revoke access to pages for each role.</p>
+          <div className="section-header">
+            <h3>Set Access Controls</h3>
+            <p>Grant or revoke access to pages for each role.</p>
+          </div>
+          
           <div className="permissions-grid">
             {roles.map((role) => (
               <div key={role._id} className="permission-card">
                 <h4>{role.name.toUpperCase()}</h4>
                 <div className="permission-list">
                   {allFeatures.map((feature) => (
-                    <label key={feature}>
+                    <label key={feature} className="permission-item">
                       <input
                         type="checkbox"
                         checked={
@@ -138,9 +141,11 @@ const RoleBasedPermissionsSubpage: React.FC<
                           handlePermissionChange(role.name, feature)
                         }
                       />
-                      {feature
-                        .replace(/-/g, ' ')
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      <span className="feature-name">
+                        {feature
+                          .replace(/-/g, ' ')
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -148,9 +153,11 @@ const RoleBasedPermissionsSubpage: React.FC<
             ))}
           </div>
           {error && <p className="error-message">{error}</p>}
-          <button onClick={handleSave} className="save-button">
-            Save Changes
-          </button>
+          <div className="save-action-bar">
+            <button onClick={handleSave} className="save-button">
+              Save Changes
+            </button>
+          </div>
         </div>
       </main>
     </div>

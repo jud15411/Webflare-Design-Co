@@ -1,19 +1,19 @@
-# Dockerfile.portal
-ARG CACHE_BUSTER=1
+# File: Dockerfile.portal
 
 FROM node:20-alpine
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies for the portal app
-COPY apps/portal/package*.json ./
+# Copy package files and install dependencies
+# We copy from the specific app folder since we are in a monorepo
+COPY apps/client-portal/package*.json ./
 RUN npm install
 
-# Copy the rest of the portal application code
-COPY apps/portal .
+# Copy the rest of the client portal application code
+COPY apps/client-portal .
 
-# [cite_start]Expose the Vite development server port [cite: 4]
+# Expose the Vite development server port
 EXPOSE 5173
 
-# [cite_start]The command to start the Vite dev server [cite: 5]
-# [cite_start]The '--host' flag is crucial to make it accessible from other containers. [cite: 5]
+# The command to start the Vite dev server
+# The '--host' flag is crucial to make it accessible from other containers/Nginx.
 CMD ["npm", "run", "dev", "--", "--host"]

@@ -156,9 +156,12 @@ export const TeamPage: React.FC = () => {
   return (
     <div className="team-page-container">
       <h1>Team Management</h1>
+      
+      {error && <p className="error-message">{error}</p>}
 
       <div className="team-management-layout">
-        <div className="add-user-card">
+        {/* Sidebar/Form Panel */}
+        <div className="add-user-panel">
           <h2>Add New Staff Member</h2>
           <form onSubmit={handleAddUser}>
             <div className="form-group">
@@ -211,52 +214,59 @@ export const TeamPage: React.FC = () => {
           </form>
         </div>
 
-        <div className="team-list-card">
+        {/* Main Content/Team List Panel */}
+        <div className="team-list-panel">
           <h2>Current Team</h2>
           {isLoading ? (
-            <p>Loading team...</p>
-          ) : error ? (
-            <p className="error-message">{error}</p>
+            <p className="loading-message">Loading team...</p>
+          ) : team.length === 0 ? (
+            <p className="no-users-message">No team members found.</p>
           ) : (
-            <table className="team-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {team.map((user) => (
-                  <tr
-                    key={user._id}
-                    className={!user.isActive ? 'inactive-user' : ''}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <span className={`role-badge`}>
-                        {user.role?.name || 'N/A'}
-                      </span>
-                    </td>
-                    <td>{user.isActive ? 'Active' : 'Inactive'}</td>
-                    <td>
-                      <button
-                        className="toggle-status-button"
-                        onClick={() => openToggleStatusModal(user)}>
-                        {user.isActive ? 'Deactivate' : 'Activate'}
-                      </button>
-                      <button
-                        className="remove-button"
-                        onClick={() => openRemoveUserModal(user)}>
-                        Remove
-                      </button>
-                    </td>
+            <div className="team-table-container">
+              <table className="team-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th className="status-col">Status</th>
+                    <th className="actions-col">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {team.map((user) => (
+                    <tr
+                      key={user._id}
+                      className={!user.isActive ? 'inactive-user' : ''}>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <span className={`role-badge`}>
+                          {user.role?.name || 'N/A'}
+                        </span>
+                      </td>
+                      <td className="status-col">
+                        <span className={`status-text ${user.isActive ? 'status-active' : 'status-inactive'}`}>
+                            {user.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td className="actions-col">
+                        <button
+                          className="toggle-status-button"
+                          onClick={() => openToggleStatusModal(user)}>
+                          {user.isActive ? 'Deactivate' : 'Activate'}
+                        </button>
+                        <button
+                          className="remove-button"
+                          onClick={() => openRemoveUserModal(user)}>
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

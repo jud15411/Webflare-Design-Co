@@ -5,7 +5,7 @@ import {
   getClientById,
   updateClient,
   deleteClient,
-  togglePortalAccess,
+  togglePortalAccess, // Ensure this import is present
 } from './client.controller.js';
 import { protect } from '../../middleware/auth.middleware.js';
 // 1. Import the role authorization middleware
@@ -18,17 +18,21 @@ const router = express.Router();
 router.use(protect);
 
 // 3. Apply role-based authorization for specific actions
-// Allow CEO and Sales to view clients
+
+// Get Clients (Allow CEO and Sales to view)
 router.route('/').get(authorizeRoles(UserRole.CEO, UserRole.SALES), getClients);
 
-// Only allow CEO to create, update, and delete clients
+// Create Client (Only allow CEO)
 router.route('/').post(authorizeRoles(UserRole.CEO), createClient);
+
+// Single Client Actions
 router
   .route('/:id')
   .get(authorizeRoles(UserRole.CEO, UserRole.SALES), getClientById)
   .put(authorizeRoles(UserRole.CEO), updateClient)
   .delete(authorizeRoles(UserRole.CEO), deleteClient);
 
+// NEW: Toggle Portal Access Route (Only allow CEO)
 router
   .route('/:id/portal-access')
   .patch(authorizeRoles(UserRole.CEO), togglePortalAccess);
