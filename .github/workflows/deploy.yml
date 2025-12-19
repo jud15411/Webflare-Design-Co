@@ -32,7 +32,4 @@ jobs:
             docker build -t frontend --target production ./frontend
 
             # Deploy with production domains
-            # Replace these with your actual domains
-            DOMAIN_FRONTEND="portal.networkguru.com" \
-            DOMAIN_BACKEND="webflare.networkguru.com" \
             docker compose up -d --build --remove-orphans
