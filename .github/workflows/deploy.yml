@@ -1,0 +1,38 @@
+name: Manual Pi Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TS_AUTHKEY }}
+
+      - name: SSH and Docker Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 100.124.76.20
+          username: judson
+          port: 22222
+          key: ${{ secrets.RPI_SSH_KEY }}
+          script: |
+            cd /mnt/webflare-data/www
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Build for production
+            docker build -t frontend --target production ./frontend
+
+            # Deploy with production domains
+            # Replace these with your actual domains
+            export DOMAIN_FRONTEND="portal.networkguru.com"
+            export DOMAIN_BACKEND="webflare.networkguru.com"
+
+            docker compose up -d --build --remove-orphans
