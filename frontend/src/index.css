@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+/* 1. Theme Customization */
+@theme {
+  --color-brand-primary: #18181b; /* zinc-900 */
+}
+
+/* 2. Base Styles (Global resets) */
+@layer base {
+  html {
+    overflow-y: scroll;
+  }
+
+  /* This applies the light mode default */
+  body {
+    @apply bg-zinc-50 text-zinc-900 transition-colors duration-300 antialiased;
+  }
+
+  /* This applies the dark mode when the .dark class is on the html tag */
+  .dark body {
+    @apply bg-zinc-950 text-zinc-50;
+  }
+}
+
+/* 3. Component Styles */
+@layer components {
+  .loader-container {
+    @apply flex flex-col items-center justify-center gap-3;
+    min-height: 1px;
+  }
+
+  .unique-bar-loader {
+    @apply w-48 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden relative;
+    display: block;
+  }
+
+  .unique-bar-loader::after {
+    content: '';
+    @apply absolute top-0 left-0 h-full w-24 bg-zinc-900 dark:bg-zinc-100;
+    animation: scanning 1.5s infinite ease-in-out;
+  }
+}
+
+@keyframes scanning {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
