@@ -26,7 +26,7 @@ server {
 
 server {
     listen 80;
-    server_name ${DOMAIN_BACKEND};
+    server_name ${DOMAIN_BACKEND} 100.124.76.20;
 
     allow 100.64.0.0/10;
     deny all;
