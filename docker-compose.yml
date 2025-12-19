@@ -11,12 +11,12 @@ services:
   frontend:
     build:
       context: ./frontend
-      target: development
+      target: production
     command: npm run dev -- --host 0.0.0.0
     ports:
       - '5173:5173'
     volumes:
-      - ./frontend:/app
+      - ./frontend/dist:/app/dist
       - /app/node_modules
     env_file:
       - ./.env
@@ -27,6 +27,7 @@ services:
       - '80:80'
     volumes:
       - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html
     depends_on:
       - frontend
       - backend
