@@ -31,3 +31,5 @@ Thumbs.db
 
 # docker compose override file for local development
 docker-compose.override.yml
+
+nginx/default.conf
