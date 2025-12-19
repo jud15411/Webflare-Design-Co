@@ -10,6 +10,9 @@ services:
     build:
       context: ./frontend
       target: production # This triggers Stage 3 of your Dockerfile
+      args:
+        # This passes the variables from your .env file into the Docker build process
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     container_name: www-nginx-1
     ports:
       - '80:80'

@@ -78,17 +78,25 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
 
     const csrfToken = crypto.randomBytes(64).toString('hex');
 
-    res.cookie('token', token, {
-      httpOnly: true,
+    const cookieOptions = {
+      // Use a leading dot to allow the cookie on all subdomains (portal and webflare)
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? '.networkguru.com'
+          : 'localhost',
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // 'lax' is required for cross-subdomain requests
       maxAge: 8 * 60 * 60 * 1000,
+    };
+
+    res.cookie('token', token, {
+      ...cookieOptions,
+      httpOnly: true, // Keep this true for security
     });
 
     res.cookie('XSRF-TOKEN', csrfToken, {
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 8 * 60 * 60 * 1000,
+      ...cookieOptions,
+      httpOnly: false, // Set to false so your frontend can read it to send headers
     });
 
     res.json({
@@ -129,8 +137,14 @@ router.post('/logout', (req, res) => {
     event: 'AUTH_LOGOUT',
   });
 
-  res.clearCookie('token');
-  res.clearCookie('XSRF-TOKEN');
+  const clearOptions = {
+    domain:
+      process.env.NODE_ENV === 'production' ? '.networkguru.com' : 'localhost',
+    sameSite: 'lax',
+  };
+
+  res.clearCookie('token', clearOptions);
+  res.clearCookie('XSRF-TOKEN', clearOptions);
   return res.status(200).json({ message: 'Logged out successfully' });
 });
 

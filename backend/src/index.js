@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://portal.networkguru.com', 'http://100.124.76.20'],
     credentials: true,
   })
 );
