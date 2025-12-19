@@ -31,5 +31,5 @@ services:
       - frontend
       - backend
     environment:
-      - DOMAIN_FRONTEND=localhost
-      - DOMAIN_BACKEND=api.localhost
+      - DOMAIN_FRONTEND=${DOMAIN_FRONTEND}
+      - DOMAIN_BACKEND=${DOMAIN_BACKEND}
