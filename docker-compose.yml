@@ -27,6 +27,11 @@ services:
       - '80:80'
     volumes:
       - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      # This line deletes the "Welcome to nginx" default config inside the container
+      - /dev/null:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
       - backend
+    environment:
+      - DOMAIN_FRONTEND=${DOMAIN_FRONTEND}
+      - DOMAIN_BACKEND=${DOMAIN_BACKEND}

@@ -33,7 +33,6 @@ jobs:
 
             # Deploy with production domains
             # Replace these with your actual domains
-            export DOMAIN_FRONTEND="portal.networkguru.com"
-            export DOMAIN_BACKEND="webflare.networkguru.com"
-
+            DOMAIN_FRONTEND="portal.networkguru.com" \
+            DOMAIN_BACKEND="webflare.networkguru.com" \
             docker compose up -d --build --remove-orphans
