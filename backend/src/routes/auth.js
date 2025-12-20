@@ -80,11 +80,8 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
 
     const cookieOptions = {
       // Use a leading dot to allow the cookie on all subdomains (portal and webflare)
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? '.networkguru.com'
-          : 'localhost',
-      secure: process.env.NODE_ENV === 'production',
+      domain: '.networkguru.com',
+      secure: false,
       sameSite: 'lax', // 'lax' is required for cross-subdomain requests
       maxAge: 8 * 60 * 60 * 1000,
     };

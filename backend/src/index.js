@@ -14,7 +14,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['http://portal.networkguru.com', 'http://100.124.76.20'],
+    origin: [
+      'http://portal.networkguru.com',
+      'http://100.124.76.20',
+      'webflare.networkguru.com',
+    ],
     credentials: true,
   })
 );
