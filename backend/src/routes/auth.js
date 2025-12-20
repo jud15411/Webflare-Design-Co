@@ -81,7 +81,7 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
     res.cookie('token', token, {
       domain: '.networkguru.com',
       httpOnly: true,
-      secure: false, // Set to true only if using HTTPS
+      secure: true, // Set to true only if using HTTPS
       sameSite: 'lax',
       maxAge: 8 * 60 * 60 * 1000,
     });
@@ -90,7 +90,7 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
     res.cookie('XSRF-TOKEN', csrfToken, {
       domain: '.networkguru.com',
       httpOnly: false, // <--- CHANGE THIS TO FALSE
-      secure: false, // <--- Match the Auth Token setting
+      secure: true, // <--- Match the Auth Token setting
       sameSite: 'lax',
       path: '/',
       maxAge: 8 * 60 * 60 * 1000,
