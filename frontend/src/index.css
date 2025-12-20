@@ -10,18 +10,12 @@
   }
 
   body {
-    /* Set global defaults that respond to the .dark class on <html> */
+    /* Default light mode */
     @apply bg-slate-50 text-slate-900 transition-colors duration-300 antialiased;
   }
 
+  /* Explicitly target the body when .dark is present on html */
   .dark body {
     @apply bg-zinc-950 text-zinc-50;
-  }
-}
-
-@layer components {
-  /* Added a helper for responsive tables */
-  .table-container {
-    @apply w-full overflow-x-auto rounded-3xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900;
   }
 }
