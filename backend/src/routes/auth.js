@@ -78,20 +78,22 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
 
     const csrfToken = crypto.randomBytes(64).toString('hex');
 
-    const cookieOptions = {
-      // Use a leading dot to allow the cookie on all subdomains
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? '.networkguru.com'
-          : 'localhost',
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax', // Must be 'lax' for cross-subdomain requests
+    res.cookie('token', token, {
+      domain: '.networkguru.com',
+      httpOnly: true,
+      secure: false, // Set to true only if using HTTPS
+      sameSite: 'lax',
       maxAge: 8 * 60 * 60 * 1000,
-    };
+    });
 
-    res.cookie('token', token, { ...cookieOptions, httpOnly: true });
-
-    res.cookie('XSRF-TOKEN', csrfToken, { ...cookieOptions, httpOnly: false });
+    // 2. The CSRF Token (MUST be httpOnly: false so Axios can read it)
+    res.cookie('XSRF-TOKEN', csrfToken, {
+      domain: '.networkguru.com',
+      httpOnly: false, // <--- CHANGE THIS TO FALSE
+      secure: false, // <--- Match the Auth Token setting
+      sameSite: 'lax',
+      maxAge: 8 * 60 * 60 * 1000,
+    });
 
     res.json({
       user: {
