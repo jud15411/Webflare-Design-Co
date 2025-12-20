@@ -4,7 +4,6 @@ services:
     env_file:
       - ./.env
     restart: always
-    # No ports needed here, NPM will handle access
 
   # 1. CHANGE: This is now JUST your frontend files, not the public entry point
   frontend:
@@ -14,7 +13,6 @@ services:
       args:
         - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     container_name: web-frontend
-    # REMOVE ports: - '80:80' from here
     volumes:
       - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
     restart: always
