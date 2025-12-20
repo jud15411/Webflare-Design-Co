@@ -17,6 +17,8 @@ app.use(
     origin: [
       'https://portal.networkguru.com', // Updated to https
       'https://webflare.networkguru.com',
+      'http://localhost',
+      'http://localhost:5173',
     ],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-XSRF-TOKEN'],

@@ -55,9 +55,9 @@ const Orchestrator = ({ user }) => {
 
   if (loading)
     return (
-      <div className="flex flex-col items-center justify-center p-20 space-y-4">
+      <div className="flex flex-col items-center justify-center p-10 md:p-20 space-y-4">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-zinc-500 font-bold animate-pulse uppercase tracking-tighter">
+        <p className="text-zinc-500 font-bold animate-pulse uppercase tracking-tighter text-center">
           Synchronizing Security Protocols...
         </p>
       </div>
@@ -65,10 +65,10 @@ const Orchestrator = ({ user }) => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 transition-colors duration-300">
-      {/* HEADER */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      {/* HEADER: Stacked on mobile, row on desktop */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             Orchestrator
           </h1>
           <p className="text-zinc-500 text-sm font-medium">
@@ -81,16 +81,16 @@ const Orchestrator = ({ user }) => {
         {isAdmin && (
           <button
             onClick={() => setShowRoleModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-xl shadow-blue-500/20">
+            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 md:py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-xl shadow-blue-500/20">
             + Create New Role
           </button>
         )}
       </div>
 
-      {/* MODAL */}
+      {/* MODAL: Added p-4 to ensure it doesn't touch screen edges on small phones */}
       {showRoleModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-8 rounded-3xl w-full max-w-md shadow-2xl transition-all">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 rounded-3xl w-full max-w-md shadow-2xl transition-all">
             <h2 className="text-2xl font-black mb-6 text-slate-900 dark:text-white">
               Provision New Role
             </h2>
@@ -128,15 +128,14 @@ const Orchestrator = ({ user }) => {
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl">
                 <p className="text-[11px] text-blue-700 dark:text-blue-300 font-medium">
                   <span className="font-bold">Inheritance Active:</span> This
-                  role will automatically inherit base permissions from the{' '}
-                  {newRole.branch.replace('_', ' ')} branch.
+                  role will automatically inherit base permissions.
                 </p>
               </div>
-              <div className="flex justify-end space-x-4 mt-8">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 mt-8">
                 <button
                   type="button"
                   onClick={() => setShowRoleModal(false)}
-                  className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 font-bold transition-colors">
+                  className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 font-bold transition-colors py-2">
                   Discard
                 </button>
                 <button
@@ -150,13 +149,13 @@ const Orchestrator = ({ user }) => {
         </div>
       )}
 
-      {/* NAVIGATION TABS */}
-      <div className="flex space-x-12 border-b border-zinc-200 dark:border-zinc-800 mb-10">
+      {/* NAVIGATION TABS: Overflow-x-auto handles many tabs on small screens */}
+      <div className="flex overflow-x-auto space-x-8 md:space-x-12 border-b border-zinc-200 dark:border-zinc-800 mb-10 no-scrollbar">
         {['users', 'roles'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`pb-4 px-2 text-xs font-black uppercase tracking-[0.2em] transition-all relative ${
+            className={`pb-4 px-2 text-xs font-black uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${
               activeTab === tab
                 ? 'text-blue-600'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
@@ -208,54 +207,57 @@ const UserTable = ({ users, roles, setUsers }) => {
   };
 
   return (
+    /* WRAPPER: Added overflow-x-auto to allow horizontal scrolling on mobile */
     <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
-      <table className="w-full text-left border-collapse">
-        <thead className="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-widest">
-          <tr>
-            <th className="px-8 py-6">Identity Profile</th>
-            <th className="px-8 py-6">Branch Access</th>
-            <th className="px-8 py-6">Active Designation</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-          {users.map((u) => (
-            <tr
-              key={u._id}
-              className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
-              <td className="px-8 py-6">
-                <div className="font-black text-slate-900 dark:text-white">
-                  {u.firstName} {u.lastName}
-                </div>
-                <div className="text-xs text-zinc-400 font-mono">
-                  ID: {u.userName}
-                </div>
-              </td>
-              <td className="px-8 py-6">
-                <span className="px-3 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black rounded-lg uppercase border border-blue-100 dark:border-blue-500/20">
-                  {u.branch}
-                </span>
-              </td>
-              <td className="px-8 py-6">
-                <select
-                  className="bg-transparent text-sm font-bold text-slate-700 dark:text-zinc-300 focus:ring-0 outline-none cursor-pointer hover:text-blue-600 transition-colors"
-                  value={u.role?._id}
-                  onChange={(e) => updateRole(u._id, e.target.value)}>
-                  {roles
-                    .filter((r) => r.branch === u.branch)
-                    .map((r) => (
-                      <option
-                        key={r._id}
-                        value={r._id}
-                        className="bg-white dark:bg-zinc-900">
-                        {r.name}
-                      </option>
-                    ))}
-                </select>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse min-w-150">
+          <thead className="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+            <tr>
+              <th className="px-6 md:px-8 py-6">Identity Profile</th>
+              <th className="px-6 md:px-8 py-6">Branch Access</th>
+              <th className="px-6 md:px-8 py-6">Active Designation</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            {users.map((u) => (
+              <tr
+                key={u._id}
+                className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
+                <td className="px-6 md:px-8 py-6">
+                  <div className="font-black text-slate-900 dark:text-white">
+                    {u.firstName} {u.lastName}
+                  </div>
+                  <div className="text-xs text-zinc-400 font-mono">
+                    ID: {u.userName}
+                  </div>
+                </td>
+                <td className="px-6 md:px-8 py-6">
+                  <span className="px-3 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black rounded-lg uppercase border border-blue-100 dark:border-blue-500/20">
+                    {u.branch}
+                  </span>
+                </td>
+                <td className="px-6 md:px-8 py-6">
+                  <select
+                    className="bg-transparent text-sm font-bold text-slate-700 dark:text-zinc-300 focus:ring-0 outline-none cursor-pointer hover:text-blue-600 transition-colors min-w-35"
+                    value={u.role?._id}
+                    onChange={(e) => updateRole(u._id, e.target.value)}>
+                    {roles
+                      .filter((r) => r.branch === u.branch)
+                      .map((r) => (
+                        <option
+                          key={r._id}
+                          value={r._id}
+                          className="bg-white dark:bg-zinc-900">
+                          {r.name}
+                        </option>
+                      ))}
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
@@ -284,14 +286,14 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 gap-6 md:gap-8">
       {roles.map((role) => (
         <div
           key={role._id}
-          className="p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-4xl shadow-sm">
-          <div className="flex justify-between items-start mb-8">
+          className="p-6 md:p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl md:rounded-4xl shadow-sm">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
             <div>
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                 {role.name}
               </h3>
               <p className="text-[10px] text-zinc-400 font-black uppercase tracking-[0.2em] mt-1">
@@ -300,12 +302,13 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
             </div>
             {role.isSystemRole && (
               <span className="bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 text-[10px] font-black px-4 py-1.5 rounded-full border border-amber-200 dark:border-amber-500/20 uppercase">
-                Read Only (System)
+                System Role
               </span>
             )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {/* ADAPTIVE GRID: Adjusted columns for all screen breakpoints */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
             {availablePerms.map((p) => (
               <label
                 key={p}

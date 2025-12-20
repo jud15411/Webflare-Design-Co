@@ -47,7 +47,7 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
       // LOG: Failed login due to incorrect password
       logger.warn('Login attempt failed: Invalid password', {
         userName,
-        ip,
+        ip: userIp,
         userId: user._id,
         event: 'AUTH_FAILURE_WRONG_PASSWORD',
       });
@@ -77,20 +77,22 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
     );
 
     const csrfToken = crypto.randomBytes(64).toString('hex');
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cookieDomain = isProduction ? process.env.COOKIE_DOMAIN : undefined;
 
     res.cookie('token', token, {
-      domain: '.networkguru.com',
+      domain: cookieDomain,
       httpOnly: true,
-      secure: true, // Set to true only if using HTTPS
+      secure: isProduction, // Set to true only if using HTTPS
       sameSite: 'lax',
       maxAge: 8 * 60 * 60 * 1000,
     });
 
     // 2. The CSRF Token (MUST be httpOnly: false so Axios can read it)
     res.cookie('XSRF-TOKEN', csrfToken, {
-      domain: '.networkguru.com',
+      domain: cookieDomain,
       httpOnly: false, // <--- CHANGE THIS TO FALSE
-      secure: true, // <--- Match the Auth Token setting
+      secure: isProduction, // <--- Match the Auth Token setting
       sameSite: 'lax',
       path: '/',
       maxAge: 8 * 60 * 60 * 1000,
@@ -136,7 +138,9 @@ router.post('/logout', (req, res) => {
 
   const clearOptions = {
     domain:
-      process.env.NODE_ENV === 'production' ? '.networkguru.com' : 'localhost',
+      process.env.NODE_ENV === 'production'
+        ? process.env.COOKIE_DOMAIN
+        : undefined,
     sameSite: 'lax',
   };
 
