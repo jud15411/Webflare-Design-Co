@@ -79,22 +79,19 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
     const csrfToken = crypto.randomBytes(64).toString('hex');
 
     const cookieOptions = {
-      // Use a leading dot to allow the cookie on all subdomains (portal and webflare)
-      domain: '.networkguru.com',
-      secure: false,
-      sameSite: 'lax', // 'lax' is required for cross-subdomain requests
+      // Use a leading dot to allow the cookie on all subdomains
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? '.networkguru.com'
+          : 'localhost',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax', // Must be 'lax' for cross-subdomain requests
       maxAge: 8 * 60 * 60 * 1000,
     };
 
-    res.cookie('token', token, {
-      ...cookieOptions,
-      httpOnly: true, // Keep this true for security
-    });
+    res.cookie('token', token, { ...cookieOptions, httpOnly: true });
 
-    res.cookie('XSRF-TOKEN', csrfToken, {
-      ...cookieOptions,
-      httpOnly: false, // Set to false so your frontend can read it to send headers
-    });
+    res.cookie('XSRF-TOKEN', csrfToken, { ...cookieOptions, httpOnly: false });
 
     res.json({
       user: {
