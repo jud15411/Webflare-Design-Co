@@ -11,8 +11,9 @@ const AdminLayout = ({ children, user, setUser }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-zinc-950 transition-colors duration-300">
-      {/* SIDEBAR: Drawer on mobile, persistent on desktop */}
+    /* Added dark:bg-zinc-950 and transition-colors here */
+    <div className="flex h-screen transition-colors duration-300">
+      {' '}
       <div
         className={`
         fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
@@ -24,15 +25,12 @@ const AdminLayout = ({ children, user, setUser }) => {
           closeSidebar={() => setSidebarOpen(false)}
         />
       </div>
-
-      {/* MOBILE OVERLAY */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
-
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar
           user={user}

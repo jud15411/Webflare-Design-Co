@@ -1,21 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const cookieParser = require('cookie-parser'); // Ensure this is imported
-// const PERMISSIONS = require('../config/permissions');
-// const authorize = require('../middleware/authorize');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
+
+// Import the database connection module
+const connectDB = require('./config/db');
 
 const app = express();
 app.set('trust proxy', 1);
 
-// 1. Basic Middleware
+// 1. Initialize Database Connection
+connectDB();
+
+// 2. Basic Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      'https://portal.networkguru.com', // Updated to https
+      'https://portal.networkguru.com',
       'https://webflare.networkguru.com',
       'http://localhost',
       'http://localhost:5173',
@@ -26,30 +29,14 @@ app.use(
   })
 );
 
-// 2. Database Connection
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB Atlas'))
-  .catch((err) => console.error('Could not connect', err));
-
-// 3. Public Routes (No CSRF check)
-// Your auth.js file contains the login logic
+// 3. Public Routes
 app.use('/api/auth', require('./routes/auth'));
 
 // 4. Protection Layer
 const verifyCsrf = require('./middleware/csrfProtection');
 
+// 5. Protected Routes
 app.use('/api/orchestrator', verifyCsrf, require('./routes/orchestrator'));
 
-// 5. Protected Routes
-// ONLY add routes here once you have created the physical files for them
-// app.use('/api/admin', verifyCsrf, require('./routes/adminRoutes'));
-
-// router.post('/deploy',
-//   authenticateToken, // Validates the JWT
-//   authorize(PERMISSIONS.WEB_DEPLOY_PROD),
-//   (req, res) => {
-//     // Deploy logic here
-// });
-
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -9,9 +9,7 @@ const Orchestrator = ({ user }) => {
   const [availablePerms, setAvailablePerms] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // New Role Form State
   const [newRole, setNewRole] = useState({ name: '', branch: 'web_dev' });
-
   const isAdmin = user?.branch === 'admin';
 
   const fetchData = async () => {
@@ -19,9 +17,7 @@ const Orchestrator = ({ user }) => {
       const [uRes, rRes, pRes] = await Promise.all([
         api.get('/orchestrator/users', { withCredentials: true }),
         api.get('/orchestrator/roles', { withCredentials: true }),
-        api.get('/orchestrator/permissions/list', {
-          withCredentials: true,
-        }),
+        api.get('/orchestrator/permissions/list', { withCredentials: true }),
       ]);
       setUsers(uRes.data);
       setRoles(rRes.data);
@@ -40,9 +36,7 @@ const Orchestrator = ({ user }) => {
   const handleCreateRole = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/orchestrator/roles', newRole, {
-        withCredentials: true,
-      });
+      await api.post('/orchestrator/roles', newRole, { withCredentials: true });
       setShowRoleModal(false);
       setNewRole({ name: '', branch: 'web_dev' });
       fetchData();
@@ -65,10 +59,9 @@ const Orchestrator = ({ user }) => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 transition-colors duration-300">
-      {/* HEADER: Stacked on mobile, row on desktop */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-zinc-100 tracking-tight">
             Orchestrator
           </h1>
           <p className="text-zinc-500 text-sm font-medium">
@@ -87,11 +80,11 @@ const Orchestrator = ({ user }) => {
         )}
       </div>
 
-      {/* MODAL: Added p-4 to ensure it doesn't touch screen edges on small phones */}
+      {/* MODAL SECTION: Swapped white for zinc-900 */}
       {showRoleModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 rounded-3xl w-full max-w-md shadow-2xl transition-all">
-            <h2 className="text-2xl font-black mb-6 text-slate-900 dark:text-white">
+            <h2 className="text-2xl font-black mb-6 text-slate-900 dark:text-zinc-100">
               Provision New Role
             </h2>
             <form onSubmit={handleCreateRole} className="space-y-5">
@@ -103,7 +96,7 @@ const Orchestrator = ({ user }) => {
                   type="text"
                   required
                   placeholder="e.g., Senior Systems Analyst"
-                  className="w-full bg-zinc-50 dark:bg-zinc-800 text-slate-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                  className="w-full bg-zinc-50 dark:bg-zinc-800 text-slate-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                   value={newRole.name}
                   onChange={(e) =>
                     setNewRole({ ...newRole, name: e.target.value })
@@ -115,21 +108,23 @@ const Orchestrator = ({ user }) => {
                   Branch Affiliation
                 </label>
                 <select
-                  className="w-full bg-zinc-50 dark:bg-zinc-800 text-slate-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 outline-none appearance-none"
+                  className="w-full bg-zinc-50 dark:bg-zinc-800 text-slate-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 outline-none appearance-none"
                   value={newRole.branch}
                   onChange={(e) =>
                     setNewRole({ ...newRole, branch: e.target.value })
                   }>
-                  <option value="web_dev">Web Development</option>
-                  <option value="cyber_security">Cybersecurity</option>
-                  <option value="admin">System Administration</option>
+                  <option value="web_dev" className="bg-white dark:bg-zinc-900">
+                    Web Development
+                  </option>
+                  <option
+                    value="cyber_security"
+                    className="bg-white dark:bg-zinc-900">
+                    Cybersecurity
+                  </option>
+                  <option value="admin" className="bg-white dark:bg-zinc-900">
+                    System Administration
+                  </option>
                 </select>
-              </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl">
-                <p className="text-[11px] text-blue-700 dark:text-blue-300 font-medium">
-                  <span className="font-bold">Inheritance Active:</span> This
-                  role will automatically inherit base permissions.
-                </p>
               </div>
               <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 mt-8">
                 <button
@@ -149,7 +144,7 @@ const Orchestrator = ({ user }) => {
         </div>
       )}
 
-      {/* NAVIGATION TABS: Overflow-x-auto handles many tabs on small screens */}
+      {/* Tabs list */}
       <div className="flex overflow-x-auto space-x-8 md:space-x-12 border-b border-zinc-200 dark:border-zinc-800 mb-10 no-scrollbar">
         {['users', 'roles'].map((tab) => (
           <button
@@ -168,7 +163,6 @@ const Orchestrator = ({ user }) => {
         ))}
       </div>
 
-      {/* CONTENT AREA */}
       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
         {activeTab === 'users' ? (
           <UserTable users={users} roles={roles} setUsers={setUsers} />
@@ -184,7 +178,6 @@ const Orchestrator = ({ user }) => {
   );
 };
 
-/* --- USER REGISTRY TABLE --- */
 const UserTable = ({ users, roles, setUsers }) => {
   const updateRole = async (userId, roleId) => {
     try {
@@ -202,15 +195,15 @@ const UserTable = ({ users, roles, setUsers }) => {
         )
       );
     } catch (err) {
-      alert('Role update rejected: Security policy mismatch.');
+      alert('Role update rejected.');
     }
   };
 
   return (
-    /* WRAPPER: Added overflow-x-auto to allow horizontal scrolling on mobile */
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
+    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm transition-colors">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-150">
+          {/* thead bg-zinc-50 is now forced to zinc-800 in CSS */}
           <thead className="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-widest">
             <tr>
               <th className="px-6 md:px-8 py-6">Identity Profile</th>
@@ -224,7 +217,7 @@ const UserTable = ({ users, roles, setUsers }) => {
                 key={u._id}
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group">
                 <td className="px-6 md:px-8 py-6">
-                  <div className="font-black text-slate-900 dark:text-white">
+                  <div className="font-black text-slate-900 dark:text-zinc-100">
                     {u.firstName} {u.lastName}
                   </div>
                   <div className="text-xs text-zinc-400 font-mono">
@@ -232,13 +225,14 @@ const UserTable = ({ users, roles, setUsers }) => {
                   </div>
                 </td>
                 <td className="px-6 md:px-8 py-6">
-                  <span className="px-3 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black rounded-lg uppercase border border-blue-100 dark:border-blue-500/20">
+                  {/* Branch Badge now uses forced bright blue in CSS */}
+                  <span className="px-3 py-1 bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-indigo-400 text-[10px] font-black rounded-lg uppercase border border-blue-100 dark:border-indigo-500/30">
                     {u.branch}
                   </span>
                 </td>
                 <td className="px-6 md:px-8 py-6">
                   <select
-                    className="bg-transparent text-sm font-bold text-slate-700 dark:text-zinc-300 focus:ring-0 outline-none cursor-pointer hover:text-blue-600 transition-colors min-w-35"
+                    className="bg-transparent text-sm font-bold text-slate-700 dark:text-zinc-300 focus:ring-0 outline-none cursor-pointer hover:text-blue-600 dark:hover:text-indigo-400 transition-colors min-w-35"
                     value={u.role?._id}
                     onChange={(e) => updateRole(u._id, e.target.value)}>
                     {roles
@@ -247,7 +241,7 @@ const UserTable = ({ users, roles, setUsers }) => {
                         <option
                           key={r._id}
                           value={r._id}
-                          className="bg-white dark:bg-zinc-900">
+                          className="bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100">
                           {r.name}
                         </option>
                       ))}
@@ -262,7 +256,6 @@ const UserTable = ({ users, roles, setUsers }) => {
   );
 };
 
-/* --- PERMISSION MATRIX --- */
 const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
   const togglePerm = async (role, perm) => {
     const updated = role.permissions.includes(perm)
@@ -290,31 +283,25 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
       {roles.map((role) => (
         <div
           key={role._id}
-          className="p-6 md:p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl md:rounded-4xl shadow-sm">
+          className="p-6 md:p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl md:rounded-4xl shadow-sm transition-colors">
           <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
             <div>
-              <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-zinc-100 tracking-tight">
                 {role.name}
               </h3>
               <p className="text-[10px] text-zinc-400 font-black uppercase tracking-[0.2em] mt-1">
                 {role.branch} branch authority
               </p>
             </div>
-            {role.isSystemRole && (
-              <span className="bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 text-[10px] font-black px-4 py-1.5 rounded-full border border-amber-200 dark:border-amber-500/20 uppercase">
-                System Role
-              </span>
-            )}
           </div>
 
-          {/* ADAPTIVE GRID: Adjusted columns for all screen breakpoints */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
             {availablePerms.map((p) => (
               <label
                 key={p}
                 className={`flex items-center p-4 rounded-2xl border transition-all cursor-pointer group ${
                   role.permissions.includes(p)
-                    ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-500/5'
+                    ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-500/10'
                     : 'border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50'
                 }`}>
                 <div className="relative flex items-center">
@@ -323,13 +310,13 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
                     disabled={role.isSystemRole}
                     checked={role.permissions.includes(p)}
                     onChange={() => togglePerm(role, p)}
-                    className="w-5 h-5 rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-blue-600 focus:ring-blue-500 transition-all disabled:opacity-30"
+                    className="w-5 h-5 rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-indigo-600 focus:ring-indigo-500 transition-all disabled:opacity-30"
                   />
                 </div>
                 <span
                   className={`ml-4 text-[11px] font-black uppercase tracking-tight transition-colors ${
                     role.permissions.includes(p)
-                      ? 'text-blue-600 dark:text-blue-400'
+                      ? 'text-indigo-600 dark:text-indigo-400'
                       : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'
                   }`}>
                   {p.replace(/_/g, ' ')}
@@ -342,5 +329,4 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
     </div>
   );
 };
-
 export default Orchestrator;

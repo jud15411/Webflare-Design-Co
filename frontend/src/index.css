@@ -1,21 +1,146 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-brand-primary: #18181b;
-}
-
 @layer base {
-  html {
-    overflow-y: scroll;
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
   }
 
   body {
-    /* Default light mode */
     @apply bg-slate-50 text-slate-900 transition-colors duration-300 antialiased;
   }
 
-  /* Explicitly target the body when .dark is present on html */
-  .dark body {
+  html.dark body {
     @apply bg-zinc-950 text-zinc-50;
+  }
+
+  /* --- ADD THIS SECTION BELOW --- */
+
+  /* Force Sidebar & Topbar Dark Mode */
+  html.dark header,
+  html.dark aside {
+    background-color: #09090b !important; /* Matches zinc-950 */
+    border-color: #27272a !important; /* Matches zinc-800 */
+    color: #f8fafc !important; /* Matches zinc-50 */
+  }
+
+  /* Force Nav Link colors in Dark Mode */
+  html.dark nav a {
+    color: #a1a1aa !important; /* zinc-400 */
+  }
+
+  html.dark nav a:hover {
+    background-color: #18181b !important; /* zinc-900 */
+    color: #f8fafc !important;
+  }
+
+  html.dark .rounded-3xl.bg-white,
+  html.dark .rounded-xl.bg-white {
+    background-color: #18181b !important; /* zinc-900 */
+    border-color: #27272a !important; /* zinc-800 */
+  }
+
+  html.dark h2,
+  html.dark .font-bold {
+    color: #f4f4f5 !important; /* zinc-100 */
+  }
+
+  html.dark .bg-slate-50.rounded-3xl,
+  html.dark .bg-white.rounded-xl {
+    background-color: #18181b !important; /* zinc-900 */
+    border-color: #27272a !important; /* zinc-800 */
+  }
+
+  /* Ensure Metadata labels and values are readable */
+  html.dark .text-slate-400 {
+    color: #a1a1aa !important; /* zinc-400 for labels */
+  }
+
+  html.dark .text-slate-700 {
+    color: #f4f4f5 !important; /* zinc-100 for values */
+  }
+
+  html.dark nav a[href].bg-indigo-50 {
+    background-color: rgba(
+      99,
+      102,
+      241,
+      0.2
+    ) !important; /* Indigo-500 at 20% */
+    color: #a5b4fc !important; /* Indigo-300 */
+  }
+
+  html.dark aside h1 {
+    color: #6366f1 !important; /* Forces Indigo-500 specifically for the sidebar title */
+  }
+
+  html.dark aside .bg-slate-50.rounded-2xl {
+    background-color: rgba(39, 39, 42, 0.5) !important; /* zinc-800 at 50% */
+    border-color: #27272a !important; /* zinc-800 */
+  }
+
+  html.dark aside .text-slate-900 {
+    color: #f4f4f5 !important; /* zinc-100 */
+  }
+
+  /* Force Table Header and Row Hover Dark */
+  html.dark .bg-zinc-50 {
+    background-color: #27272a !important; /* Matches zinc-800 */
+  }
+
+  /* Force Blue Badges (Branch indicators) to Glow */
+  html.dark .bg-blue-50 {
+    background-color: rgba(
+      99,
+      102,
+      241,
+      0.15
+    ) !important; /* Indigo-500 with 15% opacity */
+    border-color: rgba(99, 102, 241, 0.3) !important;
+  }
+
+  /* Force Bright Blue Text across the whole Personnel page */
+  html.dark .text-blue-600,
+  html.dark .text-blue-400 {
+    color: #6366f1 !important; /* Your signature bright Indigo-500 */
+  }
+
+  /* Fix for Select Dropdowns and Option lists */
+  html.dark select,
+  html.dark option {
+    background-color: #18181b !important; /* zinc-900 */
+    color: #f4f4f5 !important; /* zinc-100 */
+  }
+
+  /* Force Row dividers to stay dark */
+  html.dark .divide-zinc-100 {
+    border-color: #27272a !important; /* zinc-800 */
+  }
+
+  /* Force the main "Orchestrator" Page Title to Bright Blue */
+  html.dark h1.text-3xl.font-black,
+  html.dark h1.text-4xl.font-black {
+    color: #6366f1 !important; /* Indigo-500 */
+  }
+
+  /* Force User Names in the Personnel Registry to Bright Blue */
+  html.dark .font-black.text-slate-900 {
+    color: #6366f1 !important; /* Indigo-500 */
+  }
+
+  /* Force Role Names in the Permission Matrix cards to Bright Blue */
+  html.dark h3.text-xl.font-black,
+  html.dark h3.text-2xl.font-black {
+    color: #6366f1 !important; /* Indigo-500 */
+  }
+
+  /* Optional: Make the "Create New Role" button glow more in dark mode */
+  html.dark .bg-blue-600 {
+    background-color: #4f46e5 !important; /* Indigo-600 */
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4) !important;
   }
 }
