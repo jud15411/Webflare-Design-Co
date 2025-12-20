@@ -43,10 +43,8 @@ const logger = winston.createLogger({
       capped: true,
       size: 52428800,
       expireAfterSeconds: 2592000,
-      // FIXED: Moved options here and added connection stability
-      options: { useUnifiedTopology: true },
       tryReconnect: true,
-      decouple: true, // Helps prevent the log from blocking the app process
+      decouple: true,
     }),
   ],
 });

@@ -34,14 +34,15 @@ const Dashboard = ({ user }) => {
         </div>
       </header>
 
-      {/* BRANCH-SPECIFIC VIEWS */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {user.branch === 'admin' && <AdminView />}
         {user.branch === 'cyber_security' && <CyberView />}
         {user.branch === 'web_dev' && <WebView />}
       </div>
 
-      <div className="bg-slate-50 dark:bg-zinc-900/50 p-6 rounded-3xl border border-slate-100 dark:border-zinc-800 shadow-inner">
+      {/* Lower Metadata Container - Uses a subtle deep gray overlay */}
+      <div className="p-6 rounded-3xl border border-slate-100 dark:border-zinc-800 shadow-inner transition-colors duration-300">
         <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-2">
           <span className="w-2 h-2 bg-indigo-500 rounded-full animate-ping"></span>
           Live Branch Metadata
@@ -60,6 +61,7 @@ const Dashboard = ({ user }) => {
   );
 };
 
+/* View Components preserved from original logic */
 const AdminView = () => (
   <>
     <StatCard title="Total Revenue" value="$45,231" change="+12%" />
@@ -109,6 +111,7 @@ const WebView = () => (
   </>
 );
 
+/* Card Components - Updated for Dark Mode surfaces */
 const StatCard = ({
   title,
   value,
@@ -120,10 +123,11 @@ const StatCard = ({
       {title}
     </p>
     <div className="flex items-baseline justify-between mt-4">
+      {/* text-zinc-100 ensures the text is white/off-white in dark mode */}
       <h2 className={`text-3xl font-black tracking-tighter ${color}`}>
         {value}
       </h2>
-      <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-full">
+      <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 dark:bg-indigo-900/40 px-2.5 py-1 rounded-full">
         {change}
       </span>
     </div>
@@ -131,9 +135,13 @@ const StatCard = ({
 );
 
 const MetadataItem = ({ label, value }) => (
-  <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-slate-100 dark:border-zinc-800">
-    <span className="text-slate-400 block mb-1">{label}:</span>
-    <span className="text-slate-700 dark:text-zinc-300 font-bold">{value}</span>
+  <div className="p-3 rounded-xl border border-slate-100 dark:border-zinc-800 transition-colors duration-300">
+    <span className="text-slate-400 block mb-1 uppercase text-[9px] tracking-tighter">
+      {label}:
+    </span>
+    <span className="text-slate-700 dark:text-zinc-200 font-bold break-all">
+      {value}
+    </span>
   </div>
 );
 
