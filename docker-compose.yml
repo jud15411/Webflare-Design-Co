@@ -4,21 +4,33 @@ services:
     env_file:
       - ./.env
     restart: always
+    # No ports needed here, NPM will handle access
 
-  # The Nginx service now IS your frontend
-  nginx:
+  # 1. CHANGE: This is now JUST your frontend files, not the public entry point
+  frontend:
     build:
       context: ./frontend
-      target: production # This triggers Stage 3 of your Dockerfile
+      target: production
       args:
-        # This passes the variables from your .env file into the Docker build process
         - VITE_API_BASE_URL=${VITE_API_BASE_URL}
-    container_name: www-nginx-1
-    ports:
-      - '80:80'
+    container_name: web-frontend
+    # REMOVE ports: - '80:80' from here
     volumes:
-      # Mount only the configuration, NOT the html/dist folder
       - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: always
+
+  # 2. ADD: The Nginx Proxy Manager service
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - '80:80' # Public HTTP
+      - '443:443' # Public HTTPS
+      - '81:81' # NPM Admin Dashboard
+    volumes:
+      - ./npm_data:/data
+      - ./npm_letsencrypt:/etc/letsencrypt
     depends_on:
       - backend
-    restart: always
+      - frontend
