@@ -92,6 +92,7 @@ router.post('/login', loginLimiter, validateLogin, async (req, res) => {
       httpOnly: false, // <--- CHANGE THIS TO FALSE
       secure: false, // <--- Match the Auth Token setting
       sameSite: 'lax',
+      path: '/',
       maxAge: 8 * 60 * 60 * 1000,
     });
 

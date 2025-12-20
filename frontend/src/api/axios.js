@@ -10,13 +10,22 @@ const api = axios.create({
 
 // DEBUG INTERCEPTOR
 api.interceptors.request.use((config) => {
-  // Check if the X-XSRF-TOKEN header was successfully attached
-  const hasCsrfHeader = config.headers['X-XSRF-TOKEN'];
+  // Manually extract the cookie because Axios won't do it for cross-subdomain
+  const cookies = document.cookie.split('; ');
+  const csrfCookie = cookies.find((row) => row.startsWith('XSRF-TOKEN='));
+  const token = csrfCookie
+    ? decodeURIComponent(csrfCookie.split('=')[1])
+    : null;
+
+  if (token) {
+    config.headers['X-XSRF-TOKEN'] = token;
+  }
+
+  const hasCsrfHeader = !!config.headers['X-XSRF-TOKEN'];
   console.log(
-    `[Axios Debug] Request to ${
-      config.url
-    } - Has CSRF Header: ${!!hasCsrfHeader}`
+    `[Axios Debug] Request to ${config.url} - Has CSRF Header: ${hasCsrfHeader}`
   );
+
   return config;
 });
 
