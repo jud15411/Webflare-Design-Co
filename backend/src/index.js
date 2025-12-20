@@ -19,8 +19,9 @@ app.use(
       'http://100.124.76.20',
       'webflare.networkguru.com',
     ],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-XSRF-TOKEN'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-XSRF-TOKEN'],
+    exposedHeaders: ['set-cookie'],
   })
 );
 
