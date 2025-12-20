@@ -11,14 +11,18 @@ const AdminLayout = ({ children, user, setUser }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden transition-colors duration-300">
-      {/* SIDEBAR: Drawer on mobile, sidebar on desktop */}
+    <div className="flex h-screen bg-slate-50 dark:bg-zinc-950 transition-colors duration-300">
+      {/* SIDEBAR: Drawer on mobile, persistent on desktop */}
       <div
         className={`
         fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <Sidebar user={user} closeSidebar={() => setSidebarOpen(false)} />
+        <Sidebar
+          user={user}
+          setUser={setUser}
+          closeSidebar={() => setSidebarOpen(false)}
+        />
       </div>
 
       {/* MOBILE OVERLAY */}
