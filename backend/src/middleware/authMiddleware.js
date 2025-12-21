@@ -20,7 +20,9 @@ const protect = async (req, res, next) => {
 
     // 4. Populate req.user with full DB data (branch, userName, etc.)
     // This solves the 'null' username issue in your logs
-    req.user = await User.findById(decoded.id).select('-password');
+    req.user = await User.findById(decoded.id)
+      .select('-password')
+      .populate('role');
 
     if (!req.user) {
       return res.status(401).json({ message: 'User session invalid' });

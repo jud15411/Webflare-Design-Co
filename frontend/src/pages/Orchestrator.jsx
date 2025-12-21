@@ -21,9 +21,15 @@ const Orchestrator = ({ user }) => {
       ]);
       setUsers(uRes.data);
       setRoles(rRes.data);
-      setAvailablePerms(pRes.data);
+
+      const permsData = Array.isArray(pRes.data)
+        ? pRes.data
+        : Object.values(pRes.data || {});
+
+      setAvailablePerms(permsData);
     } catch (err) {
       console.error('Load error:', err);
+      setAvailablePerms([]);
     } finally {
       setLoading(false);
     }
@@ -296,7 +302,7 @@ const RoleMatrix = ({ roles, setRoles, availablePerms }) => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-            {availablePerms.map((p) => (
+            {(availablePerms || []).map((p) => (
               <label
                 key={p}
                 className={`flex items-center p-4 rounded-2xl border transition-all cursor-pointer group ${

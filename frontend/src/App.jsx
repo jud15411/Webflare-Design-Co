@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import ProtectedRoute from './ProtectedRoute';
 import Orchestrator from './pages/Orchestrator';
+import ClientRegistry from './pages/ClientRegistry';
+import ClientConsole from './pages/ClientConsole';
 
 const AdminLayout = ({ children, user, setUser }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -83,6 +85,26 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route
+          path="/clients"
+          element={
+            <ProtectedRoute>
+              <AdminLayout user={user} setUser={setUser}>
+                <ClientRegistry user={user} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clients/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout user={user} setUser={setUser}>
+                <ClientConsole user={user} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
