@@ -43,6 +43,7 @@ app.use(
   require('./routes/orchestratorRoutes')
 );
 app.use('/api/admin', verifyCsrf, require('./routes/adminRoutes'));
+app.use('/api/projects', verifyCsrf, require('./routes/projectRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

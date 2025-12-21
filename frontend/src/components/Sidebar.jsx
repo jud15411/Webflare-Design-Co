@@ -25,47 +25,58 @@ const Sidebar = ({ user, setUser, closeSidebar }) => {
       branches: ['admin', 'cyber_security', 'web_dev'],
     },
     {
+      name: 'Projects',
+      path: '/projects',
+      icon: '📂',
+      branches: ['admin', 'cyber_security', 'web_dev'],
+      // Specific permissions required for non-admins
+      requiredPermissions: ['web_view_projects', 'cyber_view_projects'],
+    },
+    {
       name: 'Clients',
       path: '/clients',
       icon: '🏢',
-      // Accessible to all branches; the Controller handles data siloing
       branches: ['admin', 'cyber_security', 'web_dev'],
-      permission: 'global_view_client_registry',
+      // Global permission required for non-admins
+      requiredPermissions: ['global_view_client_registry'],
     },
     {
       name: 'Personnel',
       path: '/users',
       icon: '👥',
-      // Strictly for Admin branch to manage users/roles
       branches: ['admin'],
     },
   ].filter((item) => {
-    const userPerms = user?.permissions || [];
+    // 1. SuperAdmin bypass: If they have the wildcard, show everything
+    if (user?.permissions?.includes('*')) return true;
 
-    // 1. Super Admin bypass
-    if (userPerms.includes('*')) return true;
+    // 2. Branch Check: Is the user's branch allowed to see this item?
+    const branchAllowed = item.branches.includes(user?.branch);
+    if (!branchAllowed) return false;
 
-    // 2. If item has a specific permission requirement (like Clients)
-    if (item.permission) {
-      return userPerms.includes(item.permission);
+    // 3. Admin Branch bypass: Admins see all items allowed for their branch regardless of specific permissions
+    if (user?.branch === 'admin') return true;
+
+    // 4. Permission Check: For non-admins, does their role have the required permission?
+    if (item.requiredPermissions) {
+      return item.requiredPermissions.some((p) =>
+        user?.permissions?.includes(p)
+      );
     }
 
-    // 3. Fallback to branch-based visibility (for Dashboard/Personnel)
-    return item.branches?.includes(user?.branch);
+    return true;
   });
 
   return (
-    <aside className="w-64 bg-white dark:bg-zinc-950 border-r border-slate-200 dark:border-zinc-800 flex flex-col h-screen transition-colors duration-300">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 transition-colors duration-300">
       <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <span className="text-white font-black text-xl">W</span>
-            </div>
-            <span className="font-black text-slate-900 dark:text-white uppercase tracking-tighter">
-              WebFlare
-            </span>
+        <div className="flex items-center gap-3 px-2 mb-8">
+          <div className="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-indigo-500/20">
+            W
           </div>
+          <span className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+            Webflare
+          </span>
         </div>
 
         <nav className="space-y-1">
@@ -74,10 +85,10 @@ const Sidebar = ({ user, setUser, closeSidebar }) => {
               key={item.path}
               to={item.path}
               onClick={closeSidebar}
-              className={`flex items-center px-4 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 ${
+              className={`flex items-center px-4 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-200 ${
                 location.pathname === item.path
-                  ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-sm'
-                  : 'text-slate-500 dark:text-zinc-500 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:text-slate-900 dark:hover:text-zinc-300'
+                  ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:text-slate-900 dark:hover:text-zinc-300'
               }`}>
               <span className="mr-3 text-lg opacity-80">{item.icon}</span>
               {item.name}
@@ -98,19 +109,19 @@ const Sidebar = ({ user, setUser, closeSidebar }) => {
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-[9px] font-bold text-slate-400 dark:text-zinc-500 uppercase truncate">
-              {user?.role?.name || 'Authorized Personnel'}
+              {user?.role || 'Authorized Personnel'}
             </p>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-red-500 transition-colors">
-          <span>Logout</span>
-          <span>➜</span>
+          className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all duration-200">
+          <span>🚪</span>
+          Terminate Session
         </button>
       </div>
-    </aside>
+    </div>
   );
 };
 
