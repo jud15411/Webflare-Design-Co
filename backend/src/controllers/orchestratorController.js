@@ -102,3 +102,13 @@ exports.getPermissionManifest = (req, res) => {
   const permissionsArray = Object.values(PERMISSIONS);
   res.json(permissionsArray);
 };
+
+// Update this function to ensure clean array output
+exports.getPermissionManifest = (req, res) => {
+  try {
+    const permissionsArray = Object.values(PERMISSIONS);
+    res.json(permissionsArray);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to generate manifest' });
+  }
+};
