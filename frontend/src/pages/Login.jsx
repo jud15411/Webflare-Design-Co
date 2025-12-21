@@ -51,7 +51,10 @@ const Login = ({ setUser }) => {
                 required
                 className="w-full px-4 py-4 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 outline-none text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all"
                 onChange={(e) =>
-                  setFormData({ ...formData, userName: e.target.value })
+                  setFormData({
+                    ...formData,
+                    userName: e.target.value.toLowerCase(),
+                  })
                 }
               />
             </div>

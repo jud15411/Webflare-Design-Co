@@ -4,7 +4,8 @@ const User = require('../models/User');
 const logger = require('../utils/logger');
 
 exports.login = async (req, res) => {
-  const { userName, password } = req.body;
+  const { password } = req.body;
+  const userName = req.body.userName ? req.body.userName.toLowerCase() : '';
   const rawIp =
     req.headers['x-forwarded-for'] || req.ip || req.connection.remoteAddress;
   const userIp = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : rawIp;
