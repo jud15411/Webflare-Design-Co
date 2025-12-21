@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
+import { ErrorProvider } from './context/ErrorContext';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Dashboard from './pages/Dashboard';
@@ -8,6 +9,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Orchestrator from './pages/Orchestrator';
 import ClientRegistry from './pages/ClientRegistry';
 import ClientConsole from './pages/ClientConsole';
+import Projects from './pages/Projects';
 
 const AdminLayout = ({ children, user, setUser }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -91,6 +93,16 @@ function App() {
             <ProtectedRoute>
               <AdminLayout user={user} setUser={setUser}>
                 <ClientRegistry user={user} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute>
+              <AdminLayout user={user} setUser={setUser}>
+                <Projects user={user} />
               </AdminLayout>
             </ProtectedRoute>
           }

@@ -11,7 +11,7 @@ exports.createClient = async (req, res) => {
       createdBy: req.user._id,
     });
 
-    logger.info('Client Created', {
+    logger.warn('Client Created', {
       action: 'CREATE_CLIENT',
       performedBy: req.user.userName,
       clientId: newClient._id,
@@ -64,13 +64,8 @@ exports.getClient = async (req, res) => {
       !req.user.role.permissions.includes('*')
     ) {
       delete clientObj.adminData;
-      logger.info('Client Viewed (Restricted)', {
-        action: 'VIEW_CLIENT',
-        clientId: client._id,
-        performedBy: req.user.userName,
-      });
     } else {
-      logger.info('Client Viewed (Full)', {
+      logger.warn('Client Viewed (Full)', {
         action: 'VIEW_CLIENT_ADMIN',
         clientId: client._id,
         performedBy: req.user.userName,
@@ -104,31 +99,22 @@ exports.updateClient = async (req, res) => {
         userBranch === 'web_dev' &&
         (updates.adminData || updates.cyberData)
       ) {
-        return res
-          .status(403)
-          .json({
-            message:
-              'Access Denied: Web branch cannot edit Admin or Cyber data.',
-          });
+        return res.status(403).json({
+          message: 'Access Denied: Web branch cannot edit Admin or Cyber data.',
+        });
       }
       if (
         userBranch === 'cyber_security' &&
         (updates.adminData || updates.webData)
       ) {
-        return res
-          .status(403)
-          .json({
-            message:
-              'Access Denied: Cyber branch cannot edit Admin or Web data.',
-          });
+        return res.status(403).json({
+          message: 'Access Denied: Cyber branch cannot edit Admin or Web data.',
+        });
       }
       if (userBranch !== 'admin' && updates.adminData) {
-        return res
-          .status(403)
-          .json({
-            message:
-              'Access Denied: Financial data restricted to Admin branch.',
-          });
+        return res.status(403).json({
+          message: 'Access Denied: Financial data restricted to Admin branch.',
+        });
       }
     }
 
@@ -138,6 +124,15 @@ exports.updateClient = async (req, res) => {
       { $set: updates },
       { new: true, runValidators: true }
     );
+
+    logger.warn('Client Updated', {
+      action: 'UPDATE_CLIENT',
+      performedBy: req.user.userName,
+      clientId: client._id,
+      clientName: client.name,
+    });
+
+    console.log('DEBUG: Reached the success point of updateClient');
 
     res.status(200).json({ success: true, data: client });
   } catch (err) {

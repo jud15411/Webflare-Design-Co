@@ -13,7 +13,7 @@ const PERMISSIONS = {
   SYS_MANAGE_CLIENTS: 'sys_manage_clients',
   SYS_VIEW_CLIENT_FINANCIALS: 'sys_view_client_financials',
 
-  // B. General Registry (The "Entrance" permission)
+  // B. General Registry
   GLOBAL_VIEW_CLIENT_REGISTRY: 'global_view_client_registry',
 
   // C. Web Development Branch Permissions
@@ -22,9 +22,11 @@ const PERMISSIONS = {
   WEB_MANAGE_CLIENTS: 'web_manage_clients',
 
   // D. Cybersecurity Branch Permissions
+  CYBER_VIEW_PROJECTS: 'cyber_view_projects', // <--- ADDED
+  CYBER_CREATE_PROJECT: 'cyber_create_project', // <--- ADDED
   CYBER_VIEW_VULNS: 'cyber_view_vulns',
   CYBER_RUN_SCANS: 'cyber_run_scans',
-  CYBER_MANAGE_CLIENTS: 'cyber_manage_clients', // <--- ADDED THIS
+  CYBER_MANAGE_CLIENTS: 'cyber_manage_clients',
   CYBER_MANAGE_INCIDENTS: 'cyber_manage_incidents',
   CYBER_ACCESS_VAULT: 'cyber_access_vault',
 
